@@ -1,3 +1,35 @@
+<script setup>
+const blogPosts = [
+    {
+        title: "Understanding Heart Disease: Prevention Tips",
+        author: "Dr. Mohammad Ali",
+        date: "Dec 12, 2024",
+        readTime: "5 min read",
+        excerpt:
+            "Learn about common heart conditions and how to maintain cardiovascular health through lifestyle changes.",
+        image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+    },
+    {
+        title: "Diabetes Management: A Complete Guide",
+        author: "Dr. Sabrina Chowdhury",
+        date: "Dec 8, 2024",
+        readTime: "7 min read",
+        excerpt:
+            "Comprehensive guide to managing diabetes through diet, exercise, and medication.",
+        image: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+    },
+    {
+        title: "Mental Health Awareness in Bangladesh",
+        author: "Dr. Anika Rahman",
+        date: "Dec 3, 2024",
+        readTime: "6 min read",
+        excerpt:
+            "Breaking the stigma around mental health and available treatment options.",
+        image: "https://images.unsplash.com/photo-1590650516494-0c8e4a4dd61b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+    },
+];
+</script>
+
 <template>
     <section id="blog" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,35 +97,3 @@
         </div>
     </section>
 </template>
-
-<script setup>
-const blogPosts = [
-    {
-        title: "Understanding Heart Disease: Prevention Tips",
-        author: "Dr. Mohammad Ali",
-        date: "Dec 12, 2024",
-        readTime: "5 min read",
-        excerpt:
-            "Learn about common heart conditions and how to maintain cardiovascular health through lifestyle changes.",
-        image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-    },
-    {
-        title: "Diabetes Management: A Complete Guide",
-        author: "Dr. Sabrina Chowdhury",
-        date: "Dec 8, 2024",
-        readTime: "7 min read",
-        excerpt:
-            "Comprehensive guide to managing diabetes through diet, exercise, and medication.",
-        image: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-    },
-    {
-        title: "Mental Health Awareness in Bangladesh",
-        author: "Dr. Anika Rahman",
-        date: "Dec 3, 2024",
-        readTime: "6 min read",
-        excerpt:
-            "Breaking the stigma around mental health and available treatment options.",
-        image: "https://images.unsplash.com/photo-1590650516494-0c8e4a4dd61b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-    },
-];
-</script>

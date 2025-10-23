@@ -1,3 +1,29 @@
+<script setup>
+const patientStories = [
+    {
+        name: "Rahman Ahmed",
+        condition: "Cardiac Surgery",
+        story: "The care I received at Xet Hospital was exceptional. The cardiac team saved my life with their expertise and compassion.",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
+        rating: 5,
+    },
+    {
+        name: "Fatima Begum",
+        condition: "Orthopedic Treatment",
+        story: "After my knee replacement surgery, I can walk without pain for the first time in years. Thank you Xet Hospital!",
+        image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
+        rating: 5,
+    },
+    {
+        name: "Jamal Uddin",
+        condition: "Neurology",
+        story: "The neurology department provided excellent care for my condition. The doctors were knowledgeable and caring.",
+        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
+        rating: 4,
+    },
+];
+</script>
+
 <template>
     <section id="patient-stories" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,29 +87,3 @@
         </div>
     </section>
 </template>
-
-<script setup>
-const patientStories = [
-    {
-        name: "Rahman Ahmed",
-        condition: "Cardiac Surgery",
-        story: "The care I received at Xet Hospital was exceptional. The cardiac team saved my life with their expertise and compassion.",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-        rating: 5,
-    },
-    {
-        name: "Fatima Begum",
-        condition: "Orthopedic Treatment",
-        story: "After my knee replacement surgery, I can walk without pain for the first time in years. Thank you Xet Hospital!",
-        image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-        rating: 5,
-    },
-    {
-        name: "Jamal Uddin",
-        condition: "Neurology",
-        story: "The neurology department provided excellent care for my condition. The doctors were knowledgeable and caring.",
-        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-        rating: 4,
-    },
-];
-</script>

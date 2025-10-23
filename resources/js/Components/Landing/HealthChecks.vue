@@ -1,3 +1,43 @@
+<script setup>
+const healths = [
+    {
+        name: "Basic Health Check",
+        price: "৳2,500",
+        features: [
+            "Blood Tests",
+            "Urine Analysis",
+            "Basic Consultation",
+            "BMI Calculation",
+        ],
+        popular: false,
+    },
+    {
+        name: "Executive Health Check",
+        price: "৳5,000",
+        features: [
+            "Complete Blood Count",
+            "Liver Function Test",
+            "Cardiac Screening",
+            "Diabetes Panel",
+            "Doctor Consultation",
+        ],
+        popular: true,
+    },
+    {
+        name: "Comprehensive Health Check",
+        price: "৳8,000",
+        features: [
+            "All Executive Features",
+            "Cancer Markers",
+            "Advanced Cardiac Tests",
+            "Full Body Checkup",
+            "Specialist Consultation",
+        ],
+        popular: false,
+    },
+];
+</script>
+
 <template>
     <section
         id="health-s"
@@ -91,43 +131,3 @@
         </div>
     </section>
 </template>
-
-<script setup>
-const healths = [
-    {
-        name: "Basic Health Check",
-        price: "৳2,500",
-        features: [
-            "Blood Tests",
-            "Urine Analysis",
-            "Basic Consultation",
-            "BMI Calculation",
-        ],
-        popular: false,
-    },
-    {
-        name: "Executive Health Check",
-        price: "৳5,000",
-        features: [
-            "Complete Blood Count",
-            "Liver Function Test",
-            "Cardiac Screening",
-            "Diabetes Panel",
-            "Doctor Consultation",
-        ],
-        popular: true,
-    },
-    {
-        name: "Comprehensive Health Check",
-        price: "৳8,000",
-        features: [
-            "All Executive Features",
-            "Cancer Markers",
-            "Advanced Cardiac Tests",
-            "Full Body Checkup",
-            "Specialist Consultation",
-        ],
-        popular: false,
-    },
-];
-</script>
