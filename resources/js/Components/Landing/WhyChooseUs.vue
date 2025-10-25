@@ -1,3 +1,28 @@
+<script setup>
+const features = [
+    {
+        title: "Expert Specialists",
+        desc: "200+ renowned medical specialists across all departments",
+        icon: "👨‍⚕️",
+    },
+    {
+        title: "Advanced Technology",
+        desc: "State-of-the-art medical equipment and facilities",
+        icon: "🔬",
+    },
+    {
+        title: "24/7 Emergency",
+        desc: "Round-the-clock emergency and critical care services",
+        icon: "🚨",
+    },
+    {
+        title: "Patient First",
+        desc: "Personalized care plans and compassionate treatment",
+        icon: "❤️",
+    },
+];
+</script>
+
 <template>
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,28 +61,3 @@
         </div>
     </section>
 </template>
-
-<script setup>
-const features = [
-    {
-        title: "Expert Specialists",
-        desc: "200+ renowned medical specialists across all departments",
-        icon: "👨‍⚕️",
-    },
-    {
-        title: "Advanced Technology",
-        desc: "State-of-the-art medical equipment and facilities",
-        icon: "🔬",
-    },
-    {
-        title: "24/7 Emergency",
-        desc: "Round-the-clock emergency and critical care services",
-        icon: "🚨",
-    },
-    {
-        title: "Patient First",
-        desc: "Personalized care plans and compassionate treatment",
-        icon: "❤️",
-    },
-];
-</script>

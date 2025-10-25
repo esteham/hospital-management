@@ -19,7 +19,12 @@ use App\Http\Controllers\Doctor\ScheduleController as DocScheduleCtrl;
 |
 */
 
-Route::get('/', fn() => Inertia::render('Welcome'))->name('welcome');
+Route::get('/', fn() => Inertia::render('Welcome', [
+    'canLogin' => Route::has('login'),
+    'canRegister' => Route::has('register'),
+    'laravelVersion' => app()->version(),
+    'phpVersion' => PHP_VERSION,
+]))->name('welcome');
 
 
 require __DIR__.'/auth.php';

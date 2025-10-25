@@ -1,3 +1,28 @@
+<script setup>
+const corporateServices = [
+    {
+        title: "Corporate Health Checkups",
+        description: "Comprehensive health screening s for your employees",
+        icon: "🏢",
+    },
+    {
+        title: "On-site Medical Facilities",
+        description: "Set up medical facilities at your workplace",
+        icon: "⚕️",
+    },
+    {
+        title: "Health Awareness Programs",
+        description: "Educational sessions on workplace health and safety",
+        icon: "📚",
+    },
+    {
+        title: "Emergency Response Training",
+        description: "First aid and emergency response training for staff",
+        icon: "🆘",
+    },
+];
+</script>
+
 <template>
     <section
         class="py-20 bg-gradient-to-br from-blue-600 to-cyan-500 text-white"
@@ -55,28 +80,3 @@
         </div>
     </section>
 </template>
-
-<script setup>
-const corporateServices = [
-    {
-        title: "Corporate Health Checkups",
-        description: "Comprehensive health screening s for your employees",
-        icon: "🏢",
-    },
-    {
-        title: "On-site Medical Facilities",
-        description: "Set up medical facilities at your workplace",
-        icon: "⚕️",
-    },
-    {
-        title: "Health Awareness Programs",
-        description: "Educational sessions on workplace health and safety",
-        icon: "📚",
-    },
-    {
-        title: "Emergency Response Training",
-        description: "First aid and emergency response training for staff",
-        icon: "🆘",
-    },
-];
-</script>
