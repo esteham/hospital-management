@@ -1,0 +1,125 @@
+name: Deploy (Laravel + Inertia/Vue) to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 0) Fail fast if required secrets are missing
+      - name: Validate secrets
+        run: |
+          test -n "${{ secrets.FTP_SERVER }}"   || { echo "::error::Missing secret FTP_SERVER"; exit 1; }
+          test -n "${{ secrets.FTP_USERNAME }}" || { echo "::error::Missing secret FTP_USERNAME"; exit 1; }
+          test -n "${{ secrets.FTP_PASSWORD }}" || { echo "::error::Missing secret FTP_PASSWORD"; exit 1; }
+          test -n "${{ secrets.FTP_TARGET }}"   || { echo "::error::Missing secret FTP_TARGET (e.g. public_html/tax/)"; exit 1; }
+
+      # --- Build phase ---
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl, gd, zip
+          tools: composer:v2
+
+      - name: Cache composer deps
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install PHP deps (prod)
+        run: composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Node deps & Build
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+          npm run build
+
+      - name: Cleanup before upload
+        shell: bash
+        run: |
+          rm -rf node_modules tests
+          rm -rf storage/framework/sessions/* storage/framework/cache/* storage/framework/views/* || true
+
+      # --- Preflight connectivity checks (explicit FTPS, port 21) ---
+      - name: DNS resolve + FTPS handshake (port 21)
+        shell: bash
+        run: |
+          echo "Resolving: ${{ secrets.FTP_SERVER }}"
+          getent hosts "${{ secrets.FTP_SERVER }}" || true
+          echo "FTPS check (STARTTLS over 21)..."
+          # Try STARTTLS for FTP (explicit FTPS)
+          timeout 8s bash -lc 'openssl s_client -starttls ftp -crlf -connect "${{ secrets.FTP_SERVER }}:21" </dev/null' || true
+
+      # --- Deploy (Explicit FTPS on 21) ---
+      - name: Upload via FTPS (explicit:21)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }} # TIP: প্রয়োজনে DNS এড়াতে এখানে সরাসরি সার্ভারের IP দিন
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps # explicit FTPS
+          port: 21
+          local-dir: ./
+          passive: true
+          server-dir: ${{ secrets.FTP_TARGET }}
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/tests/**
+            **/.env
+            storage/logs/*.log
+            storage/framework/sessions/**
+            storage/framework/cache/**
+            storage/framework/views/**
+          log-level: verbose
+          timeout: 600000 # 10 minutes
+          max-retries: 3
+          state-name: .ftp-deploy-sync-state.json
+
+      # (Diagnostic only) Plain FTP test — DO NOT enable permanently
+      # - name: Upload via plain FTP (diagnostic ONLY)
+      #   if: ${{ failure() }}
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+      #   with:
+      #     server: ${{ secrets.FTP_SERVER }}
+      #     username: ${{ secrets.FTP_USERNAME }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     protocol: ftp
+      #     port: 21
+      #     local-dir: ./
+      #     server-dir: ${{ secrets.FTP_TARGET }}
+      #     exclude: |
+      #       **/.git*
+      #       **/.github/**
+      #       **/node_modules/**
+      #       **/tests/**
+      #       **/.env
+      #       storage/logs/*.log
+      #       storage/framework/sessions/**
+      #       storage/framework/cache/**
+      #       storage/framework/views/**
+      #     log-level: verbose
+      #     timeout: 300000
+      #     max-retries: 1
+      #     state-name: .ftp-deploy-sync-state.json
