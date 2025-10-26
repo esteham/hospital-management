@@ -6,6 +6,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
+import Header from "@/Components/Landing/Header.vue";
+
 defineProps({
     canResetPassword: Boolean,
     status: String,
@@ -26,6 +28,8 @@ const submit = () => {
 
 <template>
     <Head title="Login - Xet Specialized Hospital" />
+    <!-- Modern Header -->
+    <Header :canLogin="canLogin" :canRegister="canRegister" />
 
     <!-- Main Container -->
     <div class="min-h-screen flex">

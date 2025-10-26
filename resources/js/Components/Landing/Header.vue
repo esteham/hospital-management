@@ -51,15 +51,15 @@ const isMenuOpen = ref(false);
 
                 <!-- Desktop Navigation Menu -->
                 <nav class="hidden lg:flex space-x-8">
-                    <a
-                        href="#home"
+                    <Link
+                        :href="route('welcome')"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
                     >
                         <span class="relative z-10">Home</span>
                         <span
                             class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
                         ></span>
-                    </a>
+                    </Link>
                     <a
                         href="#services"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
@@ -160,7 +160,7 @@ const isMenuOpen = ref(false);
             >
                 <nav class="flex flex-col space-y-4">
                     <a
-                        href="#home"
+                        :href="route('/')"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
                         @click="isMenuOpen = false"
                     >

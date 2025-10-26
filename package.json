@@ -20,6 +20,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "lucide-vue-next": "^0.548.0"
     }
 }

@@ -25,7 +25,8 @@ const submit = () => {
 
 <template>
     <Head title="Register - Xet Specialized Hospital" />
-    <Header />
+    <!-- Modern Header -->
+    <Header :canLogin="canLogin" :canRegister="canRegister" />
 
     <!-- Main Container -->
     <div class="min-h-screen flex flex-col lg:flex-row">
