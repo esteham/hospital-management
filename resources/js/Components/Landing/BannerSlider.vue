@@ -2,6 +2,10 @@
 import { Head, Link } from "@inertiajs/vue3";
 import { ref, onMounted } from "vue";
 
+import Cardiac from "@/assets/images/slide/cardiacs.png";
+import Emergency from "@/assets/images/slide/emergency.png";
+import Package from "@/assets/images/slide/package.png";
+
 const props = defineProps({
     banners: Array,
 });
@@ -27,7 +31,6 @@ const banners = ref([
         id: 1,
         title: "Advanced Cardiac Care",
         subtitle: "World-class heart treatment with 98% success rate",
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
         cta: "Book Consultation",
         link: "#cardiology",
     },
@@ -35,7 +38,6 @@ const banners = ref([
         id: 2,
         title: "24/7 Emergency Services",
         subtitle: "Immediate medical attention when you need it most",
-        image: "https://images.unsplash.com/photo-1584467735871-8db9ac8d55b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
         cta: "Emergency Contact",
         link: "#emergency",
     },
@@ -43,7 +45,6 @@ const banners = ref([
         id: 3,
         title: "Health Check Packages",
         subtitle: "Comprehensive health screenings for preventive care",
-        image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
         cta: "View Packages",
         link: "#health-packages",
     },
