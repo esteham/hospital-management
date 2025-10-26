@@ -1,0 +1,154 @@
+name: Deploy (Laravel + Inertia/Vue) to Hostinger (ZIP + remote unzip)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+
+      # ----- PHP / Composer -----
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl, gd, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache composer downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install PHP deps (prod)
+        run: composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+
+      # ----- Node / Vite -----
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Build frontend
+        run: |
+          if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm i --no-audit --no-fund; fi
+          npm run build   # => public/build + manifest.json
+
+      # ----- Prepare deploy payload -----
+      - name: Build deploy payload
+        shell: bash
+        run: |
+          set -e
+          rm -rf deploy ship deploy.zip
+          mkdir -p deploy
+          cp -r app bootstrap config database resources/views routes vendor deploy/
+          cp -r public deploy/public
+          cp artisan composer.json composer.lock deploy/
+          # clean
+          rm -rf deploy/public/hot deploy/public/storage || true
+          # create a ship folder that will contain only two files to upload:
+          mkdir -p ship/public
+          # make zip from deploy/
+          (cd deploy && zip -qr ../ship/deploy.zip .)
+          # write public/deploy.php with token check
+          cat > ship/public/deploy.php <<'PHP'
+          <?php
+          // --- secure remote unzip & deploy ---
+          $tokenProvided = $_GET['token'] ?? '';
+          $tokenExpected = '__TOKEN_PLACEHOLDER__';
+          if (!hash_equals($tokenExpected, $tokenProvided)) {
+              http_response_code(403);
+              exit('forbidden');
+          }
+          $root = realpath(__DIR__ . '/..'); // project root (public/ থেকে এক ধাপ ওপরে)
+          $zip  = $root . '/deploy.zip';
+          if (!file_exists($zip)) {
+              http_response_code(404);
+              exit('zip not found');
+          }
+          // create temp release dir
+          $release = $root . '/.release_' . date('Ymd_His');
+          if (!mkdir($release, 0755, true)) { exit('failed to create release dir'); }
+          // unzip
+          $za = new ZipArchive();
+          if ($za->open($zip) !== true) { exit('zip open failed'); }
+          if (!$za->extractTo($release)) { $za->close(); exit('extract failed'); }
+          $za->close();
+
+          // recursive copy (overwrite)
+          $it = new RecursiveIteratorIterator(
+              new RecursiveDirectoryIterator($release, FilesystemIterator::SKIP_DOTS),
+              RecursiveIteratorIterator::SELF_FIRST
+          );
+          foreach ($it as $src) {
+              $rel = substr($src->getPathname(), strlen($release) + 1);
+              $dst = $root . DIRECTORY_SEPARATOR . $rel;
+              if ($src->isDir()) {
+                  if (!is_dir($dst)) mkdir($dst, 0755, true);
+              } else {
+                  if (!is_dir(dirname($dst))) mkdir(dirname($dst), 0755, true);
+                  if (!copy($src->getPathname(), $dst)) {
+                      http_response_code(500);
+                      exit('copy failed: ' . $rel);
+                  }
+              }
+          }
+
+          // cleanup
+          function rrmdir($d){ if(is_dir($d)){ $it=new RecursiveIteratorIterator(
+              new RecursiveDirectoryIterator($d,FilesystemIterator::SKIP_DOTS),
+              RecursiveIteratorIterator::CHILD_FIRST);
+              foreach($it as $f){ $f->isDir()?rmdir($f->getPathname()):unlink($f->getPathname()); }
+              rmdir($d); } }
+          @unlink($zip);
+          rrmdir($release);
+
+          // optional: remove this script after deploy for security
+          if (isset($_GET['selfdestruct']) && $_GET['selfdestruct'] === '1') {
+              @unlink(__FILE__);
+          }
+          echo "OK";
+          PHP
+          # inject secret token
+          sed -i "s/__TOKEN_PLACEHOLDER__/${{ secrets.DEPLOY_TOKEN }}/" ship/public/deploy.php
+
+      # ----- Upload only two files via FTPS -----
+      - name: Upload ZIP + deploy.php via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          passive: true
+          local-dir: ./ship/
+          server-dir: ${{ secrets.FTP_TARGET }}/
+          state-name: .ftp-deploy-sync-state.json
+          timeout: 600000
+          max-retries: 5
+          log-level: minimal
+
+      # ----- Trigger remote unzip via HTTPS -----
+      - name: Trigger remote deploy
+        run: |
+          set -e
+          curl -fsSL "${{ secrets.DEPLOY_URL }}?token=${{ secrets.DEPLOY_TOKEN }}" -o /dev/null
+          # optional: delete deploy.php after success (safer for prod)
+          curl -fsSL "${{ secrets.DEPLOY_URL }}?token=${{ secrets.DEPLOY_TOKEN }}&selfdestruct=1" -o /dev/null
