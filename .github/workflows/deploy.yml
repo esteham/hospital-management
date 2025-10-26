@@ -1,11 +1,10 @@
-name: Deploy (Laravel + Inertia/Vue) to Hostinger
+name: Deploy (Laravel + Inertia/Vue) to Hostinger (ZIP + remote unzip)
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# একসাথে একটাই ডিপ্লয় চলবে
 concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
@@ -17,16 +16,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      # ----- Fail fast: required secrets -----
-      - name: Validate secrets
-        run: |
-          test -n "${{ secrets.FTP_SERVER }}"   || { echo "::error::Missing secret FTP_SERVER"; exit 1; }
-          test -n "${{ secrets.FTP_USERNAME }}" || { echo "::error::Missing secret FTP_USERNAME"; exit 1; }
-          test -n "${{ secrets.FTP_PASSWORD }}" || { echo "::error::Missing secret FTP_PASSWORD"; exit 1; }
-          test -n "${{ secrets.FTP_TARGET }}"   || { echo "::error::Missing secret FTP_TARGET (e.g. public_html/eland)"; exit 1; }
+        with: { fetch-depth: 1 }
 
       # ----- PHP / Composer -----
       - name: Setup PHP
@@ -55,81 +45,110 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Install Node deps & Build
+      - name: Build frontend
         run: |
           if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm i --no-audit --no-fund; fi
           npm run build   # => public/build + manifest.json
 
-      # (optional) Laravel optimize (runtime caches are re-generated server-side if needed)
-      - name: Laravel clear caches
-        run: |
-          php artisan config:clear || true
-          php artisan route:clear  || true
-          php artisan view:clear   || true
-
-      # ----- Prepare deploy payload (only what's needed) -----
-      - name: Build deploy/ payload
+      # ----- Prepare deploy payload -----
+      - name: Build deploy payload
         shell: bash
         run: |
-          rm -rf deploy && mkdir -p deploy
+          set -e
+          rm -rf deploy ship deploy.zip
+          mkdir -p deploy
           cp -r app bootstrap config database resources/views routes vendor deploy/
           cp -r public deploy/public
           cp artisan composer.json composer.lock deploy/
-          # remove dev/hot/stale things from payload
+          # clean
           rm -rf deploy/public/hot deploy/public/storage || true
-          # storage runtime files server-side
-          rm -rf deploy/storage 2>/dev/null || true
+          # create a ship folder that will contain only two files to upload:
+          mkdir -p ship/public
+          # make zip from deploy/
+          (cd deploy && zip -qr ../ship/deploy.zip .)
+          # write public/deploy.php with token check
+          cat > ship/public/deploy.php <<'PHP'
+          <?php
+          // --- secure remote unzip & deploy ---
+          $tokenProvided = $_GET['token'] ?? '';
+          $tokenExpected = '__TOKEN_PLACEHOLDER__';
+          if (!hash_equals($tokenExpected, $tokenProvided)) {
+              http_response_code(403);
+              exit('forbidden');
+          }
+          $root = realpath(__DIR__ . '/..'); // project root (public/ থেকে এক ধাপ ওপরে)
+          $zip  = $root . '/deploy.zip';
+          if (!file_exists($zip)) {
+              http_response_code(404);
+              exit('zip not found');
+          }
+          // create temp release dir
+          $release = $root . '/.release_' . date('Ymd_His');
+          if (!mkdir($release, 0755, true)) { exit('failed to create release dir'); }
+          // unzip
+          $za = new ZipArchive();
+          if ($za->open($zip) !== true) { exit('zip open failed'); }
+          if (!$za->extractTo($release)) { $za->close(); exit('extract failed'); }
+          $za->close();
 
-      # (Optional) Upload single ZIP instead of many files (unzip via SSH/FileManager)
-      # - name: Pack as zip
-      #   run: (cd deploy && zip -qr ../deploy.zip .)
+          // recursive copy (overwrite)
+          $it = new RecursiveIteratorIterator(
+              new RecursiveDirectoryIterator($release, FilesystemIterator::SKIP_DOTS),
+              RecursiveIteratorIterator::SELF_FIRST
+          );
+          foreach ($it as $src) {
+              $rel = substr($src->getPathname(), strlen($release) + 1);
+              $dst = $root . DIRECTORY_SEPARATOR . $rel;
+              if ($src->isDir()) {
+                  if (!is_dir($dst)) mkdir($dst, 0755, true);
+              } else {
+                  if (!is_dir(dirname($dst))) mkdir(dirname($dst), 0755, true);
+                  if (!copy($src->getPathname(), $dst)) {
+                      http_response_code(500);
+                      exit('copy failed: ' . $rel);
+                  }
+              }
+          }
 
-      # ----- Connectivity diag (optional) -----
-      - name: FTPS handshake (port 21)
-        continue-on-error: true
-        run: |
-          echo "Resolving: ${{ secrets.FTP_SERVER }}"
-          getent hosts "${{ secrets.FTP_SERVER }}" || true
-          echo "STARTTLS check..."
-          timeout 8s bash -lc 'openssl s_client -starttls ftp -crlf -connect "${{ secrets.FTP_SERVER }}:21" </dev/null' || true
+          // cleanup
+          function rrmdir($d){ if(is_dir($d)){ $it=new RecursiveIteratorIterator(
+              new RecursiveDirectoryIterator($d,FilesystemIterator::SKIP_DOTS),
+              RecursiveIteratorIterator::CHILD_FIRST);
+              foreach($it as $f){ $f->isDir()?rmdir($f->getPathname()):unlink($f->getPathname()); }
+              rmdir($d); } }
+          @unlink($zip);
+          rrmdir($release);
 
-      # ----- Deploy via FTPS (explicit 21) -----
-      - name: Upload via FTPS (explicit:21)
+          // optional: remove this script after deploy for security
+          if (isset($_GET['selfdestruct']) && $_GET['selfdestruct'] === '1') {
+              @unlink(__FILE__);
+          }
+          echo "OK";
+          PHP
+          # inject secret token
+          sed -i "s/__TOKEN_PLACEHOLDER__/${{ secrets.DEPLOY_TOKEN }}/" ship/public/deploy.php
+
+      # ----- Upload only two files via FTPS -----
+      - name: Upload ZIP + deploy.php via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ${{ secrets.FTP_SERVER }} # IP দিলে DNS সমস্যা কমে
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
           passive: true
-          local-dir: ./deploy/ # শুধুই payload
-          server-dir: ${{ secrets.FTP_TARGET }}/ # ট্রেলিং স্ল্যাশ দিন
-          state-name: .ftp-deploy-sync-state.json # delta-sync (এই ফাইল সার্ভার থেকে মুছবেন না)
-          timeout: 1200000 # 20 মিনিট (ms)
+          local-dir: ./ship/
+          server-dir: ${{ secrets.FTP_TARGET }}/
+          state-name: .ftp-deploy-sync-state.json
+          timeout: 600000
           max-retries: 5
-          log-level: verbose
-          exclude: |
-            **/.git**
-            **/.github/**
-            **/node_modules/**
-            **/tests/**
-            **/.env
-            **/storage/logs/**
-            **/storage/framework/sessions/**
-            **/storage/framework/cache/**
-            **/storage/framework/views/**
-            resources/js/**
-            resources/css/**
+          log-level: minimal
 
-      # ======== SFTP ALTERNATIVE (recommended if SSH available) ========
-      # - name: Upload via SFTP (faster & more stable)
-      #   if: ${{ false }} # SSH থাকলে true করে দিন এবং FTPS স্টেপটি কমেন্ট করুন
-      #   uses: appleboy/scp-action@v0.1.7
-      #   with:
-      #     host:     ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     key:      ${{ secrets.SSH_KEY }}       # private key (PEM)
-      #     source:   "deploy/*"
-      #     target:   ${{ secrets.FTP_TARGET }}
-      #     strip_components: 1
+      # ----- Trigger remote unzip via HTTPS -----
+      - name: Trigger remote deploy
+        run: |
+          set -e
+          curl -fsSL "${{ secrets.DEPLOY_URL }}?token=${{ secrets.DEPLOY_TOKEN }}" -o /dev/null
+          # optional: delete deploy.php after success (safer for prod)
+          curl -fsSL "${{ secrets.DEPLOY_URL }}?token=${{ secrets.DEPLOY_TOKEN }}&selfdestruct=1" -o /dev/null
