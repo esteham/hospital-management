@@ -33,6 +33,7 @@ const banners = ref([
         subtitle: "World-class heart treatment with 98% success rate",
         cta: "Book Consultation",
         link: "#cardiology",
+        image: Cardiac,
     },
     {
         id: 2,
@@ -40,6 +41,7 @@ const banners = ref([
         subtitle: "Immediate medical attention when you need it most",
         cta: "Emergency Contact",
         link: "#emergency",
+        image: Emergency,
     },
     {
         id: 3,
@@ -47,6 +49,7 @@ const banners = ref([
         subtitle: "Comprehensive health screenings for preventive care",
         cta: "View Packages",
         link: "#health-packages",
+        image: Package,
     },
 ]);
 </script>
