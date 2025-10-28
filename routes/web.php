@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Admin\AdminScheduleController;
 use App\Http\Controllers\Admin\DoctorController as AdminDoctorCtrl;
 use App\Http\Controllers\Doctor\ScheduleController as DocScheduleCtrl;
+use App\Http\Controllers\Admin\AdminHealthCheckController;
 
 
 /*
@@ -55,6 +56,8 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::get('/admin/schedules', fn() => Inertia::render('Admin/Schedules/Index'))->name('admin.schedules.index');
         Route::get('/admin/schedules/list', [AdminScheduleController::class,'index'])->name('admin.schedules.list');
         Route::post('/admin/schedules/mention', [AdminScheduleController::class, 'mention'])->name('admin.schedules.mention');
+
+        Route::resource('/admin/health-checks', AdminHealthCheckController::class, ['as' => 'admin']);
     });
 
     //Doctors Routes
@@ -72,5 +75,3 @@ Route::middleware(['auth','verified'])->group(function() {
     });
 
 });
-
-

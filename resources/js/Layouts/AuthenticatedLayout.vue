@@ -145,6 +145,30 @@ const sidebarOpen = ref(false);
                     </div>
                     <span class="font-semibold">Doctors Schedules</span>
                 </Link>
+
+                <Link
+                    href="/admin/health-checks"
+                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                >
+                    <div
+                        class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-orange-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Manage Packages</span>
+                </Link>
             </nav>
 
             <!-- Logout -->

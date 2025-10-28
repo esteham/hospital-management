@@ -1,43 +1,22 @@
 <script setup>
 import Background from "@/assets/images/background/background1.png";
+import api from "@/lib/api";
+import { ref, onMounted } from "vue";
 
-const healths = [
-    {
-        name: "Basic Health Check",
-        price: "৳2,500",
-        features: [
-            "Blood Tests",
-            "Urine Analysis",
-            "Basic Consultation",
-            "BMI Calculation",
-        ],
-        popular: false,
-    },
-    {
-        name: "Executive Health Check",
-        price: "৳5,000",
-        features: [
-            "Complete Blood Count",
-            "Liver Function Test",
-            "Cardiac Screening",
-            "Diabetes Panel",
-            "Doctor Consultation",
-        ],
-        popular: true,
-    },
-    {
-        name: "Comprehensive Health Check",
-        price: "৳8,000",
-        features: [
-            "All Executive Features",
-            "Cancer Markers",
-            "Advanced Cardiac Tests",
-            "Full Body Checkup",
-            "Specialist Consultation",
-        ],
-        popular: false,
-    },
-];
+const healths = ref([]);
+
+const fetchHealthChecks = async () => {
+    try {
+        const response = await api.get("/api/health-checks");
+        healths.value = response.data;
+    } catch (error) {
+        console.error("Error fetching health checks:", error);
+    }
+};
+
+onMounted(() => {
+    fetchHealthChecks();
+});
 </script>
 
 <template>

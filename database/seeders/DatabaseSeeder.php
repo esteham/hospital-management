@@ -7,9 +7,10 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    
+
     public function run()
     {
        $this->call(AdminAndDoctorSeeder::class);
+       $this->call(HealthCheckSeeder::class);
     }
 }
