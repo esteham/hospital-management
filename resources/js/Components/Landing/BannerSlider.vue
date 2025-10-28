@@ -1,44 +1,30 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
 import { ref, onMounted } from "vue";
 
+// উদাহরণ ইমেজ (আপনারগুলোই ব্যবহার করছি)
 import Cardiac from "@/assets/images/slide/cardiacs.png";
 import Emergency from "@/assets/images/slide/emergency.png";
 import Package from "@/assets/images/slide/package.png";
+import Background from "@/assets/images/background/background1.png";
 
-const props = defineProps({
-    banners: Array,
-});
-
-const currentBanner = ref(0);
-// Auto slide banners
-onMounted(() => {
-    setInterval(() => {
-        currentBanner.value = (currentBanner.value + 1) % banners.value.length;
-    }, 5000);
-});
-
-const nextBanner = () => {
-    currentBanner.value = (currentBanner.value + 1) % banners.value.length;
-};
-
-const prevBanner = () => {
-    currentBanner.value =
-        (currentBanner.value - 1 + banners.value.length) % banners.value.length;
-};
-const banners = ref([
+// স্লাইড ডেটা
+const slides = ref([
     {
         id: 1,
-        title: "Advanced Cardiac Care",
-        subtitle: "World-class heart treatment with 98% success rate",
-        cta: "Book Consultation",
-        link: "#cardiology",
+        title: "Xet Specialized Hospital",
+        subtitle:
+            "Xet Specialized Hospital was founded by a group of like-minded individuals and specialist doctors with a vision to create a “One Stop Standard Quality Health Service Centre”. We prioritize transparency and are deeply committed to our work with unwavering dedication.",
+        cta: "Connect with us on Messenger",
+        link: "#messenger",
         image: Cardiac,
+        // চাইলে ডাক্তারদের cutout foreground হিসেবে দিন:
+        // overlay: DoctorsPng
     },
     {
         id: 2,
         title: "24/7 Emergency Services",
-        subtitle: "Immediate medical attention when you need it most",
+        subtitle:
+            "Immediate medical attention when you need it most. Our emergency care is always ready.",
         cta: "Emergency Contact",
         link: "#emergency",
         image: Emergency,
@@ -46,116 +32,168 @@ const banners = ref([
     {
         id: 3,
         title: "Health Check Packages",
-        subtitle: "Comprehensive health screenings for preventive care",
+        subtitle:
+            "Comprehensive health screenings for preventive care. Choose the package that suits you.",
         cta: "View Packages",
         link: "#health-packages",
         image: Package,
     },
 ]);
+
+const current = ref(0);
+
+// Auto slide
+onMounted(() => {
+    setInterval(() => {
+        current.value = (current.value + 1) % slides.value.length;
+    }, 5000);
+});
+
+const go = (i) => (current.value = i);
+const next = () => (current.value = (current.value + 1) % slides.value.length);
+const prev = () =>
+    (current.value =
+        (current.value - 1 + slides.value.length) % slides.value.length);
 </script>
 
 <template>
-    <section id="home" class="relative h-[600px] overflow-hidden">
+    <!-- Light blue section like screenshot -->
+    <!-- Light blue section like screenshot -->
+    <section
+        class="relative bg-fixed bg-cover bg-center h-[100vh] sm:h-[420px] lg:h-[88vh] overflow-hidden"
+        :style="{
+            backgroundImage: `url(${Background})`,
+        }"
+        aria-hidden="true"
+    >
+        <div class="absolute inset-0 bg-black-50/40"></div>
+        <!-- Content wrapper: pull above bg -->
         <div
-            v-for="(banner, index) in banners"
-            :key="banner.id"
-            class="absolute inset-0 transition-opacity duration-1000"
-            :class="index === currentBanner ? 'opacity-100' : 'opacity-0'"
+            class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20"
         >
-            <div class="absolute inset-0 bg-black/40 z-10"></div>
-            <img
-                :src="banner.image"
-                :alt="banner.title"
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 z-20 flex items-center">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-                    <div class="max-w-2xl">
-                        <h2
-                            class="text-5xl lg:text-6xl font-black mb-6 leading-tight"
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <!-- Left: text block -->
+                <div class="relative z-10">
+                    <h2
+                        class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-sky-800 leading-tight"
+                    >
+                        {{ slides[current].title }}
+                    </h2>
+                    <p
+                        class="mt-5 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl"
+                    >
+                        {{ slides[current].subtitle }}
+                    </p>
+
+                    <!-- Messenger style CTA -->
+                    <a
+                        :href="slides[current].link"
+                        class="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-rose-400 text-white shadow-lg shadow-indigo-200/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-[1px]"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            class="w-6 h-6"
+                            fill="currentColor"
+                            aria-hidden="true"
                         >
-                            {{ banner.title }}
-                        </h2>
-                        <p class="text-xl lg:text-2xl mb-8 text-gray-200">
-                            {{ banner.subtitle }}
-                        </p>
-                        <a
-                            :href="banner.link"
-                            class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl font-semibold text-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                            <path
+                                d="M12 2C6.48 2 2 6.02 2 11.07c0 2.72 1.35 5.15 3.51 6.8V22l3.21-1.77c1.01.28 2.08.43 3.19.43 5.52 0 10-4.02 10-9.07S17.52 2 12 2Zm.71 11.93-2.43-2.58-4.06 2.58 4.63-4.94 2.38 2.54 4.13-2.54-4.65 4.94Z"
+                            />
+                        </svg>
+                        {{ slides[current].cta }}
+                    </a>
+
+                    <!-- Dots -->
+                    <div class="mt-6 flex items-center gap-2">
+                        <button
+                            v-for="(s, i) in slides"
+                            :key="s.id"
+                            @click="go(i)"
+                            class="h-2.5 w-2.5 rounded-full transition-all"
+                            :class="
+                                i === current
+                                    ? 'bg-sky-700 w-6'
+                                    : 'bg-sky-300 hover:bg-sky-400'
+                            "
+                            aria-label="Go to slide"
+                        />
+                    </div>
+                </div>
+
+                <!-- Right: rounded image card with slider inside -->
+                <div class="relative">
+                    <div
+                        class="relative h-[360px] sm:h-[420px] lg:h-[350px] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-sky-100 bg-white/40"
+                    >
+                        <!-- Slides -->
+                        <div
+                            v-for="(s, i) in slides"
+                            :key="s.id"
+                            class="absolute inset-0 transition-opacity duration-700"
+                            :class="i === current ? 'opacity-100' : 'opacity-0'"
                         >
-                            {{ banner.cta }}
+                            <!-- IMPORTANT: fill the card -->
+                            <img
+                                :src="s.image"
+                                :alt="s.title"
+                                class="w-full h-full object-cover"
+                                decoding="async"
+                            />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-tr from-sky-900/0 via-sky-900/0 to-sky-900/0 pointer-events-none"
+                            ></div>
+
+                            <img
+                                v-if="s.overlay"
+                                :src="s.overlay"
+                                alt=""
+                                class="absolute bottom-0 right-2 max-h-[95%] object-contain"
+                                decoding="async"
+                            />
+                        </div>
+
+                        <!-- Prev/Next -->
+                        <button
+                            @click="prev"
+                            class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/60 backdrop-blur flex items-center justify-center hover:bg-white/80 transition"
+                            aria-label="Previous slide"
+                        >
                             <svg
-                                class="w-5 h-5 ml-2"
+                                class="w-5 h-5"
+                                viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                viewBox="0 0 24 24"
                             >
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                    d="M15 19l-7-7 7-7"
                                 />
                             </svg>
-                        </a>
+                        </button>
+                        <button
+                            @click="next"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/60 backdrop-blur flex items-center justify-center hover:bg-white/80 transition"
+                            aria-label="Next slide"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 5l7 7-7 7"
+                                />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Slider Controls -->
-        <button
-            @click="prevBanner"
-            class="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200"
-        >
-            <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 19l-7-7 7-7"
-                />
-            </svg>
-        </button>
-        <button
-            @click="nextBanner"
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200"
-        >
-            <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5l7 7-7 7"
-                />
-            </svg>
-        </button>
-
-        <!-- Slider Indicators -->
-        <div
-            class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-2"
-        >
-            <button
-                v-for="(banner, index) in banners"
-                :key="banner.id"
-                @click="currentBanner = index"
-                class="w-3 h-3 rounded-full transition-all duration-300"
-                :class="
-                    index === currentBanner
-                        ? 'bg-white scale-125'
-                        : 'bg-white/50'
-                "
-            ></button>
         </div>
     </section>
 </template>

@@ -1,4 +1,6 @@
 <script setup>
+import Background from "@/assets/images/background/background1.png";
+
 const healths = [
     {
         name: "Basic Health Check",
@@ -41,21 +43,21 @@ const healths = [
 <template>
     <section
         id="health-s"
-        class="py-20 bg-gradient-to-br from-blue-50 to-cyan-50/30"
+        class="py-20 bg-fixed bg-cover bg-center"
+        :style="{ backgroundImage: `url(${Background})` }"
     >
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="absolute inset-0 bg-white/85 pointer-events-none z-0"></div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+                <h2 class="text-4xl lg:text-5xl font-black text-white mb-4">
                     Health Check
                     <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
+                        class="text-transparent bg-clip-text from-blue-600 to-cyan-500"
                     >
                         s
                     </span>
                 </h2>
-                <p
-                    class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-                >
+                <p class="text-xl text-white max-w-3xl mx-auto leading-relaxed">
                     Comprehensive health screening s designed for preventive
                     care and early detection.
                 </p>
