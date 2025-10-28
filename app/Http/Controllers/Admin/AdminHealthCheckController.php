@@ -48,7 +48,7 @@ class AdminHealthCheckController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $health_check)
     {
         //
     }
@@ -56,9 +56,9 @@ class AdminHealthCheckController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $health_check)
     {
-        $healthCheck = HealthCheck::findOrFail($id);
+        $healthCheck = HealthCheck::findOrFail($health_check);
         return Inertia::render('Admin/HealthChecks/Edit', [
             'healthCheck' => $healthCheck,
         ]);
@@ -67,7 +67,7 @@ class AdminHealthCheckController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $health_check)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -76,7 +76,7 @@ class AdminHealthCheckController extends Controller
             'popular' => 'boolean',
         ]);
 
-        $healthCheck = HealthCheck::findOrFail($id);
+        $healthCheck = HealthCheck::findOrFail($health_check);
         $healthCheck->update($request->all());
 
         return redirect()->route('admin.health-checks.index')->with('success', 'Health check updated successfully.');
@@ -85,10 +85,14 @@ class AdminHealthCheckController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $health_check)
     {
-        $healthCheck = HealthCheck::findOrFail($id);
+        $healthCheck = HealthCheck::findOrFail($health_check);
         $healthCheck->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Health check deleted successfully.']);
+        }
 
         return redirect()->route('admin.health-checks.index')->with('success', 'Health check deleted successfully.');
     }

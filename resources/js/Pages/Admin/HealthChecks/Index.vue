@@ -1,14 +1,30 @@
 <script setup>
 import AppLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Link } from "@inertiajs/vue3";
+import { ref } from "vue";
 
-defineProps({
+const props = defineProps({
     healthChecks: Array,
 });
 
+const healthChecks = ref(props.healthChecks);
+
 const deleteHealthCheck = (id) => {
     if (confirm("Are you sure you want to delete this health check?")) {
-        // Implement delete functionality
+        axios
+            .delete(route("admin.health-checks.destroy", id))
+            .then((response) => {
+                // Remove the deleted health check from the local array
+                healthChecks.value = healthChecks.value.filter(
+                    (healthCheck) => healthCheck.id !== id
+                );
+                // Show success message
+                alert("Health check deleted successfully.");
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("An error occurred while deleting the health check.");
+            });
     }
 };
 </script>

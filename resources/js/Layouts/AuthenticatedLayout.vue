@@ -431,6 +431,20 @@ const sidebarOpen = ref(false);
                 </div>
             </header>
 
+            <!-- Flash Messages -->
+            <div
+                v-if="page.props.flash?.success"
+                class="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg border border-green-600"
+            >
+                {{ page.props.flash.success }}
+            </div>
+            <div
+                v-if="page.props.flash?.error"
+                class="fixed top-4 right-4 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg border border-red-600"
+            >
+                {{ page.props.flash.error }}
+            </div>
+
             <!-- Main Content -->
             <main class="flex-1 overflow-y-auto">
                 <div
