@@ -14,11 +14,11 @@ class AdminAndDoctorSeeder extends Seeder
     public function run(): void
     {
         $admin = User::UpdateOrCreate(
-        	['email' => 'admin@clinic.test'],
+        	['email' => 'aadmin@example.com'],
         	[
         		'name' => 'Test Admin',
-        		'email' => 'admin@clinic.test',
-        		'password' => Hash::make('password'),
+        		'email' => 'admin@example.com',
+        		'password' => Hash::make('admin123'),
         		'role' => 'admin',
         		'email_verified_at' => now(),
         	]
@@ -27,11 +27,11 @@ class AdminAndDoctorSeeder extends Seeder
 
         $doctorUser = User::updateOrCreate(
 
-        	['email' => 'doctor@clinic.test'],
+        	['email' => 'doctor@example.com'],
         	[
         		'name' => 'Dr.Asad',
-        		'email' => 'asad@clinic.test',
-        		'password' => Hash::make('password'),
+        		'email' => 'octor@example.com',
+        		'password' => Hash::make('doctor123'),
         		'role' => 'doctor',
         		'email_verified_at' => now(),
         	]
