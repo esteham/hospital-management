@@ -30,7 +30,7 @@ class AdminAndDoctorSeeder extends Seeder
         	['email' => 'doctor@example.com'],
         	[
         		'name' => 'Dr.Asad',
-        		'email' => 'octor@example.com',
+        		'email' => 'doctor@example.com',
         		'password' => Hash::make('doctor123'),
         		'role' => 'doctor',
         		'email_verified_at' => now(),
