@@ -60,7 +60,7 @@ const prev = () =>
     <!-- Light blue section like screenshot -->
     <!-- Light blue section like screenshot -->
     <section
-        class="relative bg-fixed bg-cover bg-center h-[100vh] sm:h-[420px] lg:h-[88vh] overflow-hidden"
+        class="relative bg-fixed bg-cover bg-center h-screen sm:h-[420px] lg:h-[86vh] overflow-hidden"
         :style="{
             backgroundImage: `url(${Background})`,
         }"
