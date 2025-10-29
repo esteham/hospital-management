@@ -2,6 +2,9 @@
 import { Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 
+import Logo from "@/assets/images/logo/logo.png";
+import { Rotate3D } from "lucide-vue-next";
+
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
@@ -17,37 +20,23 @@ const isMenuOpen = ref(false);
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <!-- Logo and Hospital Name -->
-                <div class="flex items-center space-x-4">
-                    <div
-                        class="w-14 h-14 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg group hover:shadow-xl transition-all duration-300 hover:scale-105"
-                    >
-                        <svg
-                            class="w-8 h-8 text-white transform group-hover:scale-110 transition-transform duration-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"
-                            />
-                        </svg>
+                <Link :href="route('welcome')">
+                    <div class="flex items-center space-x-4">
+                        <img class="w-14 h-14" :src="Logo" />
+                        <div>
+                            <h1
+                                class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent tracking-tight"
+                            >
+                                Xet Specialized Hospital
+                            </h1>
+                            <p
+                                class="text-sm text-gray-600 font-medium tracking-wide"
+                            >
+                                Excellence in Specialized Healthcare
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <h1
-                            class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent tracking-tight"
-                        >
-                            Xet Specialized Hospital
-                        </h1>
-                        <p
-                            class="text-sm text-gray-600 font-medium tracking-wide"
-                        >
-                            Excellence in Specialized Healthcare
-                        </p>
-                    </div>
-                </div>
+                </Link>
 
                 <!-- Desktop Navigation Menu -->
                 <nav class="hidden lg:flex space-x-8">
