@@ -19,7 +19,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
      protected $fillable = ['name','email','password','role'];
 
-     public function doctor(){ return $this->hasOne(\App\Models\Doctor::class); }
+     public function doctor(){ 
+        return $this->hasOne(\App\Models\Doctor::class); 
+    }
 
 
     /**

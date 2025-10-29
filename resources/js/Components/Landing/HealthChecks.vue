@@ -2,11 +2,18 @@
 import Background from "@/assets/images/background/background1.png";
 import api from "@/lib/api";
 import Modal from "@/Components/Modal.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
+
+const page = usePage();
+const isLoggedIn = computed(() => !!page.props.auth?.user);
 
 const healths = ref([]);
 const showModal = ref(false);
 const selectedHealth = ref(null);
+const showLoginPrompt = ref(false);
+const bookingLoading = ref(false);
 
 const fetchHealthChecks = async () => {
     try {
@@ -20,6 +27,33 @@ const fetchHealthChecks = async () => {
 const selectPackage = (health) => {
     selectedHealth.value = health;
     showModal.value = true;
+};
+
+const bookPackage = async (paymentType) => {
+    if (!isLoggedIn.value) {
+        showModal.value = false;
+        showLoginPrompt.value = true;
+        return;
+    }
+
+    bookingLoading.value = true;
+    try {
+        const response = await api.post("/api/bookings", {
+            health_check_id: selectedHealth.value.id,
+            payment_type: paymentType,
+        });
+        alert("Booking successful!");
+        showModal.value = false;
+    } catch (error) {
+        console.error("Error booking package:", error);
+        alert("Failed to book package. Please try again.");
+    } finally {
+        bookingLoading.value = false;
+    }
+};
+
+const goToLogin = () => {
+    router.visit("/login");
 };
 
 onMounted(() => {
@@ -159,9 +193,49 @@ onMounted(() => {
                         Cancel
                     </button>
                     <button
+                        @click="bookPackage('50%')"
+                        :disabled="bookingLoading"
+                        class="mr-2 px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+                    >
+                        {{ bookingLoading ? "Booking..." : "Pay 50%" }}
+                    </button>
+                    <button
+                        @click="bookPackage('100%')"
+                        :disabled="bookingLoading"
+                        class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+                    >
+                        {{ bookingLoading ? "Booking..." : "Pay 100%" }}
+                    </button>
+                </div>
+            </div>
+        </Modal>
+
+        <!-- Login Prompt Modal -->
+        <Modal
+            :show="showLoginPrompt"
+            @close="showLoginPrompt = false"
+            max-width="md"
+        >
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                    Login Required
+                </h3>
+                <p class="text-gray-600 mb-6">
+                    You need to be logged in to book a health check package.
+                    Please log in to continue.
+                </p>
+                <div class="flex justify-end">
+                    <button
+                        @click="showLoginPrompt = false"
+                        class="mr-4 px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        @click="goToLogin"
                         class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all"
                     >
-                        Book Package
+                        Go to Login
                     </button>
                 </div>
             </div>

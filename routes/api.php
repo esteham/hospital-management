@@ -15,8 +15,12 @@ use App\Http\Controllers\Api\HealthCheckController;
 |
 */
 
+use App\Http\Controllers\Api\BookingController;
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::get('/health-checks', [HealthCheckController::class, 'index']);
+
+Route::middleware('auth:sanctum')->post('/bookings', [PackageBookingController::class, 'store']);
