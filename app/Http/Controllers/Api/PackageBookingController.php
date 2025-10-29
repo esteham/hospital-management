@@ -18,7 +18,7 @@ class PackageBookingController extends Controller
         ]);
 
         $healthCheck = HealthCheck::findOrFail($request->health_check_id);
-        $price = (float) str_replace(['$', ','], '', $healthCheck->price);
+        $price = (float) str_replace(['৳', ','], '', $healthCheck->price);
 
         $paymentType = $request->payment_type;
         $amountPaid = $paymentType === '50%' ? $price * 0.5 : $price;

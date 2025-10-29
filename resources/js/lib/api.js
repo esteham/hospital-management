@@ -1,11 +1,35 @@
-import axios from 'axios'
+import axios from "axios";
 
 const api = axios.create({
+    baseURL: "http://localhost:8000",
+    withCredentials: true,
+    headers: { "X-Requested-With": "XMLHttpRequest" },
+});
 
-	headers: { 'X-Requested-With': 'XMLHttpRequest'}
-})
+// For Laravel Sanctum SPA auth: ensure XSRF cookie is set before state-changing requests
+let csrfInitialized = false;
+async function ensureCsrfCookie() {
+    if (csrfInitialized) return;
+    try {
+        await api.get("/sanctum/csrf-cookie", { withCredentials: true });
+        csrfInitialized = true;
+    } catch (e) {
+        // noop: subsequent request will still attempt and surface error
+    }
+}
 
-const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-if(token) api.defaults.headers.common['X-CSRF-TOKEN'] = token
+api.interceptors.request.use(async (config) => {
+    const method = (config.method || "get").toLowerCase();
+    if (["post", "put", "patch", "delete"].includes(method)) {
+        await ensureCsrfCookie();
+    }
+    return config;
+});
 
-export default api
+// Keep compatibility with meta csrf for web routes if present
+const token = document
+    .querySelector('meta[name="csrf-token"]')
+    ?.getAttribute("content");
+if (token) api.defaults.headers.common["X-CSRF-TOKEN"] = token;
+
+export default api;
