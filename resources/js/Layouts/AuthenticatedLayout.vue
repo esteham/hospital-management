@@ -1,6 +1,7 @@
 <script setup>
 import { Link, usePage } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
+import Logo from "@/assets/images/logo/logo.png";
 
 defineProps({ title: { type: String, default: "" } });
 
@@ -253,11 +254,24 @@ const sidebarOpen = ref(false);
                 </div>
             </div>
             <nav class="p-4 space-y-2">
-                <Link
-                    href="/dashboard"
-                    class="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200 font-medium"
-                    >Home</Link
-                >
+                <!-- Logo and Hospital Name -->
+                <Link :href="route('welcome')">
+                    <div class="flex items-center space-x-4">
+                        <img class="w-14 h-14" :src="Logo" />
+                        <div>
+                            <h1
+                                class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent tracking-tight"
+                            >
+                                Xet Specialized Hospital
+                            </h1>
+                            <p
+                                class="text-sm text-gray-600 font-medium tracking-wide"
+                            >
+                                Excellence in Specialized Healthcare
+                            </p>
+                        </div>
+                    </div>
+                </Link>
                 <Link
                     v-if="user?.role === 'doctor'"
                     href="/doctor"
@@ -284,28 +298,23 @@ const sidebarOpen = ref(false);
                     <div class="flex justify-between h-20 items-center">
                         <!-- Left Navigation -->
                         <div class="flex items-center space-x-10">
-                            <Link
-                                :href="route('dashboard')"
-                                class="text-slate-700 hover:text-blue-600 font-semibold transition-all duration-300 flex items-center space-x-3 group"
-                            >
-                                <div
-                                    class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
-                                >
-                                    <svg
-                                        class="w-5 h-5 text-blue-600 group-hover:text-white"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                                        />
-                                    </svg>
+                            <!-- Logo and Hospital Name -->
+                            <Link :href="route('welcome')">
+                                <div class="flex items-center space-x-4">
+                                    <img class="w-12 h-12" :src="Logo" />
+                                    <div>
+                                        <h1
+                                            class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent tracking-tight"
+                                        >
+                                            Xet Specialized Hospital
+                                        </h1>
+                                        <p
+                                            class="text-sm text-gray-600 font-medium tracking-wide"
+                                        >
+                                            Excellence in Specialized Healthcare
+                                        </p>
+                                    </div>
                                 </div>
-                                <span class="text-lg">Home</span>
                             </Link>
 
                             <Link

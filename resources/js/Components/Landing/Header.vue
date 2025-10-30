@@ -22,7 +22,7 @@ const isMenuOpen = ref(false);
                 <!-- Logo and Hospital Name -->
                 <Link :href="route('welcome')">
                     <div class="flex items-center space-x-4">
-                        <img class="w-14 h-14" :src="Logo" />
+                        <img class="w-12 h-12" :src="Logo" />
                         <div>
                             <h1
                                 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent tracking-tight"
