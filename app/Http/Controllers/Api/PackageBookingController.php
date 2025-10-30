@@ -18,11 +18,18 @@ class PackageBookingController extends Controller
         ]);
 
         $healthCheck = HealthCheck::findOrFail($request->health_check_id);
-        $price = (float) str_replace(['৳', ','], '', $healthCheck->price);
+        $price = (float) preg_replace('/[^0-9.]/', '', $healthCheck->price);
 
         $paymentType = $request->payment_type;
         $amountPaid = $paymentType === '50%' ? $price * 0.5 : $price;
         $totalAmount = $price;
+
+        // Add error handling for price conversion
+        if (!is_numeric($price) || $price <= 0) {
+            return response()->json([
+                'message' => 'Invalid price format in health check',
+            ], 500);
+        }
 
         $booking = PackageBooking::create([
             'user_id' => Auth::id(),
