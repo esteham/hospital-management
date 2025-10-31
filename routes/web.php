@@ -27,6 +27,13 @@ Route::get('/', fn() => Inertia::render('Welcome', [
     'phpVersion' => PHP_VERSION,
 ]))->name('welcome');
 
+Route::get('/book-appointment', fn() => Inertia::render('AppointmentBooking', [
+    'canLogin' => Route::has('login'),
+    'canRegister' => Route::has('register'),
+    'laravelVersion' => app()->version(),
+    'phpVersion' => PHP_VERSION,
+]))->name('appointment.booking');
+
 
 require __DIR__.'/auth.php';
 
