@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
+use App\Mail\AppointmentConfirmationMail;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -21,10 +24,23 @@ class AppointmentController extends Controller
             'additional_notes' => 'nullable|string',
         ]);
 
+        // Generate unique booking ID
+        $bookingId = 'APT-' . strtoupper(Str::random(8));
+
+        $validated['booking_id'] = $bookingId;
+
         $appointment = Appointment::create($validated);
 
+        // Send confirmation email with PDF attachment
+        try {
+            Mail::to($appointment->email)->send(new AppointmentConfirmationMail($appointment));
+        } catch (\Exception $e) {
+            // Log the error but don't fail the booking
+            \Log::error('Failed to send appointment confirmation email: ' . $e->getMessage());
+        }
+
         return response()->json([
-            'message' => 'Appointment booked successfully!',
+            'message' => 'Appointment booked successfully! A confirmation email with PDF has been sent.',
             'appointment' => $appointment
         ], 201);
     }

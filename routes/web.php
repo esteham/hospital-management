@@ -59,6 +59,12 @@ Route::middleware(['auth','verified'])->group(function() {
         }
     })->name('dashboard');
 
+    // Patient Routes
+    Route::middleware('role:patient')->group(function() {
+        Route::resource('patient/appointments', \App\Http\Controllers\Patient\AppointmentController::class, ['as' => 'patient']);
+        Route::get('patient/appointments/{appointment}/download-pdf', [\App\Http\Controllers\Patient\AppointmentController::class, 'downloadPdf'])->name('patient.appointments.download-pdf');
+    });
+
     //Admin Routes
     Route::middleware('role:admin')->group(function(){
 

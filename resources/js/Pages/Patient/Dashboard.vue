@@ -111,11 +111,12 @@ import { Head } from "@inertiajs/vue3";
                                 </p>
                             </div>
                         </div>
-                        <button
-                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300"
+                        <a
+                            href="/book-appointment"
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             Book Now
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Health Packages -->
