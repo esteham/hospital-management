@@ -140,11 +140,9 @@ onMounted(fetchList);
 
 <template>
     <AuthenticatedLayout title="Schedule Management">
-        <div
-            class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 py-8"
-        >
+        <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="space-y-8">
+                <div class="space-y-6">
                     <!-- Action Bar -->
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-4">

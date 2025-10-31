@@ -421,14 +421,14 @@ const sidebarOpen = ref(false);
                 v-if="!isAdmin && title"
                 class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border-b border-white/20"
             >
-                <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-4 lg:px-10">
                     <div class="flex items-center space-x-4">
                         <div
                             class="w-3 h-12 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full shadow-lg"
                         ></div>
                         <div>
                             <h2
-                                class="font-bold text-3xl text-slate-800 leading-tight"
+                                class="font-bold text-2xl text-slate-800 leading-tight"
                             >
                                 {{ title }}
                             </h2>
