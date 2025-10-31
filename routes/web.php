@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminScheduleController;
 use App\Http\Controllers\Admin\DoctorController as AdminDoctorCtrl;
 use App\Http\Controllers\Doctor\ScheduleController as DocScheduleCtrl;
 use App\Http\Controllers\Admin\AdminHealthCheckController;
+use App\Http\Controllers\AppointmentController;
 
 
 /*
@@ -33,6 +34,8 @@ Route::get('/book-appointment', fn() => Inertia::render('AppointmentBooking', [
     'laravelVersion' => app()->version(),
     'phpVersion' => PHP_VERSION,
 ]))->name('appointment.booking');
+
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
 
 require __DIR__.'/auth.php';
@@ -74,6 +77,10 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::post('/admin/schedules/mention', [AdminScheduleController::class, 'mention'])->name('admin.schedules.mention');
 
         Route::resource('/admin/health-checks', AdminHealthCheckController::class, ['as' => 'admin']);
+
+        Route::get('/admin/appointments', [AppointmentController::class, 'index'])->name('admin.appointments.index');
+        Route::get('/admin/appointments/{appointment}', [AppointmentController::class, 'show'])->name('admin.appointments.show');
+        Route::put('/admin/appointments/{appointment}', [AppointmentController::class, 'update'])->name('admin.appointments.update');
     });
 
     //Doctors Routes

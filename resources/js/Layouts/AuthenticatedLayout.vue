@@ -170,6 +170,30 @@ const sidebarOpen = ref(false);
                     </div>
                     <span class="font-semibold">Manage Packages</span>
                 </Link>
+
+                <Link
+                    href="/admin/appointments"
+                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                >
+                    <div
+                        class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-teal-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Manage Appointments</span>
+                </Link>
             </nav>
 
             <!-- Logout -->

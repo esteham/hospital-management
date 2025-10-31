@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import Header from "@/Components/Landing/Header.vue";
 import Footer from "@/Components/Landing/Footer.vue";
 
@@ -22,10 +22,65 @@ const form = ref({
     additionalNotes: "",
 });
 
-const submitForm = () => {
-    // Handle form submission
-    console.log("Appointment booking form submitted:", form.value);
-    // You can add API call here later
+const submitting = ref(false);
+
+// Computed property for minimum date (today)
+const minDate = computed(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+});
+
+const submitForm = async () => {
+    submitting.value = true;
+    try {
+        const formData = new FormData();
+        formData.append("first_name", form.value.firstName);
+        formData.append("last_name", form.value.lastName);
+        formData.append("email", form.value.email);
+        formData.append("phone", form.value.phone);
+        formData.append("preferred_date", form.value.preferredDate);
+        formData.append("preferred_time", form.value.preferredTime);
+        formData.append("speciality", form.value.speciality);
+        formData.append("additional_notes", form.value.additionalNotes || "");
+        formData.append(
+            "_token",
+            document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content")
+        );
+
+        const response = await fetch("/appointments", {
+            method: "POST",
+            body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("Appointment booked successfully!");
+            // Reset form
+            form.value = {
+                firstName: "",
+                lastName: "",
+                email: "",
+                phone: "",
+                preferredDate: "",
+                preferredTime: "",
+                speciality: "",
+                additionalNotes: "",
+            };
+        } else {
+            alert(
+                "Error booking appointment: " +
+                    (result.message || "Unknown error")
+            );
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while booking the appointment.");
+    } finally {
+        submitting.value = false;
+    }
 };
 
 // Available time slots
@@ -464,6 +519,7 @@ const hospitalStats = ref([
                                         <input
                                             v-model="form.preferredDate"
                                             type="date"
+                                            :min="minDate"
                                             required
                                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
                                         />
@@ -539,9 +595,14 @@ const hospitalStats = ref([
                             <div class="pt-8 border-t border-gray-200">
                                 <button
                                     type="submit"
-                                    class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300 shadow-lg"
+                                    :disabled="submitting"
+                                    class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    📋 Book Appointment Now
+                                    {{
+                                        submitting
+                                            ? "📋 Booking..."
+                                            : "📋 Book Appointment Now"
+                                    }}
                                 </button>
                                 <p
                                     class="text-center text-sm text-gray-600 mt-4"
