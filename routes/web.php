@@ -38,7 +38,16 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth','verified'])->group(function() {
 
-    Route::get('/dashboard', fn ()=> Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+        if ($user->role === 'admin') {
+            return Inertia::render('Admin/Dashboard');
+        } elseif ($user->role === 'doctor') {
+            return Inertia::render('Doctor/Dashboard');
+        } else {
+            return Inertia::render('Patient/Dashboard');
+        }
+    })->name('dashboard');
 
     //Admin Routes
     Route::middleware('role:admin')->group(function(){

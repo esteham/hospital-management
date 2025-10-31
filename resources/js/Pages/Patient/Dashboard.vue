@@ -40,7 +40,7 @@ import { Head } from "@inertiajs/vue3";
         </template>
 
         <div class="py-2">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+            <div class="max-w-7l mx-auto sm:px-6 lg:px-8 space-y-8">
                 <!-- Welcome Section -->
                 <div
                     class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-100"
