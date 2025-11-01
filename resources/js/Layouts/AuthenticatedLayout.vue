@@ -8,17 +8,18 @@ defineProps({ title: { type: String, default: "" } });
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
 const isAdmin = computed(() => user.value && user.value.role === "admin");
+const isDoctor = computed(() => user.value && user.value.role === "doctor");
 const sidebarOpen = ref(false);
 </script>
 
 <template>
     <div
         class="h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 overflow-hidden"
-        :class="{ flex: isAdmin }"
+        :class="{ flex: isAdmin || isDoctor }"
     >
         <!-- Mobile Menu Button -->
         <button
-            v-if="!isAdmin"
+            v-if="!isAdmin && !isDoctor"
             @click="sidebarOpen = true"
             class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white/90 backdrop-blur-md rounded-xl shadow-lg border border-white/20"
         >
@@ -226,16 +227,157 @@ const sidebarOpen = ref(false);
             </div>
         </aside>
 
+        <!-- Doctor Sidebar -->
+        <aside
+            v-if="isDoctor"
+            class="w-80 bg-white/10 backdrop-blur-2xl border-r border-white/20 shadow-2xl flex flex-col"
+        >
+            <!-- Sidebar Header -->
+            <div class="p-8 border-b border-white/10">
+                <div class="flex items-center space-x-4">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg"
+                    >
+                        <svg
+                            class="w-7 h-7 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">
+                            Doctor Portal
+                        </h2>
+                        <p class="text-slate-600 mt-1 text-sm">
+                            Welcome back, {{ user.name }} 👋
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-6 space-y-3 overflow-y-auto">
+                <Link
+                    :href="route('dashboard')"
+                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                >
+                    <div
+                        class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-blue-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Dashboard</span>
+                </Link>
+
+                <Link
+                    href="/doctor/schedules"
+                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                >
+                    <div
+                        class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-purple-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">My Schedules</span>
+                </Link>
+
+                <Link
+                    href="/doctor/messages"
+                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                >
+                    <div
+                        class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-yellow-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Messages</span>
+                </Link>
+            </nav>
+
+            <!-- Logout -->
+            <div class="p-6 border-t border-white/10">
+                <Link
+                    :href="route('logout')"
+                    method="post"
+                    as="button"
+                    class="flex items-center space-x-4 w-full px-6 py-4 text-red-600 hover:bg-red-50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-red-100"
+                >
+                    <div
+                        class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Log Out</span>
+                </Link>
+            </div>
+        </aside>
+
         <!-- Mobile Sidebar Overlay -->
         <div
-            v-if="sidebarOpen && !isAdmin"
+            v-if="sidebarOpen && !isAdmin && !isDoctor"
             class="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-all duration-300"
             @click="sidebarOpen = false"
         ></div>
 
         <!-- Mobile Sidebar -->
         <aside
-            v-if="sidebarOpen && !isAdmin"
+            v-if="sidebarOpen && !isAdmin && !isDoctor"
             class="lg:hidden fixed top-0 left-0 w-80 h-full bg-white/95 backdrop-blur-2xl shadow-2xl border-r border-white/20 z-50 transform transition-transform duration-300"
         >
             <div class="p-6 border-b border-white/10">
@@ -308,14 +450,23 @@ const sidebarOpen = ref(false);
                     class="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200 font-medium"
                     >My Schedules</Link
                 >
+                <Link
+                    v-if="user?.role === 'doctor'"
+                    href="/doctor/messages"
+                    class="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200 font-medium"
+                    >Messages</Link
+                >
             </nav>
         </aside>
 
         <!-- Main Content Area -->
-        <div :class="{ 'flex-1': isAdmin }" class="h-screen flex flex-col">
+        <div
+            :class="{ 'flex-1': isAdmin || isDoctor }"
+            class="h-screen flex flex-col"
+        >
             <!-- Top Navigation for Non-Admin -->
             <nav
-                v-if="!isAdmin"
+                v-if="!isAdmin && !isDoctor"
                 class="bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm sticky top-0 z-30"
             >
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -339,81 +490,6 @@ const sidebarOpen = ref(false);
                                         </p>
                                     </div>
                                 </div>
-                            </Link>
-
-                            <Link
-                                v-if="user && user.role === 'doctor'"
-                                href="/doctor"
-                                class="text-slate-700 hover:text-blue-600 transition-all duration-300 flex items-center space-x-3 group"
-                            >
-                                <div
-                                    class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300"
-                                >
-                                    <svg
-                                        class="w-5 h-5 text-green-600 group-hover:text-white"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                                        />
-                                    </svg>
-                                </div>
-                                <span class="text-lg">Doctor Portal</span>
-                            </Link>
-
-                            <Link
-                                v-if="user && user.role === 'doctor'"
-                                href="/doctor/schedules"
-                                class="text-slate-700 hover:text-blue-600 transition-all duration-300 flex items-center space-x-3 group"
-                            >
-                                <div
-                                    class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
-                                >
-                                    <svg
-                                        class="w-5 h-5 text-purple-600 group-hover:text-white"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-                                    </svg>
-                                </div>
-                                <span class="text-lg">My Schedules</span>
-                            </Link>
-
-                            <Link
-                                v-if="user && user.role === 'doctor'"
-                                href="/doctor/messages"
-                                class="text-slate-700 hover:text-blue-600 transition-all duration-300 flex items-center space-x-3 group"
-                            >
-                                <div
-                                    class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-500 transition-colors duration-300"
-                                >
-                                    <svg
-                                        class="w-5 h-5 text-yellow-600 group-hover:text-white"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                                        />
-                                    </svg>
-                                </div>
-                                <span class="text-lg">Messages</span>
                             </Link>
                         </div>
 
@@ -465,9 +541,9 @@ const sidebarOpen = ref(false);
                 </div>
             </nav>
 
-            <!-- Header (hidden for admin) -->
+            <!-- Header (hidden for admin and doctor) -->
             <header
-                v-if="!isAdmin && title"
+                v-if="!isAdmin && !isDoctor && title"
                 class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border-b border-white/20"
             >
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-4 lg:px-10">
@@ -513,7 +589,11 @@ const sidebarOpen = ref(false);
                     "
                 >
                     <div
-                        class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/20 overflow-hidden"
+                        :class="
+                            isDoctor
+                                ? 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/20 overflow-hidden'
+                                : 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/20 overflow-hidden'
+                        "
                     >
                         <slot />
                     </div>

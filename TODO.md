@@ -1,14 +1,8 @@
-# TODO: Add Message Section to Doctor Dashboard
+# TODO: Move Doctor Navigation to Sidebar
 
-## Tasks
-
--   [x] Create a controller method to fetch doctor messages
--   [x] Add route for fetching doctor messages
--   [x] Update Doctor Dashboard.vue to display messages section
--   [ ] Test the functionality
-
-## Details
-
--   Admin sends messages via "Mention" in schedules, stored in doctor_messages table
--   Messages linked to doctor_id, with optional schedule_id
--   Display messages in doctor's dashboard
+-   [x] Add `isDoctor` computed property to detect doctor role
+-   [x] Modify main container to enable flex layout for doctors
+-   [x] Add doctor-specific sidebar with navigation items (Dashboard, My Schedules, Messages)
+-   [x] Remove doctor-specific links from top navigation bar
+-   [x] Update mobile sidebar to include Messages for doctors
+-   [x] Test layout changes and navigation functionality (App running on http://localhost:5174)
