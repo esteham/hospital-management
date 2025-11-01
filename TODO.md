@@ -1,14 +1,14 @@
-# Separate Dashboards for Admin, Doctor, and Patients
+# TODO: Add Message Section to Doctor Dashboard
 
 ## Tasks
 
--   [x] Create Admin Dashboard: resources/js/Pages/Admin/Dashboard.vue
--   [x] Create Patient Dashboard: resources/js/Pages/Patient/Dashboard.vue (copy from current Dashboard.vue)
--   [x] Update routes/web.php: Modify /dashboard route to conditionally render based on user role
--   [x] Fix typo in Doctor/Dashboard.vue: Correct AuthenticatedLayout
--   [x] Remove original Dashboard.vue: After creating Patient/Dashboard.vue
+-   [x] Create a controller method to fetch doctor messages
+-   [x] Add route for fetching doctor messages
+-   [x] Update Doctor Dashboard.vue to display messages section
+-   [ ] Test the functionality
 
-## Followup Steps
+## Details
 
--   [ ] Test application: Ensure users are redirected to correct dashboard based on role
--   [ ] Verify middleware: Confirm role-based access still works for other routes
+-   Admin sends messages via "Mention" in schedules, stored in doctor_messages table
+-   Messages linked to doctor_id, with optional schedule_id
+-   Display messages in doctor's dashboard

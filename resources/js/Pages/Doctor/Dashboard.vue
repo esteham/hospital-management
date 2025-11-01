@@ -21,7 +21,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
                             Manage your schedules, view appointments, and handle
                             patient interactions.
                         </p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="bg-blue-50 p-4 rounded-lg">
                                 <h4 class="font-semibold">My Schedule</h4>
                                 <p>View and manage your availability.</p>
@@ -29,10 +29,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
                             <div class="bg-green-50 p-4 rounded-lg">
                                 <h4 class="font-semibold">Appointments</h4>
                                 <p>See upcoming patient appointments.</p>
-                            </div>
-                            <div class="bg-yellow-50 p-4 rounded-lg">
-                                <h4 class="font-semibold">Messages</h4>
-                                <p>Check communications from patients.</p>
                             </div>
                         </div>
                     </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DoctorController as AdminDoctorCtrl;
 use App\Http\Controllers\Doctor\ScheduleController as DocScheduleCtrl;
 use App\Http\Controllers\Admin\AdminHealthCheckController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
 
 
 /*
@@ -101,6 +102,9 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::post('/doctor/schedules', [DocScheduleCtrl::class, 'store']);
         Route::put('/doctor/schedules/{schedule}', [DocScheduleCtrl::class, 'update']);
         Route::delete('/doctor/schedules/{schedule}', [DocScheduleCtrl::class, 'destroy']);
+
+        Route::get('/doctor/messages', fn() => Inertia::render('Doctor/Messages'))->name('doctor.messages');
+        Route::get('/doctor/messages/api', [DocMessageCtrl::class, 'index'])->name('doctor.messages.index');
     });
 
 });
