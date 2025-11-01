@@ -1,3 +1,5 @@
 RewriteEngine On
-RewriteCond %{REQUEST_URI} !^hospital-management/public/
-RewriteRule ^(.*)$ public/$1 [L,QSA]
+
+RewriteCond %{REQUEST_URI} !^/hospital-management/public/
+
+RewriteRule ^(.*)$ hospital-management/public/$1 [L,QSA]
