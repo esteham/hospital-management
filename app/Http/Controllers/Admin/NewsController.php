@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -13,8 +15,10 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::all();
-        return response()->json($news);
+        $news = News::orderBy('date','desc')->get();
+        return Inertia::render('Admin/News/Index', [
+            'news' => $news,
+        ]);
     }
 
     /**
@@ -22,7 +26,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/News/Create');
     }
 
     /**
@@ -33,13 +37,24 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'category' => 'required|string|max:255',
             'date' => 'required|date',
         ]);
 
-        $news = News::create($request->all());
-        return response()->json($news, 201);
+        $data = $request->only(['title','excerpt','category','date']);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('news', 'public');
+            $data['image'] = $path;
+        } elseif ($request->filled('image')) {
+            // allow passing an image path or url as string
+            $data['image'] = $request->input('image');
+        }
+
+        News::create($data);
+
+        return redirect()->route('admin.news.index')->with('success', 'News created successfully.');
     }
 
     /**
@@ -48,7 +63,9 @@ class NewsController extends Controller
     public function show(string $id)
     {
         $news = News::findOrFail($id);
-        return response()->json($news);
+        return Inertia::render('Admin/News/Show', [
+            'news' => $news,
+        ]);
     }
 
     /**
@@ -56,7 +73,10 @@ class NewsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $news = News::findOrFail($id);
+        return Inertia::render('Admin/News/Edit', [
+            'news' => $news,
+        ]);
     }
 
     /**
@@ -69,13 +89,27 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'category' => 'required|string|max:255',
             'date' => 'required|date',
         ]);
 
-        $news->update($request->all());
-        return response()->json($news);
+        $data = $request->only(['title','excerpt','category','date']);
+
+        if ($request->hasFile('image')) {
+            // delete old file if exists
+            if ($news->image) {
+                Storage::disk('public')->delete($news->image);
+            }
+            $path = $request->file('image')->store('news', 'public');
+            $data['image'] = $path;
+        } elseif ($request->filled('image')) {
+            $data['image'] = $request->input('image');
+        }
+
+        $news->update($data);
+
+        return redirect()->route('admin.news.index')->with('success', 'News updated successfully.');
     }
 
     /**
@@ -84,7 +118,16 @@ class NewsController extends Controller
     public function destroy(string $id)
     {
         $news = News::findOrFail($id);
+        // delete stored image if present
+        if ($news->image) {
+            Storage::disk('public')->delete($news->image);
+        }
+
         $news->delete();
-        return response()->json(['message' => 'News deleted successfully']);
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'News deleted successfully']);
+        }
+
+        return redirect()->route('admin.news.index')->with('success', 'News deleted successfully.');
     }
 }

@@ -195,6 +195,30 @@ const sidebarOpen = ref(false);
                     </div>
                     <span class="font-semibold">Manage Appointments</span>
                 </Link>
+
+                <Link
+                    :href="route('admin.news.index')"
+                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                >
+                    <div
+                        class="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center group-hover:bg-rose-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-rose-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 11H5m7-7v14"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Manage News</span>
+                </Link>
             </nav>
 
             <!-- Logout -->

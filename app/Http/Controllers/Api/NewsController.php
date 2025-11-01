@@ -5,12 +5,26 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
     public function index()
     {
         $news = News::orderBy('date', 'desc')->get();
-        return response()->json($news);
+
+        // ensure image field is a full URL when possible
+        $newsTransformed = $news->map(function ($item) {
+            if ($item->image) {
+                $img = $item->image;
+                if (!Str::startsWith($img, ['http://', 'https://'])) {
+                    $item->image = Storage::url($img);
+                }
+            }
+            return $item;
+        });
+
+        return response()->json($newsTransformed);
     }
 }

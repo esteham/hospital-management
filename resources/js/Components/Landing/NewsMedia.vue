@@ -15,6 +15,15 @@ const fetchNews = async () => {
     }
 };
 
+const imageUrl = (img) => {
+    if (!img) return null;
+    if (typeof img === "string") {
+        if (img.startsWith("http://") || img.startsWith("https://")) return img;
+        if (img.startsWith("/")) return img; // already a full path like /storage/...
+    }
+    return "/storage/" + img;
+};
+
 onMounted(() => {
     fetchNews();
 });
@@ -57,7 +66,7 @@ onMounted(() => {
                             class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden"
                         >
                             <img
-                                :src="news.image"
+                                :src="imageUrl(news.image)"
                                 :alt="news.title"
                                 class="w-full h-48 object-cover"
                             />
