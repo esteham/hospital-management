@@ -139,7 +139,7 @@ onMounted(fetchList);
 </script>
 
 <template>
-    <AuthenticatedLayout title="Schedule Management">
+    <AuthenticatedLayout>
         <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="space-y-6">
@@ -483,7 +483,7 @@ onMounted(fetchList);
                                             class="px-6 py-4 whitespace-nowrap text-right"
                                         >
                                             <div
-                                                class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                class="flex justify-end gap-2 group-hover:opacity-100 transition-opacity"
                                             >
                                                 <button
                                                     @click="edit(row)"
