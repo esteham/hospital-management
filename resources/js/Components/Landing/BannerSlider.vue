@@ -7,7 +7,6 @@ import Emergency from "@/assets/images/slide/emergency.png";
 import Package from "@/assets/images/slide/package.png";
 import Background from "@/assets/images/background/background1.png";
 
-// স্লাইড ডেটা
 const slides = ref([
     {
         id: 1,
@@ -16,7 +15,7 @@ const slides = ref([
             "Xet Specialized Hospital was founded by a group of like-minded individuals and specialist doctors with a vision to create a “One Stop Standard Quality Health Service Centre”. We prioritize transparency and are deeply committed to our work with unwavering dedication.",
         cta: "Connect with us on Messenger",
         link: "#messenger",
-        image: Cardiac,
+        image: Package,
         // চাইলে ডাক্তারদের cutout foreground হিসেবে দিন:
         // overlay: DoctorsPng
     },
@@ -36,7 +35,7 @@ const slides = ref([
             "Comprehensive health screenings for preventive care. Choose the package that suits you.",
         cta: "View Packages",
         link: "#health-packages",
-        image: Package,
+        image: Cardiac,
     },
 ]);
 
