@@ -529,380 +529,384 @@ onMounted(() => {
         </div>
 
         <!-- Create Modal -->
-        <transition name="fade">
-            <div
-                v-if="showCreate"
-                class="fixed inset-0 z-50 grid place-items-center p-4"
-            >
+        <Teleport to="body">
+            <transition name="fade">
                 <div
-                    class="absolute inset-0 bg-black/40"
-                    @click="showCreate = false"
-                />
-                <div
-                    class="relative z-10 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl"
+                    v-if="showCreate"
+                    class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
                 >
-                    <div class="mb-4 flex items-start justify-between">
-                        <h3 class="text-lg font-semibold">Create News</h3>
-                        <button
-                            @click="showCreate = false"
-                            class="rounded-full p-1.5 hover:bg-gray-100"
-                        >
-                            <span class="sr-only">Close</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                class="h-5 w-5"
+                    <div
+                        class="absolute inset-0 bg-black/40"
+                        @click="showCreate = false"
+                    />
+                    <div
+                        class="relative z-10 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl"
+                    >
+                        <div class="mb-4 flex items-start justify-between">
+                            <h3 class="text-lg font-semibold">Create News</h3>
+                            <button
+                                @click="showCreate = false"
+                                class="rounded-full p-1.5 hover:bg-gray-100"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                    <form @submit.prevent="submitCreate" class="space-y-4">
-                        <div>
-                            <label
-                                for="create-title"
-                                class="mb-1 block text-sm font-medium text-gray-700"
-                                >Title</label
-                            >
-                            <input
-                                id="create-title"
-                                v-model="createForm.title"
-                                type="text"
-                                class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                            <p
-                                v-if="createForm.errors.title"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ createForm.errors.title }}
-                            </p>
+                                <span class="sr-only">Close</span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    class="h-5 w-5"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
                         </div>
-                        <div>
-                            <label
-                                class="mb-1 block text-sm font-medium text-gray-700"
-                                >Excerpt</label
-                            >
-                            <textarea
-                                v-model="createForm.excerpt"
-                                rows="4"
-                                class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                            <p
-                                v-if="createForm.errors.excerpt"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ createForm.errors.excerpt }}
-                            </p>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <form @submit.prevent="submitCreate" class="space-y-4">
                             <div>
                                 <label
+                                    for="create-title"
                                     class="mb-1 block text-sm font-medium text-gray-700"
-                                    >Category</label
+                                    >Title</label
                                 >
                                 <input
-                                    v-model="createForm.category"
+                                    id="create-title"
+                                    v-model="createForm.title"
                                     type="text"
                                     class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                     required
                                 />
                                 <p
-                                    v-if="createForm.errors.category"
+                                    v-if="createForm.errors.title"
                                     class="mt-1 text-sm text-red-600"
                                 >
-                                    {{ createForm.errors.category }}
+                                    {{ createForm.errors.title }}
                                 </p>
                             </div>
                             <div>
                                 <label
                                     class="mb-1 block text-sm font-medium text-gray-700"
-                                    >Date</label
+                                    >Excerpt</label
                                 >
-                                <input
-                                    v-model="createForm.date"
-                                    type="date"
+                                <textarea
+                                    v-model="createForm.excerpt"
+                                    rows="4"
                                     class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                     required
                                 />
                                 <p
-                                    v-if="createForm.errors.date"
+                                    v-if="createForm.errors.excerpt"
                                     class="mt-1 text-sm text-red-600"
                                 >
-                                    {{ createForm.errors.date }}
+                                    {{ createForm.errors.excerpt }}
                                 </p>
                             </div>
-                        </div>
-
-                        <div>
-                            <label
-                                class="mb-1 block text-sm font-medium text-gray-700"
-                                >Image (optional)</label
-                            >
-                            <div class="flex items-center gap-4">
-                                <label
-                                    class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
-                                >
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label
+                                        class="mb-1 block text-sm font-medium text-gray-700"
+                                        >Category</label
+                                    >
                                     <input
-                                        type="file"
-                                        accept="image/*"
-                                        class="hidden"
-                                        @change="onPickCreate"
+                                        v-model="createForm.category"
+                                        type="text"
+                                        class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        required
                                     />
-                                    Choose file
-                                </label>
-                                <img
-                                    v-if="imagePreviewCreate"
-                                    :src="imagePreviewCreate"
-                                    class="h-12 w-16 rounded-lg object-cover ring-1 ring-gray-200"
-                                />
+                                    <p
+                                        v-if="createForm.errors.category"
+                                        class="mt-1 text-sm text-red-600"
+                                    >
+                                        {{ createForm.errors.category }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <label
+                                        class="mb-1 block text-sm font-medium text-gray-700"
+                                        >Date</label
+                                    >
+                                    <input
+                                        v-model="createForm.date"
+                                        type="date"
+                                        class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        required
+                                    />
+                                    <p
+                                        v-if="createForm.errors.date"
+                                        class="mt-1 text-sm text-red-600"
+                                    >
+                                        {{ createForm.errors.date }}
+                                    </p>
+                                </div>
                             </div>
-                            <p
-                                v-if="createForm.errors.image"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ createForm.errors.image }}
-                            </p>
-                        </div>
 
-                        <div class="flex justify-end gap-2 pt-2">
-                            <button
-                                type="button"
-                                @click="showCreate = false"
-                                class="rounded-xl border border-gray-300 px-4 py-2 text-sm shadow-sm hover:bg-gray-50"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                :disabled="createForm.processing"
-                                class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 disabled:opacity-60"
-                            >
-                                <svg
-                                    v-if="createForm.processing"
-                                    class="h-4 w-4 animate-spin"
-                                    viewBox="0 0 24 24"
+                            <div>
+                                <label
+                                    class="mb-1 block text-sm font-medium text-gray-700"
+                                    >Image (optional)</label
                                 >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        stroke-width="4"
-                                        fill="none"
-                                        opacity=".25"
+                                <div class="flex items-center gap-4">
+                                    <label
+                                        class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
+                                    >
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="hidden"
+                                            @change="onPickCreate"
+                                        />
+                                        Choose file
+                                    </label>
+                                    <img
+                                        v-if="imagePreviewCreate"
+                                        :src="imagePreviewCreate"
+                                        class="h-12 w-16 rounded-lg object-cover ring-1 ring-gray-200"
                                     />
-                                    <path
-                                        d="M22 12a10 10 0 00-10-10"
-                                        stroke="currentColor"
-                                        stroke-width="4"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                    />
-                                </svg>
-                                Create
-                            </button>
-                        </div>
-                    </form>
+                                </div>
+                                <p
+                                    v-if="createForm.errors.image"
+                                    class="mt-1 text-sm text-red-600"
+                                >
+                                    {{ createForm.errors.image }}
+                                </p>
+                            </div>
+
+                            <div class="flex justify-end gap-2 pt-2">
+                                <button
+                                    type="button"
+                                    @click="showCreate = false"
+                                    class="rounded-xl border border-gray-300 px-4 py-2 text-sm shadow-sm hover:bg-gray-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    :disabled="createForm.processing"
+                                    class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 disabled:opacity-60"
+                                >
+                                    <svg
+                                        v-if="createForm.processing"
+                                        class="h-4 w-4 animate-spin"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            stroke-width="4"
+                                            fill="none"
+                                            opacity=".25"
+                                        />
+                                        <path
+                                            d="M22 12a10 10 0 00-10-10"
+                                            stroke="currentColor"
+                                            stroke-width="4"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                        />
+                                    </svg>
+                                    Create
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </transition>
+            </transition>
+        </Teleport>
 
         <!-- Edit Modal -->
-        <transition name="fade">
-            <div
-                v-if="showEdit"
-                class="fixed inset-0 z-50 grid place-items-center p-4"
-            >
+        <Teleport to="body">
+            <transition name="fade">
                 <div
-                    class="absolute inset-0 bg-black/40"
-                    @click="showEdit = false"
-                />
-                <div
-                    class="relative z-10 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl"
+                    v-if="showEdit"
+                    class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
                 >
-                    <div class="mb-4 flex items-start justify-between">
-                        <h3 class="text-lg font-semibold">Edit News</h3>
-                        <button
-                            @click="showEdit = false"
-                            class="rounded-full p-1.5 hover:bg-gray-100"
-                        >
-                            <span class="sr-only">Close</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                class="h-5 w-5"
+                    <div
+                        class="absolute inset-0 bg-black/40"
+                        @click="showEdit = false"
+                    />
+                    <div
+                        class="relative z-10 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl"
+                    >
+                        <div class="mb-4 flex items-start justify-between">
+                            <h3 class="text-lg font-semibold">Edit News</h3>
+                            <button
+                                @click="showEdit = false"
+                                class="rounded-full p-1.5 hover:bg-gray-100"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                    <form @submit.prevent="submitEdit" class="space-y-4">
-                        <div>
-                            <label
-                                for="edit-title"
-                                class="mb-1 block text-sm font-medium text-gray-700"
-                                >Title</label
-                            >
-                            <input
-                                id="edit-title"
-                                v-model="editForm.title"
-                                type="text"
-                                class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                            <p
-                                v-if="editForm.errors.title"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ editForm.errors.title }}
-                            </p>
+                                <span class="sr-only">Close</span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    class="h-5 w-5"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
                         </div>
-                        <div>
-                            <label
-                                class="mb-1 block text-sm font-medium text-gray-700"
-                                >Excerpt</label
-                            >
-                            <textarea
-                                v-model="editForm.excerpt"
-                                rows="4"
-                                class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                            <p
-                                v-if="editForm.errors.excerpt"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ editForm.errors.excerpt }}
-                            </p>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <form @submit.prevent="submitEdit" class="space-y-4">
                             <div>
                                 <label
+                                    for="edit-title"
                                     class="mb-1 block text-sm font-medium text-gray-700"
-                                    >Category</label
+                                    >Title</label
                                 >
                                 <input
-                                    v-model="editForm.category"
+                                    id="edit-title"
+                                    v-model="editForm.title"
                                     type="text"
                                     class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                     required
                                 />
                                 <p
-                                    v-if="editForm.errors.category"
+                                    v-if="editForm.errors.title"
                                     class="mt-1 text-sm text-red-600"
                                 >
-                                    {{ editForm.errors.category }}
+                                    {{ editForm.errors.title }}
                                 </p>
                             </div>
                             <div>
                                 <label
                                     class="mb-1 block text-sm font-medium text-gray-700"
-                                    >Date</label
+                                    >Excerpt</label
                                 >
-                                <input
-                                    v-model="editForm.date"
-                                    type="date"
+                                <textarea
+                                    v-model="editForm.excerpt"
+                                    rows="4"
                                     class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                     required
                                 />
                                 <p
-                                    v-if="editForm.errors.date"
+                                    v-if="editForm.errors.excerpt"
                                     class="mt-1 text-sm text-red-600"
                                 >
-                                    {{ editForm.errors.date }}
+                                    {{ editForm.errors.excerpt }}
                                 </p>
                             </div>
-                        </div>
-
-                        <div>
-                            <label
-                                class="mb-1 block text-sm font-medium text-gray-700"
-                                >Image (optional)</label
-                            >
-                            <div class="flex items-center gap-4">
-                                <label
-                                    class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
-                                >
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label
+                                        class="mb-1 block text-sm font-medium text-gray-700"
+                                        >Category</label
+                                    >
                                     <input
-                                        type="file"
-                                        accept="image/*"
-                                        class="hidden"
-                                        @change="onPickEdit"
+                                        v-model="editForm.category"
+                                        type="text"
+                                        class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        required
                                     />
-                                    Choose file
-                                </label>
-                                <img
-                                    v-if="imagePreviewEdit"
-                                    :src="imagePreviewEdit"
-                                    class="h-12 w-16 rounded-lg object-cover ring-1 ring-gray-200"
-                                />
+                                    <p
+                                        v-if="editForm.errors.category"
+                                        class="mt-1 text-sm text-red-600"
+                                    >
+                                        {{ editForm.errors.category }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <label
+                                        class="mb-1 block text-sm font-medium text-gray-700"
+                                        >Date</label
+                                    >
+                                    <input
+                                        v-model="editForm.date"
+                                        type="date"
+                                        class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        required
+                                    />
+                                    <p
+                                        v-if="editForm.errors.date"
+                                        class="mt-1 text-sm text-red-600"
+                                    >
+                                        {{ editForm.errors.date }}
+                                    </p>
+                                </div>
                             </div>
-                            <p
-                                v-if="editForm.errors.image"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ editForm.errors.image }}
-                            </p>
-                        </div>
 
-                        <div class="flex justify-end gap-2 pt-2">
-                            <button
-                                type="button"
-                                @click="showEdit = false"
-                                class="rounded-xl border border-gray-300 px-4 py-2 text-sm shadow-sm hover:bg-gray-50"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                :disabled="editForm.processing"
-                                class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 disabled:opacity-60"
-                            >
-                                <svg
-                                    v-if="editForm.processing"
-                                    class="h-4 w-4 animate-spin"
-                                    viewBox="0 0 24 24"
+                            <div>
+                                <label
+                                    class="mb-1 block text-sm font-medium text-gray-700"
+                                    >Image (optional)</label
                                 >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        stroke-width="4"
-                                        fill="none"
-                                        opacity=".25"
+                                <div class="flex items-center gap-4">
+                                    <label
+                                        class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
+                                    >
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="hidden"
+                                            @change="onPickEdit"
+                                        />
+                                        Choose file
+                                    </label>
+                                    <img
+                                        v-if="imagePreviewEdit"
+                                        :src="imagePreviewEdit"
+                                        class="h-12 w-16 rounded-lg object-cover ring-1 ring-gray-200"
                                     />
-                                    <path
-                                        d="M22 12a10 10 0 00-10-10"
-                                        stroke="currentColor"
-                                        stroke-width="4"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                    />
-                                </svg>
-                                Save Changes
-                            </button>
-                        </div>
-                    </form>
+                                </div>
+                                <p
+                                    v-if="editForm.errors.image"
+                                    class="mt-1 text-sm text-red-600"
+                                >
+                                    {{ editForm.errors.image }}
+                                </p>
+                            </div>
+
+                            <div class="flex justify-end gap-2 pt-2">
+                                <button
+                                    type="button"
+                                    @click="showEdit = false"
+                                    class="rounded-xl border border-gray-300 px-4 py-2 text-sm shadow-sm hover:bg-gray-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    :disabled="editForm.processing"
+                                    class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 disabled:opacity-60"
+                                >
+                                    <svg
+                                        v-if="editForm.processing"
+                                        class="h-4 w-4 animate-spin"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            stroke-width="4"
+                                            fill="none"
+                                            opacity=".25"
+                                        />
+                                        <path
+                                            d="M22 12a10 10 0 00-10-10"
+                                            stroke="currentColor"
+                                            stroke-width="4"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                        />
+                                    </svg>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </transition>
+            </transition>
+        </Teleport>
 
         <!-- Delete Modal -->
         <transition name="fade">
