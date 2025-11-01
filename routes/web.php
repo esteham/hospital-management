@@ -9,6 +9,7 @@ use App\Http\Controllers\Doctor\ScheduleController as DocScheduleCtrl;
 use App\Http\Controllers\Admin\AdminHealthCheckController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
+use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
 
 
 /*
@@ -88,6 +89,8 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::get('/admin/appointments', [AppointmentController::class, 'index'])->name('admin.appointments.index');
         Route::get('/admin/appointments/{appointment}', [AppointmentController::class, 'show'])->name('admin.appointments.show');
         Route::put('/admin/appointments/{appointment}', [AppointmentController::class, 'update'])->name('admin.appointments.update');
+
+        Route::resource('/admin/news', AdminNewsCtrl::class, ['as' => 'admin']);
     });
 
     //Doctors Routes

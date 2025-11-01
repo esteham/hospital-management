@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\HealthCheckController;
 use App\Http\Controllers\Api\PackageBookingController;
 use App\Http\Controllers\Api\EmailCheckController;
+use App\Http\Controllers\Api\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,5 @@ Route::get('/health-checks', [HealthCheckController::class, 'index']);
 Route::middleware('auth:sanctum')->post('/bookings', [PackageBookingController::class, 'store']);
 
 Route::post('/email-check', [EmailCheckController::class, 'check']);
+
+Route::get('/news', [NewsController::class, 'index']);
