@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\DoctorMentionMail;
 use App\Models\Schedule;
 use App\Models\DoctorMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AdminScheduleController extends Controller
 {
@@ -54,6 +56,9 @@ class AdminScheduleController extends Controller
     		'schedule_id' => $data['schedule_id'] ?? null,
     		'message' => $data['message'],
     	]);
+
+    	// Send email notification to the doctor
+    	Mail::to($msg->doctor->user->email)->send(new DoctorMentionMail($msg));
 
     	return response()->json([
 
