@@ -40,6 +40,8 @@ Route::get('/book-appointment', fn() => Inertia::render('AppointmentBooking', [
 
 Route::get('/news/{id}', fn($id) => Inertia::render('NewsDetail', ['id' => $id]))->name('news.detail');
 
+Route::get('/news-all', fn() => Inertia::render('NewsAll'))->name('news.all');
+
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
 

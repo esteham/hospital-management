@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import { Head, usePage } from "@inertiajs/vue3";
+import { Head, usePage, Link } from "@inertiajs/vue3";
 
 const page = usePage();
 const news = ref(null);
@@ -27,7 +27,25 @@ onMounted(() => {
     <Head :title="news ? news.title : 'News Detail'" />
 
     <div class="min-h-screen bg-gray-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex">
+            <div class="flex items-center gap-2">
+                <Link
+                    href="/news-all"
+                    class="inline-flex items-center gap-2 rounded-2xl bg-gray-600 px-4 py-2 text-white shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                    Back to All News
+                </Link>
+            </div>
+            <div class="flex items-center gap-2">
+                <Link
+                    href="/"
+                    class="inline-flex items-center gap-2 rounded-2xl bg-gray-600 px-4 py-2 text-white shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                    Back to Home
+                </Link>
+            </div>
+        </div>
+        <div class="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8 py-8">
             <div v-if="loading" class="text-center">
                 <div
                     class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"
