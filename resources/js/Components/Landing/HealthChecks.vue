@@ -38,15 +38,35 @@ const bookPackage = async (paymentType) => {
 
     bookingLoading.value = true;
     try {
-        const response = await api.post("/api/bookings", {
-            health_check_id: selectedHealth.value.id,
-            payment_type: paymentType,
-        });
-        alert("Booking successful!");
-        showModal.value = false;
+        // Use Inertia router for the booking to maintain session state
+        await router.post(
+            "/api/bookings",
+            {
+                health_check_id: selectedHealth.value.id,
+                payment_type: paymentType,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: () => {
+                    alert("Booking successful!");
+                    showModal.value = false;
+                },
+                onError: (errors) => {
+                    alert(
+                        Object.values(errors)[0] ||
+                            "Failed to book package. Please try again."
+                    );
+                },
+            }
+        );
     } catch (error) {
         console.error("Error booking package:", error);
-        alert("Failed to book package. Please try again.");
+        if (error.response?.status === 401) {
+            router.visit("/login", { preserveState: true });
+        } else {
+            alert("Failed to book package. Please try again.");
+        }
     } finally {
         bookingLoading.value = false;
     }

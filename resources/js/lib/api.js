@@ -6,7 +6,11 @@ const api = axios.create({
             ? "http://localhost:8000"
             : "https://hospital.xetroot.com",
     withCredentials: true,
-    headers: { "X-Requested-With": "XMLHttpRequest" },
+    headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        Accept: "application/json",
+        "Content-Type": "application/json",
+    },
 });
 
 // For Laravel Sanctum SPA auth: ensure XSRF cookie is set before state-changing requests
