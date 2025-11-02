@@ -5,6 +5,7 @@ import Modal from "@/Components/Modal.vue";
 import { ref, onMounted, computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { router } from "@inertiajs/vue3";
+import axios from "axios";
 
 const page = usePage();
 const isLoggedIn = computed(() => !!page.props.auth?.user);
@@ -14,6 +15,8 @@ const showModal = ref(false);
 const selectedHealth = ref(null);
 const showLoginPrompt = ref(false);
 const bookingLoading = ref(false);
+const showSuccessModal = ref(false);
+const bookingMessage = ref("");
 
 const fetchHealthChecks = async () => {
     try {
@@ -38,28 +41,14 @@ const bookPackage = async (paymentType) => {
 
     bookingLoading.value = true;
     try {
-        // Use Inertia router for the booking to maintain session state
-        await router.post(
-            "/api/bookings",
-            {
-                health_check_id: selectedHealth.value.id,
-                payment_type: paymentType,
-            },
-            {
-                preserveState: true,
-                preserveScroll: true,
-                onSuccess: () => {
-                    alert("Booking successful!");
-                    showModal.value = false;
-                },
-                onError: (errors) => {
-                    alert(
-                        Object.values(errors)[0] ||
-                            "Failed to book package. Please try again."
-                    );
-                },
-            }
-        );
+        const response = await axios.post("/api/bookings", {
+            health_check_id: selectedHealth.value.id,
+            payment_type: paymentType,
+        });
+
+        bookingMessage.value = response.data.message;
+        showModal.value = false;
+        showSuccessModal.value = true;
     } catch (error) {
         console.error("Error booking package:", error);
         if (error.response?.status === 401) {
@@ -74,6 +63,14 @@ const bookPackage = async (paymentType) => {
 
 const goToLogin = () => {
     router.visit("/login");
+};
+
+const goToLanding = () => {
+    router.visit("/");
+};
+
+const goToDashboardPackages = () => {
+    router.visit("/dashboard");
 };
 
 onMounted(() => {
@@ -256,6 +253,36 @@ onMounted(() => {
                         class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all"
                     >
                         Go to Login
+                    </button>
+                </div>
+            </div>
+        </Modal>
+
+        <!-- Success Modal -->
+        <Modal
+            :show="showSuccessModal"
+            @close="showSuccessModal = false"
+            max-width="md"
+        >
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                    Booking Successful
+                </h3>
+                <p class="text-gray-600 mb-6">
+                    {{ bookingMessage }}
+                </p>
+                <div class="flex justify-end space-x-4">
+                    <button
+                        @click="goToLanding"
+                        class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                        OK
+                    </button>
+                    <button
+                        @click="goToDashboardPackages"
+                        class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all"
+                    >
+                        Go to Book Package
                     </button>
                 </div>
             </div>

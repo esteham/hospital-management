@@ -26,7 +26,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/health-checks', [HealthCheckController::class, 'index']);
 
-Route::middleware(['auth:sanctum', 'web'])->post('/bookings', [PackageBookingController::class, 'store']);
+Route::middleware(['auth:sanctum', 'web'])->group(function () {
+    Route::get('/bookings', [PackageBookingController::class, 'index']);
+    Route::post('/bookings', [PackageBookingController::class, 'store']);
+});
 
 Route::post('/email-check', [EmailCheckController::class, 'check']);
 

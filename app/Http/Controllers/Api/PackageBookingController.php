@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class PackageBookingController extends Controller
 {
+    public function index()
+    {
+        $bookings = PackageBooking::where('user_id', Auth::id())
+            ->with('healthCheck')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($bookings);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
