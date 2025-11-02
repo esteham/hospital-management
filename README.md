@@ -2,14 +2,14 @@
 
 A modern **Hospital Management System** built with **Laravel** + **Vue 3** using **Vite**. It covers patient onboarding, appointments, doctors & departments, prescriptions, billing, inventory, and role-based admin features—designed for speed, clarity, and maintainability.
 
-![Screenshot](screenshort/Screenshot 1.png)
-![Screenshot](screenshort/Screenshot 2.png)
-![Screenshot](screenshort/Screenshot 3.png)
-![Screenshot](screenshort/Screenshot 4.png)
-![Screenshot](screenshort/Screenshot 5.png)
-![Screenshot](screenshort/Screenshot 6.png)
-![Screenshot](screenshort/Screenshot 7.png)
-![Screenshot](screenshort/Screenshot 8.png)
+![Screenshot](screenshort/Screenshot01.png)
+![Screenshot](screenshort/Screenshot02.png)
+![Screenshot](screenshort/Screenshot03.png)
+![Screenshot](screenshort/Screenshot04.png)
+![Screenshot](screenshort/Screenshot05.png)
+![Screenshot](screenshort/Screenshot06.png)
+![Screenshot](screenshort/Screenshot07.png)
+![Screenshot](screenshort/Screenshot08.png)
 
 ## ✨ Features
 
