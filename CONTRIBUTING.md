@@ -64,6 +64,30 @@ cp .env.example .env
 php artisan key:generate
 ```
 
+---
+## 📦 Environment (.env) quick sample
+
+```dotenv
+APP_NAME="Hospital Management"
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
+
+# DB
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=hospital_mgmt
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Vite (optional for HMR over network)
+VITE_DEV_SERVER_HOST=localhost
+```
+
+---
+
 * Set DB credentials in `.env` (or use SQLite: set `DB_CONNECTION=sqlite` and create `database/database.sqlite`).
 * (Optional) Configure mail, cache, queues as needed.
 
