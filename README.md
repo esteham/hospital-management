@@ -2,34 +2,36 @@
 
 A modern **Hospital Management System** built with **Laravel** + **Vue 3** using **Vite**. It covers patient onboarding, appointments, doctors & departments, prescriptions, billing, inventory, and role-based admin features—designed for speed, clarity, and maintainability.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Laravel-11.x-red" />
-  <img src="https://img.shields.io/badge/Vue-3.x-brightgreen" />
-  <img src="https://img.shields.io/badge/Vite-7.x-8A2BE2" />
-  <img src="https://img.shields.io/badge/Tailwind-3.x-38B2AC" />
-</p>
+![Screenshot](screenshort/Screenshot 1.png)
+![Screenshot](screenshort/Screenshot 2.png)
+![Screenshot](screenshort/Screenshot 3.png)
+![Screenshot](screenshort/Screenshot 4.png)
+![Screenshot](screenshort/Screenshot 5.png)
+![Screenshot](screenshort/Screenshot 6.png)
+![Screenshot](screenshort/Screenshot 7.png)
+![Screenshot](screenshort/Screenshot 8.png)
 
 ## ✨ Features
 
-- **Patient Management**: registration, profiles, history
-- **Appointments**: scheduling, status, notifications
-- **Doctors & Departments**: specialization, availability
-- **Billing & Payments**: invoices, discounts, receipt print
-- **Pharmacy / Inventory**: medicines, stock, suppliers
-- **Roles & Permissions**: admin, doctor, staff, accountant
-- **Search & Filters**: quick lookups everywhere
-- **Responsive UI**: Tailwind CSS, accessible components
-- **Fast Dev Experience**: Vue 3 + Vite 7, HMR
+-   **Patient Management**: registration, profiles, history
+-   **Appointments**: scheduling, status, notifications
+-   **Doctors & Departments**: specialization, availability
+-   **Billing & Payments**: invoices, discounts, receipt print
+-   **Pharmacy / Inventory**: medicines, stock, suppliers
+-   **Roles & Permissions**: admin, doctor, staff, accountant
+-   **Search & Filters**: quick lookups everywhere
+-   **Responsive UI**: Tailwind CSS, accessible components
+-   **Fast Dev Experience**: Vue 3 + Vite 7, HMR
 
 ---
 
 ## 🧰 Tech Stack
 
-- **Backend**: Laravel 11 (PHP 8.2+), Laravel Sanctum/Passport (if API auth)
-- **Frontend**: Vue 3, @vitejs/plugin-vue, Axios
-- **Build**: Vite 7, laravel-vite-plugin 2.x
-- **UI**: Tailwind CSS 3.x, @tailwindcss/forms
-- **DB**: MySQL/MariaDB (or PostgreSQL)
+-   **Backend**: Laravel 11 (PHP 8.2+), Laravel Sanctum/Passport (if API auth)
+-   **Frontend**: Vue 3, @vitejs/plugin-vue, Axios
+-   **Build**: Vite 7, laravel-vite-plugin 2.x
+-   **UI**: Tailwind CSS 3.x, @tailwindcss/forms
+-   **DB**: MySQL/MariaDB (or PostgreSQL)
 
 > If you are using Inertia.js: `@inertiajs/vue3` is supported.
 
@@ -37,10 +39,10 @@ A modern **Hospital Management System** built with **Laravel** + **Vue 3** using
 
 ## ⚙️ Prerequisites
 
-- **PHP** 8.2+ and **Composer**
-- **Node.js** 18+ and **npm**
-- **MySQL** 8+ (or MariaDB/PostgreSQL)
-- **Git**
+-   **PHP** 8.2+ and **Composer**
+-   **Node.js** 18+ and **npm**
+-   **MySQL** 8+ (or MariaDB/PostgreSQL)
+-   **Git**
 
 ---
 
@@ -110,18 +112,18 @@ VITE_DEV_SERVER_HOST=localhost
 
 ## 🧱 Vite / Vue / Tailwind Notes
 
-* Use **Vite 7** with **laravel-vite-plugin 2.x**
-* Use **@vitejs/plugin-vue 6.x** (compatible with Vite 7)
-* Use **Tailwind 3.x** (do **not** install `@tailwindcss/vite`, that’s for Tailwind v4)
+-   Use **Vite 7** with **laravel-vite-plugin 2.x**
+-   Use **@vitejs/plugin-vue 6.x** (compatible with Vite 7)
+-   Use **Tailwind 3.x** (do **not** install `@tailwindcss/vite`, that’s for Tailwind v4)
 
 **`postcss.config.cjs`**
 
 ```js
 module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
 };
 ```
 
@@ -129,31 +131,31 @@ module.exports = {
 
 ```js
 module.exports = {
-  content: [
-    './resources/**/*.blade.php',
-    './resources/**/*.js',
-    './resources/**/*.vue',
-  ],
-  theme: { extend: {} },
-  plugins: [require('@tailwindcss/forms')],
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
+    ],
+    theme: { extend: {} },
+    plugins: [require("@tailwindcss/forms")],
 };
 ```
 
 **`vite.config.js`**
 
 ```js
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import laravel from 'laravel-vite-plugin';
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import laravel from "laravel-vite-plugin";
 
 export default defineConfig({
-  plugins: [
-    vue(),
-    laravel({
-      input: ['resources/css/app.css', 'resources/js/app.js'],
-      refresh: true,
-    }),
-  ],
+    plugins: [
+        vue(),
+        laravel({
+            input: ["resources/css/app.css", "resources/js/app.js"],
+            refresh: true,
+        }),
+    ],
 });
 ```
 
@@ -194,12 +196,12 @@ routes/
 
 ## 🩺 Troubleshooting
 
-* **Dependency conflicts (ERESOLVE)**
-  Ensure: `vite@^7`, `@vitejs/plugin-vue@^6`, `laravel-vite-plugin@^2`.
-* **Tailwind PostCSS warning**
-  Use `tailwindcss` and `autoprefixer` in `postcss.config.cjs` (no `@tailwindcss/vite` on Tailwind v3).
-* **Node version**
-  Vite 7 requires Node **18+**.
+-   **Dependency conflicts (ERESOLVE)**
+    Ensure: `vite@^7`, `@vitejs/plugin-vue@^6`, `laravel-vite-plugin@^2`.
+-   **Tailwind PostCSS warning**
+    Use `tailwindcss` and `autoprefixer` in `postcss.config.cjs` (no `@tailwindcss/vite` on Tailwind v3).
+-   **Node version**
+    Vite 7 requires Node **18+**.
 
 ---
 
