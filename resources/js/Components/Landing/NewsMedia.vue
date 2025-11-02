@@ -103,7 +103,8 @@ onMounted(() => {
                                 </p>
 
                                 <a
-                                    href="#"
+                                    :href="`/news/${news.id}`"
+                                    target="_blank"
                                     class="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200"
                                 >
                                     Read More →

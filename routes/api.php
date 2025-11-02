@@ -31,3 +31,4 @@ Route::middleware('auth:sanctum')->post('/bookings', [PackageBookingController::
 Route::post('/email-check', [EmailCheckController::class, 'check']);
 
 Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news/{id}', [NewsController::class, 'show']);

@@ -27,4 +27,19 @@ class NewsController extends Controller
 
         return response()->json($newsTransformed);
     }
+
+    public function show($id)
+    {
+        $news = News::findOrFail($id);
+
+        // ensure image field is a full URL when possible
+        if ($news->image) {
+            $img = $news->image;
+            if (!Str::startsWith($img, ['http://', 'https://'])) {
+                $news->image = Storage::url($img);
+            }
+        }
+
+        return response()->json($news);
+    }
 }

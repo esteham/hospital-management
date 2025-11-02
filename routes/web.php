@@ -37,6 +37,8 @@ Route::get('/book-appointment', fn() => Inertia::render('AppointmentBooking', [
     'phpVersion' => PHP_VERSION,
 ]))->name('appointment.booking');
 
+Route::get('/news/{id}', fn($id) => Inertia::render('NewsDetail', ['id' => $id]))->name('news.detail');
+
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
 
