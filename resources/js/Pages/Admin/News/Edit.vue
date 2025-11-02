@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { useForm, router, Link } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import axios from "axios";
@@ -20,7 +20,7 @@ const editForm = useForm({
     title: props.news.title || "",
     excerpt: props.news.excerpt || "",
     content: props.news.content || "",
-    image: null, // keep empty unless user picks new
+    image: null,
     category: props.news.category || "",
     date: props.news.date
         ? props.news.date.slice(0, 10)
@@ -30,6 +30,8 @@ const editForm = useForm({
 const imagePreviewEdit = ref(
     props.news.image ? `/storage/${props.news.image}` : null
 );
+
+const editorRef = ref(null);
 
 const editorOptions = ref({
     modules: {
@@ -83,8 +85,8 @@ function imageHandler() {
                 );
 
                 const imageUrl = response.data.url;
-                const quill = this.quill;
-                const range = quill.getSelection();
+                const quill = editorRef.value?.getQuill();
+                const range = quill?.getSelection();
                 const index = range ? range.index : quill.getLength();
                 quill.insertEmbed(index, "image", imageUrl);
             } catch (error) {
@@ -110,6 +112,12 @@ function submitEdit() {
 
 onMounted(() => {
     document.getElementById("edit-title")?.focus();
+    // Set content after mount to ensure Quill is ready
+    nextTick(() => {
+        if (editorRef.value) {
+            editorRef.value.setHTML(props.news.content || "");
+        }
+    });
 });
 </script>
 
@@ -160,7 +168,7 @@ onMounted(() => {
                             >
                             <textarea
                                 v-model="editForm.excerpt"
-                                rows="4"
+                                rows="2"
                                 class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                 required
                             />
@@ -177,7 +185,9 @@ onMounted(() => {
                                 >Content</label
                             >
                             <QuillEditor
-                                v-model="editForm.content"
+                                ref="editorRef"
+                                v-model:content="editForm.content"
+                                content-type="html"
                                 :options="editorOptions"
                                 class="quill-field"
                                 required
@@ -304,6 +314,6 @@ onMounted(() => {
 </template>
 <style scoped>
 :deep(.quill-field .ql-editor) {
-    @apply min-h-[500px];
+    @apply min-h-[300px];
 }
 </style>

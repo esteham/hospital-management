@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminHealthCheckController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
 use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
+use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
 
 
 /*
@@ -65,8 +66,8 @@ Route::middleware(['auth','verified'])->group(function() {
 
     // Patient Routes
     Route::middleware('role:patient')->group(function() {
-        Route::resource('patient/appointments', \App\Http\Controllers\Patient\AppointmentController::class, ['as' => 'patient']);
-        Route::get('patient/appointments/{appointment}/download-pdf', [\App\Http\Controllers\Patient\AppointmentController::class, 'downloadPdf'])->name('patient.appointments.download-pdf');
+        Route::resource('patient/appointments', PtnAppoinmentCtrl::class, ['as' => 'patient']);
+        Route::get('patient/appointments/{appointment}/download-pdf', [PtnAppoinmentCtrl::class, 'downloadPdf'])->name('patient.appointments.download-pdf');
     });
 
     //Admin Routes
@@ -93,6 +94,7 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::put('/admin/appointments/{appointment}', [AppointmentController::class, 'update'])->name('admin.appointments.update');
 
         Route::resource('/admin/news', AdminNewsCtrl::class, ['as' => 'admin']);
+        Route::post('/admin/news/upload-image', [AdminNewsCtrl::class, 'uploadImage'])->name('admin.news.upload-image');
     });
 
     //Doctors Routes

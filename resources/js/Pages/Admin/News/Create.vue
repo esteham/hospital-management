@@ -6,6 +6,8 @@ import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import axios from "axios";
 
+const editorRef = ref(null);
+
 /**
  * Forms
  */
@@ -52,41 +54,52 @@ function onPickCreate(e) {
 
 function imageHandler() {
     const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
+    input.type = "file";
+    input.accept = "image/*";
     input.click();
 
     input.onchange = async () => {
-        const file = input.files[0];
-        if (file) {
-            const formData = new FormData();
-            formData.append("image", file);
+        const file = input.files?.[0];
+        if (!file) return;
 
-            try {
-                const response = await axios.post(
-                    route("admin.news.upload-image"),
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                );
+        const formData = new FormData();
+        formData.append("image", file);
 
-                const imageUrl = response.data.url;
-                const quill = this.quill;
-                const range = quill.getSelection();
-                const index = range ? range.index : quill.getLength();
-                quill.insertEmbed(index, "image", imageUrl);
-            } catch (error) {
-                console.error("Image upload failed:", error);
-                alert("Image upload failed. Please try again.");
-            }
+        try {
+            const response = await axios.post(
+                route("admin.news.upload-image"),
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+
+            const imageUrl = response.data.url;
+
+            const quill = editorRef.value?.getQuill?.();
+            if (!quill) return;
+
+            const range = quill.getSelection();
+            const index = range ? range.index : quill.getLength();
+            quill.insertEmbed(index, "image", imageUrl);
+        } catch (e) {
+            console.error("Image upload failed:", e);
+            alert("Image upload failed. Please try again.");
         }
     };
 }
 
 function submitCreate() {
+    if (editorRef.value?.getHTML) {
+        createForm.content = editorRef.value.getHTML();
+    }
+    // Client-side validation for content
+    if (
+        !createForm.content ||
+        createForm.content.replace(/<[^>]*>/g, "").trim() === ""
+    ) {
+        createForm.errors.content = "Content is required";
+        return;
+    }
+
     createForm.post(route("admin.news.store"), {
         forceFormData: true,
         onSuccess: () => {
@@ -167,7 +180,9 @@ onMounted(() => {
                                 >Content</label
                             >
                             <QuillEditor
-                                v-model="createForm.content"
+                                ref="editorRef"
+                                v-model:content="createForm.content"
+                                content-type="html"
                                 :options="editorOptions"
                                 class="quill-field"
                                 required
@@ -294,6 +309,6 @@ onMounted(() => {
 </template>
 <style scoped>
 :deep(.quill-field .ql-editor) {
-    @apply min-h-[500px];
+    @apply min-h-[300px];
 }
 </style>

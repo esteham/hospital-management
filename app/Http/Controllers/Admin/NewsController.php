@@ -37,12 +37,22 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string',
+            'content' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $stripped = strip_tags($value);
+                    if (empty(trim($stripped))) {
+                        $fail('The content field is required.');
+                    }
+                },
+            ],
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'category' => 'required|string|max:255',
             'date' => 'required|date',
         ]);
 
-        $data = $request->only(['title','excerpt','category','date']);
+        $data = $request->only(['title','excerpt','content','category','date']);
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('news', 'public');
@@ -89,12 +99,22 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string',
+            'content' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $stripped = strip_tags($value);
+                    if (empty(trim($stripped))) {
+                        $fail('The content field is required.');
+                    }
+                },
+            ],
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'category' => 'required|string|max:255',
             'date' => 'required|date',
         ]);
 
-        $data = $request->only(['title','excerpt','category','date']);
+        $data = $request->only(['title','excerpt','content','category','date']);
 
         if ($request->hasFile('image')) {
             // delete old file if exists
@@ -129,5 +149,20 @@ class NewsController extends Controller
         }
 
         return redirect()->route('admin.news.index')->with('success', 'News deleted successfully.');
+    }
+
+    /**
+     * Upload image for Quill editor.
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+        ]);
+
+        $path = $request->file('image')->store('news', 'public');
+        $url = Storage::disk('public')->url($path);
+
+        return response()->json(['url' => $url]);
     }
 }
