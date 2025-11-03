@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminScheduleController;
 use App\Http\Controllers\Admin\DoctorController as AdminDoctorCtrl;
 use App\Http\Controllers\Doctor\ScheduleController as DocScheduleCtrl;
 use App\Http\Controllers\Admin\AdminHealthCheckController;
+use App\Http\Controllers\Admin\AdminPackageBookingController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
 use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
@@ -90,6 +91,8 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::post('/admin/schedules/mention', [AdminScheduleController::class, 'mention'])->name('admin.schedules.mention');
 
         Route::resource('/admin/health-checks', AdminHealthCheckController::class, ['as' => 'admin']);
+
+        Route::resource('/admin/package-bookings', AdminPackageBookingController::class, ['as' => 'admin']);
 
         Route::get('/admin/appointments', [AppointmentController::class, 'index'])->name('admin.appointments.index');
         Route::get('/admin/appointments/{appointment}', [AppointmentController::class, 'show'])->name('admin.appointments.show');

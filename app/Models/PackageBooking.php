@@ -13,6 +13,7 @@ class PackageBooking extends Model
         'amount_paid',
         'total_amount',
         'status',
+        'cancellation_reason',
     ];
 
     public function user()

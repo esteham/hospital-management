@@ -400,6 +400,17 @@ onMounted(() => {
                                     }}
                                 </div>
                             </div>
+                            <div
+                                v-if="booking.cancellation_reason"
+                                class="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg"
+                            >
+                                <h6 class="font-medium text-red-800 text-sm">
+                                    Cancellation Reason:
+                                </h6>
+                                <p class="text-red-700 text-sm">
+                                    {{ booking.cancellation_reason }}
+                                </p>
+                            </div>
                             <div class="mt-3 text-xs text-slate-500">
                                 Booked on
                                 {{
