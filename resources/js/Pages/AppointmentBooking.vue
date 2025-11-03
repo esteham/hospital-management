@@ -1,15 +1,46 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import Header from "@/Components/Landing/Header.vue";
 import Footer from "@/Components/Landing/Footer.vue";
 
-defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
-});
+const { doctors, canLogin, canRegister, laravelVersion, phpVersion } =
+    defineProps({
+        canLogin: Boolean,
+        canRegister: Boolean,
+        laravelVersion: String,
+        phpVersion: String,
+        doctors: Array,
+    });
+
+// Function to generate time slots from doctor's schedules
+const generateTimeSlotsFromSchedules = (schedules) => {
+    if (!schedules || schedules.length === 0) return [];
+
+    const slots = [];
+    schedules.forEach((schedule) => {
+        const start = new Date(`1970-01-01T${schedule.start_time}`);
+        const end = new Date(`1970-01-01T${schedule.end_time}`);
+        const slotMinutes = schedule.slot_minutes;
+
+        let current = new Date(start);
+        while (current < end) {
+            const timeString = current.toTimeString().slice(0, 5);
+            const hours = current.getHours();
+            const minutes = current.getMinutes();
+            const ampm = hours >= 12 ? "PM" : "AM";
+            const displayHours = hours % 12 || 12;
+            const displayTime = `${displayHours}:${minutes
+                .toString()
+                .padStart(2, "0")} ${ampm}`;
+            slots.push(displayTime);
+            current.setMinutes(current.getMinutes() + slotMinutes);
+        }
+    });
+
+    // Remove duplicates and sort
+    return [...new Set(slots)].sort();
+};
 
 const form = ref({
     firstName: "",
@@ -19,6 +50,7 @@ const form = ref({
     preferredDate: "",
     preferredTime: "",
     speciality: "",
+    doctorId: "",
     additionalNotes: "",
 });
 
@@ -41,6 +73,7 @@ const submitForm = async () => {
         formData.append("preferred_date", form.value.preferredDate);
         formData.append("preferred_time", form.value.preferredTime);
         formData.append("speciality", form.value.speciality);
+        formData.append("doctor_id", form.value.doctorId || "");
         formData.append("additional_notes", form.value.additionalNotes || "");
         formData.append(
             "_token",
@@ -67,6 +100,7 @@ const submitForm = async () => {
                 preferredDate: "",
                 preferredTime: "",
                 speciality: "",
+                doctorId: "",
                 additionalNotes: "",
             };
         } else {
@@ -102,19 +136,79 @@ const timeSlots = ref([
     "05:00 PM",
 ]);
 
-// Medical specialties
-const specialties = ref([
-    { value: "cardiology", label: "Cardiology", icon: "❤️" },
-    { value: "dermatology", label: "Dermatology", icon: "🔬" },
-    { value: "neurology", label: "Neurology", icon: "🧠" },
-    { value: "orthopedics", label: "Orthopedics", icon: "🦴" },
-    { value: "general", label: "General Medicine", icon: "👨‍⚕️" },
-    { value: "pediatrics", label: "Pediatrics", icon: "👶" },
-    { value: "gynecology", label: "Gynecology", icon: "🌸" },
-    { value: "ophthalmology", label: "Ophthalmology", icon: "👁️" },
-    { value: "ent", label: "ENT Specialist", icon: "👂" },
-    { value: "gastroenterology", label: "Gastroenterology", icon: "🩺" },
-]);
+// Computed property for unique specialties from doctors
+const specialties = computed(() => {
+    const uniqueSpecialties = new Set();
+    doctors.forEach((doctor) => {
+        if (doctor.speciality) {
+            uniqueSpecialties.add(doctor.speciality);
+        }
+    });
+    return Array.from(uniqueSpecialties).map((speciality) => {
+        // Map speciality to label and icon (you can customize this mapping)
+        const mappings = {
+            cardiology: { label: "Cardiology", icon: "❤️" },
+            dermatology: { label: "Dermatology", icon: "🔬" },
+            neurology: { label: "Neurology", icon: "🧠" },
+            orthopedics: { label: "Orthopedics", icon: "🦴" },
+            general: { label: "General Medicine", icon: "👨‍⚕️" },
+            pediatrics: { label: "Pediatrics", icon: "👶" },
+            gynecology: { label: "Gynecology", icon: "🌸" },
+            ophthalmology: { label: "Ophthalmology", icon: "👁️" },
+            ent: { label: "ENT Specialist", icon: "👂" },
+            gastroenterology: { label: "Gastroenterology", icon: "🩺" },
+        };
+        const mapping = mappings[speciality] || {
+            label: speciality,
+            icon: "👨‍⚕️",
+        };
+        return { value: speciality, label: mapping.label, icon: mapping.icon };
+    });
+});
+
+// Computed property for filtered doctors based on selected speciality
+const filteredDoctors = computed(() => {
+    if (!form.value.speciality) return doctors;
+    return doctors.filter(
+        (doctor) => doctor.speciality === form.value.speciality
+    );
+});
+
+// Computed property for available time slots based on selected doctor
+const availableTimeSlots = computed(() => {
+    if (!form.value.doctorId) return timeSlots.value; // Default slots if no doctor selected
+
+    const selectedDoctor = doctors.find(
+        (doctor) => doctor.id == form.value.doctorId
+    );
+    if (
+        !selectedDoctor ||
+        !selectedDoctor.schedules ||
+        selectedDoctor.schedules.length === 0
+    ) {
+        return []; // No slots available
+    }
+
+    return generateTimeSlotsFromSchedules(selectedDoctor.schedules);
+});
+
+// Watch for speciality changes to reset doctor selection
+watch(
+    () => form.value.speciality,
+    (newSpeciality) => {
+        if (newSpeciality && form.value.doctorId) {
+            const selectedDoctor = doctors.find(
+                (doctor) => doctor.id === form.value.doctorId
+            );
+            if (
+                !selectedDoctor ||
+                selectedDoctor.speciality !== newSpeciality
+            ) {
+                form.value.doctorId = "";
+            }
+        }
+    }
+);
 
 // Benefits information
 const benefits = ref([
@@ -413,7 +507,7 @@ const hospitalStats = ref([
                     >
                         <!-- Form Header -->
                         <div class="text-center mb-8">
-                            <h2 class="text-3xl font-black text-gray-900 mb-3">
+                            <h2 class="text-3xl font-black text-gray-900 mb-1">
                                 Book Your Appointment
                             </h2>
                             <p class="text-gray-600">
@@ -438,7 +532,7 @@ const hospitalStats = ref([
                                 <div class="grid md:grid-cols-2 gap-6">
                                     <div>
                                         <label
-                                            class="block text-sm font-semibold text-gray-700 mb-3"
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
                                         >
                                             First Name *
                                         </label>
@@ -452,7 +546,7 @@ const hospitalStats = ref([
                                     </div>
                                     <div>
                                         <label
-                                            class="block text-sm font-semibold text-gray-700 mb-3"
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
                                         >
                                             Last Name *
                                         </label>
@@ -468,7 +562,7 @@ const hospitalStats = ref([
                                 <div class="grid md:grid-cols-2 gap-6 mt-6">
                                     <div>
                                         <label
-                                            class="block text-sm font-semibold text-gray-700 mb-3"
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
                                         >
                                             Email Address *
                                         </label>
@@ -482,7 +576,7 @@ const hospitalStats = ref([
                                     </div>
                                     <div>
                                         <label
-                                            class="block text-sm font-semibold text-gray-700 mb-3"
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
                                         >
                                             Phone Number *
                                         </label>
@@ -509,48 +603,10 @@ const hospitalStats = ref([
                                     </div>
                                     Appointment Details
                                 </h3>
-                                <div class="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-3"
-                                        >
-                                            Preferred Date *
-                                        </label>
-                                        <input
-                                            v-model="form.preferredDate"
-                                            type="date"
-                                            :min="minDate"
-                                            required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-3"
-                                        >
-                                            Preferred Time *
-                                        </label>
-                                        <select
-                                            v-model="form.preferredTime"
-                                            required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
-                                        >
-                                            <option value="">
-                                                Select Time Slot
-                                            </option>
-                                            <option
-                                                v-for="time in timeSlots"
-                                                :key="time"
-                                                :value="time"
-                                            >
-                                                {{ time }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
+
                                 <div class="mt-6">
                                     <label
-                                        class="block text-sm font-semibold text-gray-700 mb-3"
+                                        class="block text-sm font-semibold text-gray-700 mb-1"
                                     >
                                         Medical Speciality *
                                     </label>
@@ -574,7 +630,73 @@ const hospitalStats = ref([
                                 </div>
                                 <div class="mt-6">
                                     <label
-                                        class="block text-sm font-semibold text-gray-700 mb-3"
+                                        class="block text-sm font-semibold text-gray-700 mb-1"
+                                    >
+                                        Preferred Doctor
+                                    </label>
+                                    <select
+                                        v-model="form.doctorId"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                    >
+                                        <option value="">
+                                            Select Doctor (Optional)
+                                        </option>
+                                        <option
+                                            v-for="doctor in filteredDoctors"
+                                            :key="doctor.id"
+                                            :value="doctor.id"
+                                        >
+                                            {{ doctor.user.name }} -
+                                            {{ doctor.speciality }}
+                                        </option>
+                                    </select>
+                                    <p class="text-sm text-gray-500">
+                                        You can leave this blank and we'll
+                                        assign the best available doctor
+                                    </p>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-6 mt-5">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Preferred Date *
+                                        </label>
+                                        <input
+                                            v-model="form.preferredDate"
+                                            type="date"
+                                            :min="minDate"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Preferred Time *
+                                        </label>
+                                        <select
+                                            v-model="form.preferredTime"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                        >
+                                            <option value="">
+                                                Select Time Slot
+                                            </option>
+                                            <option
+                                                v-for="time in availableTimeSlots"
+                                                :key="time"
+                                                :value="time"
+                                            >
+                                                {{ time }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <label
+                                        class="block text-sm font-semibold text-gray-700 mb-1"
                                     >
                                         Additional Notes
                                     </label>

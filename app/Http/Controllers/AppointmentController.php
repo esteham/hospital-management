@@ -21,6 +21,7 @@ class AppointmentController extends Controller
             'preferred_date' => 'required|date|after:today',
             'preferred_time' => 'required|string',
             'speciality' => 'required|string|max:255',
+            'doctor_id' => 'nullable|exists:doctors,id',
             'additional_notes' => 'nullable|string',
         ]);
 

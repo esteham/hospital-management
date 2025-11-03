@@ -231,7 +231,7 @@
                 <div class="label">Status</div>
                 <div class="value">{{ ucfirst($appointment->status) }}</div>
 
-                @if(!empty($appointment->doctor_name))
+                @if($appointment->doctor_name)
                     <div class="label">Doctor</div>
                     <div class="value">{{ $appointment->doctor_name }}</div>
                 @endif

@@ -32,12 +32,16 @@ Route::get('/', fn() => Inertia::render('Welcome', [
     'phpVersion' => PHP_VERSION,
 ]))->name('welcome');
 
-Route::get('/book-appointment', fn() => Inertia::render('AppointmentBooking', [
-    'canLogin' => Route::has('login'),
-    'canRegister' => Route::has('register'),
-    'laravelVersion' => app()->version(),
-    'phpVersion' => PHP_VERSION,
-]))->name('appointment.booking');
+Route::get('/book-appointment', function () {
+    $doctors = \App\Models\Doctor::with('user', 'schedules')->get();
+    return Inertia::render('AppointmentBooking', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => app()->version(),
+        'phpVersion' => PHP_VERSION,
+        'doctors' => $doctors,
+    ]);
+})->name('appointment.booking');
 
 Route::get('/find-doctor', function () {
     $doctors = \App\Models\Doctor::with('user')->get();

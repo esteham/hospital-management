@@ -67,6 +67,9 @@
             <p><strong>Preferred Date:</strong> {{ \Carbon\Carbon::parse($appointment->preferred_date)->format('F j, Y') }}</p>
             <p><strong>Preferred Time:</strong> {{ $appointment->preferred_time }}</p>
             <p><strong>Speciality:</strong> {{ $appointment->speciality }}</p>
+            @if($appointment->doctor_name)
+            <p><strong>Doctor:</strong> {{ $appointment->doctor_name }}</p>
+            @endif
             @if($appointment->additional_notes)
             <p><strong>Additional Notes:</strong> {{ $appointment->additional_notes }}</p>
             @endif
