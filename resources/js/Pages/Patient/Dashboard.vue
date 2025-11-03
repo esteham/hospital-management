@@ -115,7 +115,7 @@ import { Head, Link } from "@inertiajs/vue3";
                             :href="route('patient.book-appointment')"
                             class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
-                            Book Now
+                            Booked Appointment
                         </Link>
                     </div>
 

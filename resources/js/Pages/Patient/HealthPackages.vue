@@ -77,7 +77,7 @@ onMounted(fetchBookedPackages);
                                 <li
                                     class="inline-flex items-center gap-2 rounded-xl bg-red-300 text-black px-4 py-1 text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
                                 >
-                                    <Link href="/dashboard">Dashboard</Link>
+                                    <Link href="/dashboard">Back</Link>
                                 </li>
                                 <li
                                     aria-hidden="true"
@@ -86,7 +86,7 @@ onMounted(fetchBookedPackages);
                                     /
                                 </li>
                                 <li class="text-slate-700 font-medium">
-                                    Health Packages
+                                    Dashboard
                                 </li>
                             </ol>
                         </nav>

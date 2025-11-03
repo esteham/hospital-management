@@ -69,7 +69,13 @@ Route::middleware(['auth','verified'])->group(function() {
 
     // Patient Routes
     Route::middleware('role:patient')->group(function() {
-        Route::get('/patient/book-appointment', fn() => Inertia::render('Patient/BookAppointment'))->name('patient.book-appointment');
+        Route::get('/patient/book-appointment', function () {
+            $user = auth()->user();
+            $appointments = \App\Models\Appointment::where('email', $user->email)->latest()->get();
+            return Inertia::render('Patient/BookAppointment', [
+                'appointments' => $appointments
+            ]);
+        })->name('patient.book-appointment');
         Route::get('/patient/health-packages', fn() => Inertia::render('Patient/HealthPackages'))->name('patient.health-packages');
         Route::get('/patient/medical-records', fn() => Inertia::render('Patient/MedicalRecords'))->name('patient.medical-records');
         Route::get('/patient/emergency', fn() => Inertia::render('Patient/Emergency'))->name('patient.emergency');
