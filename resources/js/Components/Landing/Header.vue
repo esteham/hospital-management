@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 import Logo from "@/assets/images/logo/logo.png";
-import { Rotate3D } from "lucide-vue-next";
+// import { Rotate3D } from "lucide-vue-next"; // not used; remove if unnecessary
 
 defineProps({
     canLogin: Boolean,
@@ -12,19 +12,28 @@ defineProps({
 
 const isMenuOpen = ref(false);
 const isServicesDropdownOpen = ref(false);
+
+// optional helpers
+const closeAll = () => {
+    isMenuOpen.value = false;
+    isServicesDropdownOpen.value = false;
+};
 </script>
 
 <template>
     <header
         class="bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100/50 sticky top-0 z-50"
-        @click="isMenuOpen = !isMenuOpen"
     >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <!-- Logo and Hospital Name -->
-                <Link :href="route('welcome')">
+                <Link :href="route('welcome')" @click.stop>
                     <div class="flex items-center space-x-4">
-                        <img class="w-12 h-12" :src="Logo" />
+                        <img
+                            class="w-12 h-12"
+                            :src="Logo"
+                            alt="Xet Specialized Hospital Logo"
+                        />
                         <div>
                             <h1
                                 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent tracking-tight"
@@ -41,7 +50,7 @@ const isServicesDropdownOpen = ref(false);
                 </Link>
 
                 <!-- Desktop Navigation Menu -->
-                <nav class="hidden lg:flex space-x-8">
+                <nav class="hidden lg:flex space-x-8" @click.stop>
                     <Link
                         :href="route('welcome')"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
@@ -49,15 +58,21 @@ const isServicesDropdownOpen = ref(false);
                         <span class="relative z-10">Home</span>
                         <span
                             class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
-                        ></span>
+                        />
                     </Link>
+
+                    <!-- Services (desktop: hover, mobile handled below) -->
                     <div
                         class="relative"
+                        @mouseenter="isServicesDropdownOpen = true"
                         @mouseleave="isServicesDropdownOpen = false"
+                        @click.stop
                     >
                         <button
-                            @mouseenter="isServicesDropdownOpen = true"
+                            type="button"
                             class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2 flex items-center space-x-1"
+                            aria-haspopup="menu"
+                            :aria-expanded="isServicesDropdownOpen"
                         >
                             <span class="relative z-10">Services</span>
                             <svg
@@ -74,16 +89,16 @@ const isServicesDropdownOpen = ref(false);
                                     stroke-linejoin="round"
                                     stroke-width="2"
                                     d="M19 9l-7 7-7-7"
-                                ></path>
+                                />
                             </svg>
                             <span
                                 class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
-                            ></span>
+                            />
                         </button>
+
                         <div
                             v-if="isServicesDropdownOpen"
-                            class="absolute top-8 left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-                            @mouseenter="isServicesDropdownOpen = true"
+                            class="absolute top-8 left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                         >
                             <Link
                                 :href="route('appointment.booking')"
@@ -116,7 +131,7 @@ const isServicesDropdownOpen = ref(false);
                         <span class="relative z-10">Patient Stories</span>
                         <span
                             class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
-                        ></span>
+                        />
                     </a>
                     <a
                         href="#blog"
@@ -125,16 +140,19 @@ const isServicesDropdownOpen = ref(false);
                         <span class="relative z-10">Blog</span>
                         <span
                             class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
-                        ></span>
+                        />
                     </a>
                 </nav>
 
-                <!-- Auth Links -->
+                <!-- Right side (auth + hamburger) -->
                 <div class="flex items-center space-x-4">
                     <!-- Mobile Menu Button -->
                     <button
-                        @click="isMenuOpen = !isMenuOpen"
+                        type="button"
+                        @click.stop="isMenuOpen = !isMenuOpen"
                         class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                        aria-label="Toggle menu"
+                        :aria-expanded="isMenuOpen"
                     >
                         <svg
                             class="w-6 h-6 text-gray-600"
@@ -155,7 +173,12 @@ const isServicesDropdownOpen = ref(false);
                         </svg>
                     </button>
 
-                    <div v-if="canLogin" class="hidden lg:flex space-x-4">
+                    <!-- Desktop Auth -->
+                    <div
+                        v-if="canLogin"
+                        class="hidden lg:flex space-x-4"
+                        @click.stop
+                    >
                         <Link
                             v-if="$page.props.auth.user"
                             :href="route('dashboard')"
@@ -186,23 +209,29 @@ const isServicesDropdownOpen = ref(false);
 
             <!-- Mobile Menu -->
             <div
-                v-if="isMenuOpen"
+                v-show="isMenuOpen"
                 class="lg:hidden py-4 border-t border-gray-200/50 animate-fade-in"
+                @click.stop
             >
                 <nav class="flex flex-col space-y-4">
-                    <a
-                        :href="route('/')"
+                    <Link
+                        :href="route('welcome')"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
-                        @click="isMenuOpen = false"
+                        @click="closeAll"
                     >
                         Home
-                    </a>
-                    <div class="relative">
+                    </Link>
+
+                    <!-- Services (mobile: click to toggle) -->
+                    <div class="relative" @click.stop>
                         <button
-                            @click="
+                            type="button"
+                            @click.stop="
                                 isServicesDropdownOpen = !isServicesDropdownOpen
                             "
                             class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-4 px-4 rounded-lg hover:bg-blue-50 flex items-center justify-between w-full"
+                            :aria-expanded="isServicesDropdownOpen"
+                            aria-haspopup="menu"
                         >
                             <span>Services</span>
                             <svg
@@ -219,40 +248,32 @@ const isServicesDropdownOpen = ref(false);
                                     stroke-linejoin="round"
                                     stroke-width="2"
                                     d="M19 9l-7 7-7-7"
-                                ></path>
+                                />
                             </svg>
                         </button>
+
                         <div
-                            v-if="isServicesDropdownOpen"
+                            v-show="isServicesDropdownOpen"
                             class="mt-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
                         >
                             <Link
                                 :href="route('appointment.booking')"
                                 class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                                @click="
-                                    isServicesDropdownOpen = false;
-                                    isMenuOpen = false;
-                                "
+                                @click="closeAll"
                             >
                                 Book Appointment
                             </Link>
                             <Link
                                 href="#health-s"
                                 class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                                @click="
-                                    isServicesDropdownOpen = false;
-                                    isMenuOpen = false;
-                                "
+                                @click="closeAll"
                             >
                                 Health Packages
                             </Link>
                             <Link
                                 :href="route('find.doctor')"
                                 class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                                @click="
-                                    isServicesDropdownOpen = false;
-                                    isMenuOpen = false;
-                                "
+                                @click="closeAll"
                             >
                                 Find Doctor
                             </Link>
@@ -262,14 +283,14 @@ const isServicesDropdownOpen = ref(false);
                     <a
                         href="#patient-stories"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
-                        @click="isMenuOpen = false"
+                        @click="closeAll"
                     >
                         Patient Stories
                     </a>
                     <a
                         href="#blog"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
-                        @click="isMenuOpen = false"
+                        @click="closeAll"
                     >
                         Blog
                     </a>
@@ -278,12 +299,13 @@ const isServicesDropdownOpen = ref(false);
                     <div
                         v-if="canLogin"
                         class="pt-4 border-t border-gray-200/50 space-y-3"
+                        @click.stop
                     >
                         <Link
                             v-if="$page.props.auth.user"
                             :href="route('dashboard')"
                             class="block w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-center py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
-                            @click="isMenuOpen = false"
+                            @click="closeAll"
                         >
                             Dashboard
                         </Link>
@@ -292,7 +314,7 @@ const isServicesDropdownOpen = ref(false);
                             <Link
                                 :href="route('login')"
                                 class="block w-full text-gray-600 hover:text-blue-600 font-semibold text-center py-3 rounded-xl border border-gray-200 hover:border-blue-200 transition-all duration-300"
-                                @click="isMenuOpen = false"
+                                @click="closeAll"
                             >
                                 Sign In
                             </Link>
@@ -301,7 +323,7 @@ const isServicesDropdownOpen = ref(false);
                                 v-if="canRegister"
                                 :href="route('register')"
                                 class="block w-full bg-gradient-to-r from-green-600 to-emerald-500 text-white text-center py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
-                                @click="isMenuOpen = false"
+                                @click="closeAll"
                             >
                                 Get Started
                             </Link>
@@ -315,13 +337,12 @@ const isServicesDropdownOpen = ref(false);
 
 <style scoped>
 .animate-fade-in {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.25s ease-in-out;
 }
-
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-8px);
     }
     to {
         opacity: 1;
