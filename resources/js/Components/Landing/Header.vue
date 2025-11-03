@@ -11,11 +11,13 @@ defineProps({
 });
 
 const isMenuOpen = ref(false);
+const isServicesDropdownOpen = ref(false);
 </script>
 
 <template>
     <header
         class="bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100/50 sticky top-0 z-50"
+        @click="isMenuOpen = !isMenuOpen"
     >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -49,24 +51,64 @@ const isMenuOpen = ref(false);
                             class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
                         ></span>
                     </Link>
-                    <a
-                        href="#services"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
+                    <div
+                        class="relative"
+                        @mouseleave="isServicesDropdownOpen = false"
                     >
-                        <span class="relative z-10">Services</span>
-                        <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
-                        ></span>
-                    </a>
-                    <a
-                        href="#health-s"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
-                    >
-                        <span class="relative z-10">Health's</span>
-                        <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
-                        ></span>
-                    </a>
+                        <button
+                            @mouseenter="isServicesDropdownOpen = true"
+                            class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2 flex items-center space-x-1"
+                        >
+                            <span class="relative z-10">Services</span>
+                            <svg
+                                class="w-4 h-4 transition-transform duration-200"
+                                :class="{
+                                    'rotate-180': isServicesDropdownOpen,
+                                }"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 9l-7 7-7-7"
+                                ></path>
+                            </svg>
+                            <span
+                                class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
+                            ></span>
+                        </button>
+                        <div
+                            v-if="isServicesDropdownOpen"
+                            class="absolute top-8 left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                            @mouseenter="isServicesDropdownOpen = true"
+                        >
+                            <Link
+                                :href="route('appointment.booking')"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 font-semibold hover:text-blue-600 transition-colors duration-200"
+                                @click="isServicesDropdownOpen = false"
+                            >
+                                Book Appointment
+                            </Link>
+                            <Link
+                                href="#health-s"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 font-semibold hover:text-blue-600 transition-colors duration-200"
+                                @click="isServicesDropdownOpen = false"
+                            >
+                                Health Packages
+                            </Link>
+                            <Link
+                                :href="route('find.doctor')"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 font-semibold hover:text-blue-600 transition-colors duration-200"
+                                @click="isServicesDropdownOpen = false"
+                            >
+                                Find Doctor
+                            </Link>
+                        </div>
+                    </div>
+
                     <a
                         href="#patient-stories"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
@@ -85,15 +127,6 @@ const isMenuOpen = ref(false);
                             class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
                         ></span>
                     </a>
-                    <Link
-                        :href="route('appointment.booking')"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
-                    >
-                        <span class="relative z-10">Book Appointment</span>
-                        <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
-                        ></span>
-                    </Link>
                 </nav>
 
                 <!-- Auth Links -->
@@ -164,20 +197,68 @@ const isMenuOpen = ref(false);
                     >
                         Home
                     </a>
-                    <a
-                        href="#services"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
-                        @click="isMenuOpen = false"
-                    >
-                        Services
-                    </a>
-                    <a
-                        href="#health-s"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
-                        @click="isMenuOpen = false"
-                    >
-                        Health's
-                    </a>
+                    <div class="relative">
+                        <button
+                            @click="
+                                isServicesDropdownOpen = !isServicesDropdownOpen
+                            "
+                            class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-4 px-4 rounded-lg hover:bg-blue-50 flex items-center justify-between w-full"
+                        >
+                            <span>Services</span>
+                            <svg
+                                class="w-4 h-4 transition-transform duration-200"
+                                :class="{
+                                    'rotate-180': isServicesDropdownOpen,
+                                }"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 9l-7 7-7-7"
+                                ></path>
+                            </svg>
+                        </button>
+                        <div
+                            v-if="isServicesDropdownOpen"
+                            class="mt-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
+                        >
+                            <Link
+                                :href="route('appointment.booking')"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                                @click="
+                                    isServicesDropdownOpen = false;
+                                    isMenuOpen = false;
+                                "
+                            >
+                                Book Appointment
+                            </Link>
+                            <Link
+                                href="#health-s"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                                @click="
+                                    isServicesDropdownOpen = false;
+                                    isMenuOpen = false;
+                                "
+                            >
+                                Health Packages
+                            </Link>
+                            <Link
+                                :href="route('find.doctor')"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                                @click="
+                                    isServicesDropdownOpen = false;
+                                    isMenuOpen = false;
+                                "
+                            >
+                                Find Doctor
+                            </Link>
+                        </div>
+                    </div>
+
                     <a
                         href="#patient-stories"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
@@ -192,13 +273,6 @@ const isMenuOpen = ref(false);
                     >
                         Blog
                     </a>
-                    <Link
-                        :href="route('appointment.booking')"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
-                        @click="isMenuOpen = false"
-                    >
-                        Book Appointment
-                    </Link>
 
                     <!-- Mobile Auth Links -->
                     <div

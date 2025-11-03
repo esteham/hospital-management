@@ -39,6 +39,15 @@ Route::get('/book-appointment', fn() => Inertia::render('AppointmentBooking', [
     'phpVersion' => PHP_VERSION,
 ]))->name('appointment.booking');
 
+Route::get('/find-doctor', function () {
+    $doctors = \App\Models\Doctor::with('user')->get();
+    return Inertia::render('FindDoctor', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'doctors' => $doctors,
+    ]);
+})->name('find.doctor');
+
 Route::get('/news/{id}', fn($id) => Inertia::render('NewsDetail', ['id' => $id]))->name('news.detail');
 
 Route::get('/news-all', fn() => Inertia::render('NewsAll'))->name('news.all');
