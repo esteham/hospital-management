@@ -29,7 +29,7 @@ class CancellationNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Package Booking Cancellation Notification',
+            subject: 'Package Booking Update Notification',
         );
     }
 
@@ -44,6 +44,7 @@ class CancellationNotificationMail extends Mailable
                 'user' => $this->packageBooking->user,
                 'package' => $this->packageBooking->healthCheck,
                 'cancellationReason' => $this->packageBooking->cancellation_reason,
+                'actionUrl' => route('dashboard'),
             ],
         );
     }

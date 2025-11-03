@@ -78,7 +78,7 @@ const sidebarOpen = ref(false);
             <nav class="flex-1 p-6 space-y-3 overflow-y-auto">
                 <Link
                     :href="route('dashboard')"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
@@ -102,7 +102,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     href="/admin/doctors"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300"
@@ -126,7 +126,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     href="/admin/schedules"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
@@ -150,7 +150,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     href="/admin/health-checks"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
@@ -174,7 +174,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     href="/admin/package-bookings"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-500 transition-colors duration-300"
@@ -198,7 +198,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     href="/admin/appointments"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors duration-300"
@@ -222,7 +222,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     :href="route('admin.news.index')"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center group-hover:bg-rose-500 transition-colors duration-300"
@@ -251,7 +251,7 @@ const sidebarOpen = ref(false);
                     :href="route('logout')"
                     method="post"
                     as="button"
-                    class="flex items-center space-x-4 w-full px-6 py-4 text-red-600 hover:bg-red-50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-red-100"
+                    class="flex items-center space-x-4 w-full px-4 py-2 text-red-600 hover:bg-red-50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-red-100"
                 >
                     <div
                         class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-500 transition-colors duration-300"
@@ -315,7 +315,7 @@ const sidebarOpen = ref(false);
             <nav class="flex-1 p-6 space-y-3 overflow-y-auto">
                 <Link
                     :href="route('dashboard')"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
@@ -339,7 +339,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     href="/doctor/schedules"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
@@ -363,7 +363,7 @@ const sidebarOpen = ref(false);
 
                 <Link
                     href="/doctor/messages"
-                    class="flex items-center space-x-4 px-6 py-4 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
                 >
                     <div
                         class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-500 transition-colors duration-300"
@@ -392,7 +392,7 @@ const sidebarOpen = ref(false);
                     :href="route('logout')"
                     method="post"
                     as="button"
-                    class="flex items-center space-x-4 w-full px-6 py-4 text-red-600 hover:bg-red-50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-red-100"
+                    class="flex items-center space-x-4 w-full px-4 py-2 text-red-600 hover:bg-red-50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-red-100"
                 >
                     <div
                         class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-500 transition-colors duration-300"
