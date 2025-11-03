@@ -135,6 +135,11 @@ const cancelPackageBooking = (id) => {
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                         >
+                                            Receipt
+                                        </th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
                                             Actions
                                         </th>
                                     </tr>
@@ -200,6 +205,22 @@ const cancelPackageBooking = (id) => {
                                             >
                                                 Cancelled
                                             </span>
+                                        </td>
+                                        <td
+                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                                        >
+                                            <a
+                                                :href="
+                                                    route(
+                                                        'admin.package-bookings.download-pdf',
+                                                        packageBooking
+                                                    )
+                                                "
+                                                class="text-blue-600 hover:text-blue-900"
+                                                target="_blank"
+                                            >
+                                                Download
+                                            </a>
                                         </td>
                                         <td
                                             class="px-6 py-4 whitespace-nowrap text-sm font-medium"

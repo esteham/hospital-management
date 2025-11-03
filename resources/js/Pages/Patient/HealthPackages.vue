@@ -257,17 +257,16 @@ onMounted(fetchBookedPackages);
                                 >
                                     View Details
                                 </Link>
-                                <!-- Placeholder for future invoice/receipt -->
-                                <Link
+                                <a
                                     :href="
                                         route(
-                                            'patient.appointments.download-pdf',
-                                            { appointment: booking.id }
+                                            'patient.package-bookings.download-pdf',
+                                            { package_booking: booking.id }
                                         )
                                     "
                                     class="inline-flex items-center gap-1 rounded-lg bg-slate-800 text-white px-2.5 py-1.5 font-medium hover:bg-slate-900"
-                                    >Receipt</Link
-                                >
+                                    >Receipt
+                                </a>
                             </div>
                         </div>
                     </article>

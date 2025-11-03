@@ -6,5 +6,5 @@
             "ziggy-js": ["./vendor/tightenco/ziggy"]
         }
     },
-    "exclude": ["node_modules", "public"]
+    "exclude": ["node_modules", "public", "resources/js/Pages/Patient/Emergency.vue"]
 }

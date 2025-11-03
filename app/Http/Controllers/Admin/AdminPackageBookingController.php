@@ -8,6 +8,7 @@ use App\Models\PackageBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminPackageBookingController extends Controller
 {
@@ -95,5 +96,17 @@ class AdminPackageBookingController extends Controller
         }
 
         return redirect()->route('admin.package-bookings.index')->with('success', 'Package booking deleted successfully.');
+    }
+
+    /**
+     * Download PDF for the package booking receipt.
+     */
+    public function downloadPdf(PackageBooking $packageBooking)
+    {
+        // Ensure admin can download any receipt and load relationships
+        $packageBooking->load(['user', 'healthCheck']);
+        $pdf = Pdf::loadView('pdfs.package_booking_receipt', ['packageBooking' => $packageBooking]);
+
+        return $pdf->download('package_booking_receipt_' . $packageBooking->id . '.pdf');
     }
 }

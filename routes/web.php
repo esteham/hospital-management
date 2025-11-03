@@ -77,6 +77,7 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::get('/patient/profile', fn() => Inertia::render('Patient/Profile'))->name('patient.profile');
         Route::resource('patient/appointments', PtnAppoinmentCtrl::class, ['as' => 'patient']);
         Route::get('patient/appointments/{appointment}/download-pdf', [PtnAppoinmentCtrl::class, 'downloadPdf'])->name('patient.appointments.download-pdf');
+        Route::get('patient/package-bookings/{package_booking}/download-pdf', [PtnAppoinmentCtrl::class, 'downloadPackagePdf'])->name('patient.package-bookings.download-pdf');
     });
 
     //Admin Routes
@@ -99,6 +100,7 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::resource('/admin/health-checks', AdminHealthCheckController::class, ['as' => 'admin']);
 
         Route::resource('/admin/package-bookings', AdminPackageBookingController::class, ['as' => 'admin']);
+        Route::get('/admin/package-bookings/{package_booking}/download-pdf', [AdminPackageBookingController::class, 'downloadPdf'])->name('admin.package-bookings.download-pdf');
 
         Route::get('/admin/appointments', [AppointmentController::class, 'index'])->name('admin.appointments.index');
         Route::get('/admin/appointments/{appointment}', [AppointmentController::class, 'show'])->name('admin.appointments.show');

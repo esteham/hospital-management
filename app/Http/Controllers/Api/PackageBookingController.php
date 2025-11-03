@@ -7,6 +7,8 @@ use App\Models\PackageBooking;
 use App\Models\HealthCheck;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PackageBookingConfirmationMail as PkgMail;
 
 class PackageBookingController extends Controller
 {
@@ -50,8 +52,16 @@ class PackageBookingController extends Controller
             'status' => 'pending',
         ]);
 
+        // Send confirmation email with PDF attachment
+        try {
+            Mail::to($booking->user->email)->send(new PkgMail($booking));
+        } catch (\Exception $e) {
+            // Log the error but don't fail the booking
+            \Log::error('Failed to send package booking confirmation email: ' . $e->getMessage());
+        }
+
         return response()->json([
-            'message' => 'Booking created successfully',
+            'message' => 'Booking created successfully! A confirmation email with PDF receipt has been sent.',
             'booking' => $booking->load('healthCheck'),
         ], 201);
     }

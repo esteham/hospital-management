@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\PackageBooking;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -67,6 +68,22 @@ class AppointmentController extends Controller
         $pdf = Pdf::loadView('pdfs.appointment_details', ['appointment' => $appointment]);
 
         return $pdf->download('appointment_' . $appointment->booking_id . '.pdf');
+    }
+
+    /**
+     * Download PDF for the package booking receipt.
+     */
+    public function downloadPackagePdf(PackageBooking $packageBooking)
+    {
+        // Ensure user can only download their own package booking PDFs
+        if ($packageBooking->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $packageBooking->load(['user', 'healthCheck']);
+        $pdf = Pdf::loadView('pdfs.package_booking_receipt', ['packageBooking' => $packageBooking]);
+
+        return $pdf->download('package_booking_receipt_' . $packageBooking->id . '.pdf');
     }
 
     /**
