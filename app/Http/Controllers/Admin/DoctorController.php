@@ -18,7 +18,7 @@ class DoctorController extends Controller
     // List
     public function index(Request $request)
     {
-        $rows = Doctor::with(['user:id,name,email'])
+        $rows = Doctor::with(['user:id,name,email,photo'])
             ->orderByDesc('id')
             ->get()
             ->map(fn($d) => [
@@ -26,6 +26,7 @@ class DoctorController extends Controller
                 'user_id'     => $d->user_id,
                 'name'        => $d->user?->name,
                 'email'       => $d->user?->email,
+                'photo'       => $d->user?->photo ? asset('storage/' . $d->user->photo) : null,
                 'designation' => $d->designation,
                 'speciality'  => $d->speciality,
                 'phone'       => $d->phone,
@@ -46,16 +47,23 @@ class DoctorController extends Controller
             'speciality'   => ['nullable','string','max:255'],
             'phone'        => ['nullable','string','max:50'],
             'about'        => ['nullable','string','max:2000'],
+            'photo'        => ['nullable','image','max:2048'],
         ]);
 
         $plain = $data['password'];
 
         $row = DB::transaction(function () use ($data) {
+            $photoPath = null;
+            if (isset($data['photo'])) {
+                $photoPath = $data['photo']->store('doctors', 'public');
+            }
+
             $user = User::create([
                 'name'              => $data['name'],
                 'email'             => $data['email'],
                 'password'          => Hash::make($data['password']),
                 'role'              => 'doctor',
+                'photo'             => $photoPath,
                 'email_verified_at' => now(),
             ]);
 
@@ -86,6 +94,7 @@ class DoctorController extends Controller
                 'user_id'     => $user->id,
                 'name'        => $user->name,
                 'email'       => $user->email,
+                'photo'       => $user->photo ? asset('storage/' . $user->photo) : null,
                 'designation' => $doctor->designation,
                 'speciality'  => $doctor->speciality,
                 'phone'       => $doctor->phone,
@@ -107,6 +116,7 @@ class DoctorController extends Controller
             'speciality'   => ['nullable','string','max:255'],
             'phone'        => ['nullable','string','max:50'],
             'about'        => ['nullable','string','max:2000'],
+            'photo'        => ['nullable','image','max:2048'],
         ]);
 
         DB::transaction(function () use ($data, $user, $doctor) {
@@ -114,6 +124,10 @@ class DoctorController extends Controller
             $user->email = $data['email'];
             if (!empty($data['password'])) {
                 $user->password = Hash::make($data['password']);
+            }
+            if (isset($data['photo'])) {
+                $photoPath = $data['photo']->store('doctors', 'public');
+                $user->photo = $photoPath;
             }
             $user->save();
 
@@ -125,7 +139,7 @@ class DoctorController extends Controller
             ]);
         });
 
-        $doctor->load('user:id,name,email');
+        $doctor->load('user:id,name,email,photo');
 
         return response()->json([
             'message' => 'Doctor updated',
@@ -134,6 +148,7 @@ class DoctorController extends Controller
                 'user_id'     => $doctor->user_id,
                 'name'        => $doctor->user?->name,
                 'email'       => $doctor->user?->email,
+                'photo'       => $doctor->user?->photo ? asset('storage/' . $doctor->user->photo) : null,
                 'designation' => $doctor->designation,
                 'speciality'  => $doctor->speciality,
                 'phone'       => $doctor->phone,

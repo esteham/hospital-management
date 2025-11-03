@@ -139,24 +139,31 @@ const specialties = computed(() => {
                     class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300"
                 >
                     <!-- Doctor Avatar -->
-                    <div class="text-center mb-6">
-                        <div
-                            class="w-24 h-24 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                    <div
+                        class="w-full h-48 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-t-3xl flex items-center justify-center mb-6"
+                    >
+                        <img
+                            v-if="doctor.user.photo"
+                            :src="`/storage/${doctor.user.photo}`"
+                            alt="Doctor Photo"
+                            class="w-full h-full object-cover rounded-t-3xl"
+                        />
+                        <svg
+                            v-else
+                            class="w-16 h-16 text-blue-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
                         >
-                            <svg
-                                class="w-12 h-12 text-blue-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                ></path>
-                            </svg>
-                        </div>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div class="text-center mb-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-1">
                             {{ doctor.user.name }}
                         </h3>

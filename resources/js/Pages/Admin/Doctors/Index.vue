@@ -41,6 +41,7 @@ const form = reactive({
     speciality: "",
     phone: "",
     about: "",
+    photo: null,
 });
 const editForm = reactive({
     name: "",
@@ -50,11 +51,33 @@ const editForm = reactive({
     speciality: "",
     phone: "",
     about: "",
+    photo: null,
 });
 const errors = ref({});
 const hasErrors = computed(
     () => !!errors.value && Object.keys(errors.value).length > 0
 );
+
+//Form data helper
+function toFormData(obj) {
+    const fd = new FormData();
+    for (const [key, value] of Object.entries(obj ?? {})) {
+        if (value === undefined || value === null || value === "") continue;
+        if (value instanceof File || value instanceof Blob) {
+            fd.append(key, value);
+        } else if (Array.isArray(value)) {
+            value.forEach((v, i) => fd.append(`${key}[${i}]`, v));
+        } else if (typeof value === "object") {
+            // shallow-flatten objects: key[nested]=...
+            for (const [k2, v2] of Object.entries(value)) {
+                fd.append(`${key}[${k2}]`, v2 ?? "");
+            }
+        } else {
+            fd.append(key, value);
+        }
+    }
+    return fd;
+}
 
 /** UI helpers */
 const showPassword = ref(false);
@@ -132,16 +155,39 @@ function resetForm() {
         speciality: "",
         phone: "",
         about: "",
+        photo: null,
     });
     errors.value = {};
 }
 
 async function submit() {
+    if (form.photo && !form.photo.type?.startsWith("image/")) {
+        errors.value = {
+            ...errors.value,
+            photo: ["Please upload a valid image file."],
+        };
+        return scrollToFirstError();
+    }
+
     errors.value = validate(form);
     if (Object.keys(errors.value).length) return scrollToFirstError();
     submitting.value = true;
     try {
-        const { data } = await api.post("/admin/doctors", { ...form });
+        const payload = {
+            name: form.name,
+            email: form.email,
+            password: form.password,
+            designation: form.designation,
+            speciality: form.speciality,
+            phone: form.phone,
+            about: form.about,
+            photo: form.photo || null,
+        };
+
+        const fd = toFormData(payload);
+
+        const { data } = await api.post("/admin/doctors", fd);
+
         items.value.unshift(data.doctor ?? data);
         resetForm();
         showAdd.value = false;
@@ -187,20 +233,49 @@ function openEdit(row) {
         speciality: row.speciality ?? "",
         phone: row.phone ?? "",
         about: row.about ?? "",
+        photo: null,
     });
     showEdit.value = true;
 }
 
 async function saveEdit() {
     if (!editing.value) return;
+
+    if (editForm.photo && !editForm.photo.type?.startsWith("image/")) {
+        errors.value = {
+            ...errors.value,
+            photo: ["Please upload a valid image file."],
+        };
+        return scrollToFirstError();
+    }
+
     errors.value = validate(editForm, true);
     if (Object.keys(errors.value).length) return scrollToFirstError();
+
     try {
-        const { data } = await api.post(`/admin/doctors/${editing.value.id}`, {
-            ...editForm,
-        });
+        const payload = {
+            name: editForm.name,
+            email: editForm.email,
+            password: editForm.password || "",
+            designation: editForm.designation,
+            speciality: editForm.speciality,
+            phone: editForm.phone,
+            about: editForm.about,
+        };
+        const fd = toFormData(payload);
+
+        if (editForm.photo) fd.append("photo", editForm.photo);
+
+        fd.append("_method", "PUT");
+
+        const { data } = await api.post(
+            `/admin/doctors/${editing.value.id}`,
+            fd
+        );
+
         const idx = items.value.findIndex((x) => x.id === editing.value.id);
         if (idx > -1) items.value[idx] = data.doctor ?? data;
+
         showEdit.value = false;
         toast({ type: "success", title: "Saved", message: "Doctor updated." });
     } catch (e) {
@@ -458,14 +533,24 @@ onMounted(fetchList);
                             class="hover:bg-gray-50"
                         >
                             <td class="px-4 py-3">
-                                <div class="font-medium text-gray-900">
-                                    {{ d.name }}
-                                </div>
-                                <div
-                                    v-if="d.designation"
-                                    class="text-xs text-gray-500 mt-1"
-                                >
-                                    {{ d.designation }}
+                                <div class="flex items-center gap-3">
+                                    <img
+                                        v-if="d.photo"
+                                        :src="d.photo"
+                                        alt="Doctor photo"
+                                        class="w-10 h-10 rounded-full object-cover"
+                                    />
+                                    <div>
+                                        <div class="font-medium text-gray-900">
+                                            {{ d.name }}
+                                        </div>
+                                        <div
+                                            v-if="d.designation"
+                                            class="text-xs text-gray-500 mt-1"
+                                        >
+                                            {{ d.designation }}
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-4 py-3 text-gray-700">
@@ -730,6 +815,21 @@ onMounted(fetchList);
                                                 placeholder="Brief professional background"
                                             ></textarea>
                                         </div>
+                                        <div class="sm:col-span-2">
+                                            <label
+                                                class="block text-sm font-medium text-gray-700"
+                                                >Photo</label
+                                            >
+                                            <input
+                                                type="file"
+                                                @change="
+                                                    form.photo =
+                                                        $event.target.files[0]
+                                                "
+                                                accept="image/*"
+                                                class="mt-1 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            />
+                                        </div>
                                     </div>
                                     <div
                                         v-if="hasErrors"
@@ -906,6 +1006,21 @@ onMounted(fetchList);
                                                 rows="3"
                                                 class="mt-1 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                             ></textarea>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label
+                                                class="block text-sm font-medium text-gray-700"
+                                                >Photo</label
+                                            >
+                                            <input
+                                                type="file"
+                                                @change="
+                                                    editForm.photo =
+                                                        $event.target.files[0]
+                                                "
+                                                accept="image/*"
+                                                class="mt-1 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            />
                                         </div>
                                     </div>
                                     <div
