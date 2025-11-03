@@ -249,21 +249,6 @@
         <strong>Important:</strong> Please carry this confirmation (printed or digital) and a valid ID. Reach the reception 15 minutes prior to your slot for registration.
     </div>
 
-    <!-- Contact Card -->
-    <div class="contact-card">
-        <div class="section-title" style="border:0;margin:0 0 8px 0;">Contact Information</div>
-        <div class="grid" style="grid-template-columns: 95px 1fr;">
-            <div class="label">Email</div>
-            <div class="value">appointments@xethospital.com</div>
-            <div class="label">Hotline</div>
-            <div class="value">999</div>
-            <div class="label">Website</div>
-            <div class="value">xethospital.com</div>
-            <div class="label">Location</div>
-            <div class="value">Xet Specialized Hospital, Dhaka</div>
-        </div>
-    </div>
-
     <!-- Footer -->
     <div class="footer">
         <div>Document generated on {{ now()->format('F j, Y \a\t g:i A') }} <span class="nowrap">(Booking: {{ $appointment->booking_id }})</span></div>
