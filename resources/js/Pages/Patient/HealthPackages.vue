@@ -61,72 +61,52 @@ onMounted(fetchBookedPackages);
     <Head title="Health Packages" />
 
     <AuthenticatedLayout>
-        <!-- Page header -->
-        <template #header>
-            <div class="flex items-start sm:items-center justify-between gap-3">
-                <div>
-                    <nav
-                        class="text-xs text-slate-500 mb-1"
-                        aria-label="Breadcrumb"
-                    >
-                        <ol class="flex items-center gap-1">
-                            <li>
-                                <Link href="/" class="hover:text-slate-700"
-                                    >Dashboard</Link
-                                >
-                            </li>
-                            <li aria-hidden="true" class="mx-1 text-slate-400">
-                                /
-                            </li>
-                            <li class="text-slate-700 font-medium">
-                                Health Packages
-                            </li>
-                        </ol>
-                    </nav>
-                    <h2 class="font-bold text-2xl text-slate-800 leading-tight">
-                        Health Packages
-                    </h2>
-                    <p class="text-slate-600 mt-1">
-                        Explore preventive care and manage your booked packages.
-                    </p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <Link
-                        href="/book-appointment"
-                        class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2.5 text-sm font-medium shadow-sm hover:bg-blue-700 transition-colors"
-                    >
-                        <svg
-                            class="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                        </svg>
-                        Book Appointment
-                    </Link>
-                </div>
-            </div>
-        </template>
-
         <!-- Content -->
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <!-- Top info / hint -->
                 <div
-                    class="rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm"
+                    class="flex items-start sm:items-center justify-between gap-3"
                 >
-                    <div class="flex items-start gap-3">
-                        <div
-                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-blue-600 text-white grid place-items-center shadow"
+                    <div>
+                        <nav
+                            class="text-xs text-slate-500 mb-1"
+                            aria-label="Breadcrumb"
+                        >
+                            <ol class="flex items-center gap-1">
+                                <li
+                                    class="inline-flex items-center gap-2 rounded-xl bg-red-300 text-black px-4 py-1 text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
+                                >
+                                    <Link href="/dashboard">Dashboard</Link>
+                                </li>
+                                <li
+                                    aria-hidden="true"
+                                    class="mx-1 text-slate-400"
+                                >
+                                    /
+                                </li>
+                                <li class="text-slate-700 font-medium">
+                                    Health Packages
+                                </li>
+                            </ol>
+                        </nav>
+                        <h2
+                            class="font-bold text-2xl text-slate-800 leading-tight"
+                        >
+                            Health Packages
+                        </h2>
+                        <p class="text-slate-600 mt-1">
+                            Explore preventive care and manage your booked
+                            packages.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <Link
+                            href="/#health-s"
+                            class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2.5 text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
                         >
                             <svg
-                                class="w-5 h-5"
+                                class="w-4 h-4"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -135,19 +115,11 @@ onMounted(fetchBookedPackages);
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     stroke-width="2"
-                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                                 />
                             </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-slate-800 font-semibold">
-                                Your Booked Health Packages
-                            </h3>
-                            <p class="text-slate-600 text-sm mt-1">
-                                Below is a list of packages you’ve booked. Click
-                                a card to view details.
-                            </p>
-                        </div>
+                            Book Package
+                        </Link>
                     </div>
                 </div>
 

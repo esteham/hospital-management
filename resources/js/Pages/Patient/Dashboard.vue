@@ -228,12 +228,12 @@ import { Head, Link } from "@inertiajs/vue3";
                                 </p>
                             </div>
                         </div>
-                        <Link
-                            :href="route('patient.emergency')"
+                        <a
+                            href="tel:999"
                             class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             Call Now
-                        </Link>
+                        </a>
                     </div>
 
                     <!-- Health Tips -->
