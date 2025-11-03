@@ -69,6 +69,12 @@ Route::middleware(['auth','verified'])->group(function() {
 
     // Patient Routes
     Route::middleware('role:patient')->group(function() {
+        Route::get('/patient/book-appointment', fn() => Inertia::render('Patient/BookAppointment'))->name('patient.book-appointment');
+        Route::get('/patient/health-packages', fn() => Inertia::render('Patient/HealthPackages'))->name('patient.health-packages');
+        Route::get('/patient/medical-records', fn() => Inertia::render('Patient/MedicalRecords'))->name('patient.medical-records');
+        Route::get('/patient/emergency', fn() => Inertia::render('Patient/Emergency'))->name('patient.emergency');
+        Route::get('/patient/health-tips', fn() => Inertia::render('Patient/HealthTips'))->name('patient.health-tips');
+        Route::get('/patient/profile', fn() => Inertia::render('Patient/Profile'))->name('patient.profile');
         Route::resource('patient/appointments', PtnAppoinmentCtrl::class, ['as' => 'patient']);
         Route::get('patient/appointments/{appointment}/download-pdf', [PtnAppoinmentCtrl::class, 'downloadPdf'])->name('patient.appointments.download-pdf');
     });

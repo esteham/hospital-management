@@ -1,25 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
-import api from "@/lib/api";
-
-const bookedPackages = ref([]);
-
-const fetchBookedPackages = async () => {
-    try {
-        const response = await api.get("/api/bookings");
-        console.log("API Response:", response.data);
-        const data = response.data.data || response.data;
-        bookedPackages.value = Array.isArray(data) ? data : [];
-    } catch (error) {
-        console.error("Error fetching booked packages:", error);
-    }
-};
-
-onMounted(() => {
-    fetchBookedPackages();
-});
+import { Head, Link } from "@inertiajs/vue3";
 </script>
 
 <template>
@@ -130,12 +111,12 @@ onMounted(() => {
                                 </p>
                             </div>
                         </div>
-                        <a
-                            href="/book-appointment"
+                        <Link
+                            :href="route('patient.book-appointment')"
                             class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             Book Now
-                        </a>
+                        </Link>
                     </div>
 
                     <!-- Health Packages -->
@@ -169,12 +150,12 @@ onMounted(() => {
                                 </p>
                             </div>
                         </div>
-                        <a
-                            href="#health-packages"
+                        <Link
+                            :href="route('patient.health-packages')"
                             class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             View Packages
-                        </a>
+                        </Link>
                     </div>
 
                     <!-- Medical Records -->
@@ -208,11 +189,12 @@ onMounted(() => {
                                 </p>
                             </div>
                         </div>
-                        <button
-                            class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300"
+                        <Link
+                            :href="route('patient.medical-records')"
+                            class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             View Records
-                        </button>
+                        </Link>
                     </div>
 
                     <!-- Emergency Contact -->
@@ -246,11 +228,12 @@ onMounted(() => {
                                 </p>
                             </div>
                         </div>
-                        <button
-                            class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300"
+                        <Link
+                            :href="route('patient.emergency')"
+                            class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             Call Now
-                        </button>
+                        </Link>
                     </div>
 
                     <!-- Health Tips -->
@@ -284,11 +267,12 @@ onMounted(() => {
                                 </p>
                             </div>
                         </div>
-                        <button
-                            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300"
+                        <Link
+                            :href="route('patient.health-tips')"
+                            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             Read More
-                        </button>
+                        </Link>
                     </div>
 
                     <!-- Profile Settings -->
@@ -322,121 +306,12 @@ onMounted(() => {
                                 </p>
                             </div>
                         </div>
-                        <button
-                            class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300"
+                        <Link
+                            :href="route('patient.profile')"
+                            class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
                         >
                             Edit Profile
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Health Packages Section -->
-                <div
-                    id="health-packages"
-                    class="bg-white rounded-2xl p-6 shadow-sm border border-white/20"
-                >
-                    <h4 class="font-bold text-xl text-slate-800 mb-4">
-                        Health Packages
-                    </h4>
-                    <p class="text-slate-600 mb-4">
-                        Your booked health check packages will appear here.
-                    </p>
-                    <!-- Display booked packages -->
-                    <div v-if="bookedPackages.length > 0" class="space-y-4">
-                        <div
-                            v-for="booking in bookedPackages"
-                            :key="booking.id"
-                            class="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-4 border border-green-200"
-                        >
-                            <div class="flex items-center justify-between mb-2">
-                                <h5 class="font-semibold text-slate-800">
-                                    {{
-                                        booking.health_check?.name ||
-                                        `Package #${booking.health_check_id}`
-                                    }}
-                                </h5>
-                                <span
-                                    :class="[
-                                        'px-3 py-1 rounded-full text-xs font-medium',
-                                        booking.status === 'confirmed'
-                                            ? 'bg-green-100 text-green-800'
-                                            : booking.status === 'pending'
-                                            ? 'bg-yellow-100 text-yellow-800'
-                                            : 'bg-red-100 text-red-800',
-                                    ]"
-                                >
-                                    {{
-                                        booking.status.charAt(0).toUpperCase() +
-                                        booking.status.slice(1)
-                                    }}
-                                </span>
-                            </div>
-                            <div
-                                class="grid grid-cols-2 gap-4 text-sm text-slate-600"
-                            >
-                                <div>
-                                    <span class="font-medium">Price:</span>
-                                    {{
-                                        booking.health_check?.price ??
-                                        booking.total_amount
-                                    }}
-                                </div>
-                                <div>
-                                    <span class="font-medium">Payment:</span>
-                                    {{ booking.payment_type }}
-                                </div>
-                                <div>
-                                    <span class="font-medium">Paid:</span> ৳{{
-                                        Number(
-                                            booking.amount_paid
-                                        ).toLocaleString()
-                                    }}
-                                </div>
-                                <div>
-                                    <span class="font-medium">Total:</span> ৳{{
-                                        Number(
-                                            booking.total_amount
-                                        ).toLocaleString()
-                                    }}
-                                </div>
-                            </div>
-                            <div
-                                v-if="booking.cancellation_reason"
-                                class="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg"
-                            >
-                                <h6 class="font-medium text-red-800 text-sm">
-                                    Cancellation Reason:
-                                </h6>
-                                <p class="text-red-700 text-sm">
-                                    {{ booking.cancellation_reason }}
-                                </p>
-                            </div>
-                            <div class="mt-3 text-xs text-slate-500">
-                                Booked on
-                                {{
-                                    new Date(
-                                        booking.created_at
-                                    ).toLocaleDateString()
-                                }}
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Placeholder for no booked packages -->
-                    <div v-else class="text-center py-8">
-                        <svg
-                            class="w-16 h-16 text-slate-300 mx-auto mb-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                            />
-                        </svg>
-                        <p class="text-slate-500">No packages booked yet</p>
+                        </Link>
                     </div>
                 </div>
 
