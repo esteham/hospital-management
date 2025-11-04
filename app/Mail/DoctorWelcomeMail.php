@@ -24,7 +24,7 @@ class DoctorWelcomeMail extends Mailable
    
     public function build()
     {
-        return $this->subject('Your Clinic Doctor Account')->markdown('emails.doctor_welcome', [
+        return $this->subject('Your Xet Hopital Doctor Account')->markdown('emails.doctor_welcome', [
 
             'name' => $this->name,
             'email' => $this->email,
