@@ -27,11 +27,11 @@ A modern **Hospital Management System** built with **Laravel** + **Vue 3** using
 
 ## 🧰 Tech Stack
 
--   **Backend**: Laravel 11 (PHP 8.2+), Laravel Sanctum/Passport (if API auth)
+-   **Backend**: Laravel 12 (PHP 8.2+), Laravel Sanctum
 -   **Frontend**: Vue 3, @vitejs/plugin-vue, Axios
 -   **Build**: Vite 7, laravel-vite-plugin 2.x
 -   **UI**: Tailwind CSS 3.x, @tailwindcss/forms
--   **DB**: MySQL/MariaDB (or PostgreSQL)
+-   **DB**: MySQL
 
 > If you are using Inertia.js: `@inertiajs/vue3` is supported.
 
@@ -40,7 +40,7 @@ A modern **Hospital Management System** built with **Laravel** + **Vue 3** using
 ## ⚙️ Prerequisites
 
 -   **PHP** 8.2+ and **Composer**
--   **Node.js** 18+ and **npm**
+-   **Node.js** 20+ and **npm**
 -   **MySQL** 8+ (or MariaDB/PostgreSQL)
 -   **Git**
 
