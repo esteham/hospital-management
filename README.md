@@ -155,7 +155,7 @@ This project is open-source under the **MIT License**.
 
 ## 📧 Contact
 
-Maintainer: **Esteham**
+Maintainer: **Esteham H. Zihad Ansari**
 Repository: `https://github.com/esteham/hospital-management`
 
 ```
