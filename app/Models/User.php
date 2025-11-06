@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Models\Doctor;
+use App\Models\Staff;
+
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -19,8 +23,12 @@ class User extends Authenticatable implements MustVerifyEmail
      */
      protected $fillable = ['name','email','password','role'];
 
-     public function doctor(){ 
-        return $this->hasOne(\App\Models\Doctor::class); 
+     public function doctor(){
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function staff(){
+        return $this->hasOne(Staff::class);
     }
 
 

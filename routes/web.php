@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\AdminScheduleController;
 use App\Http\Controllers\Admin\DoctorController as AdminDoctorCtrl;
+use App\Http\Controllers\Admin\StaffController as AdminStaffCtrl;
 use App\Http\Controllers\Doctor\ScheduleController as DocScheduleCtrl;
 use App\Http\Controllers\Admin\AdminHealthCheckController;
 use App\Http\Controllers\Admin\AdminPackageBookingController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
 use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
 use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
+
+use App\Models\Appointment;
 
 
 /*
@@ -84,7 +87,7 @@ Route::middleware(['auth','verified'])->group(function() {
     Route::middleware('role:patient')->group(function() {
         Route::get('/patient/book-appointment', function () {
             $user = auth()->user();
-            $appointments = \App\Models\Appointment::where('email', $user->email)->latest()->get();
+            $appointments = Appointment::where('email', $user->email)->latest()->get();
             return Inertia::render('Patient/BookAppointment', [
                 'appointments' => $appointments
             ]);
@@ -111,6 +114,16 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::put('/admin/doctors/{doctor}',[AdminDoctorCtrl::class, 'update'])->name('admin.doctors.update');
 
         Route::delete('/admin/doctors/{doctor}',[AdminDoctorCtrl::class, 'destroy'])->name('admin.doctors.destroy');
+
+        Route::get('/admin/staff', fn() => Inertia::render('Admin/Staff/Index'))->name('admin.staff.index');
+
+        Route::get('/admin/staff/list', [AdminStaffCtrl::class, 'index'])->name('admin.staff.list');
+
+        Route::post('/admin/staff',[AdminStaffCtrl::class, 'store'])->name('admin.staff.store');
+
+        Route::put('/admin/staff/{staff}',[AdminStaffCtrl::class, 'update'])->name('admin.staff.update');
+
+        Route::delete('/admin/staff/{staff}',[AdminStaffCtrl::class, 'destroy'])->name('admin.staff.destroy');
 
         Route::get('/admin/schedules', fn() => Inertia::render('Admin/Schedules/Index'))->name('admin.schedules.index');
         Route::get('/admin/schedules/list', [AdminScheduleController::class,'index'])->name('admin.schedules.list');
