@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 use App\Mail\AppointmentConfirmationMail;
+use App\Mail\DoctorAppointmentNotificationMail;
 use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
@@ -32,12 +33,23 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::create($validated);
 
-        // Send confirmation email with PDF attachment
+        // Send confirmation email with PDF attachment to patient
         try {
             Mail::to($appointment->email)->send(new AppointmentConfirmationMail($appointment));
         } catch (\Exception $e) {
             // Log the error but don't fail the booking
-            \Log::error('Failed to send appointment confirmation email: ' . $e->getMessage());
+            ('Failed to send appointment confirmation email: ' . $e->getMessage());
+        }
+
+        // Send notification email to doctor if doctor is selected
+        if ($appointment->doctor_id) {
+            try {
+                $doctorEmail = $appointment->doctor->user->email;
+                Mail::to($doctorEmail)->send(new DoctorAppointmentNotificationMail($appointment));
+            } catch (\Exception $e) {
+                // Log the error but don't fail the booking
+                ('Failed to send doctor notification email: ' . $e->getMessage());
+            }
         }
 
         return response()->json([

@@ -11,10 +11,12 @@ use App\Http\Controllers\Admin\AdminHealthCheckController;
 use App\Http\Controllers\Admin\AdminPackageBookingController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
+use App\Http\Controllers\Doctor\AppointmentController as DocAppointmentCtrl;
 use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
 use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
 
 use App\Models\Appointment;
+use App\Models\Doctor;
 
 
 /*
@@ -36,7 +38,7 @@ Route::get('/', fn() => Inertia::render('Welcome', [
 ]))->name('welcome');
 
 Route::get('/book-appointment', function () {
-    $doctors = \App\Models\Doctor::with('user', 'schedules')->get();
+    $doctors = Doctor::with('user', 'schedules')->get();
     return Inertia::render('AppointmentBooking', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -47,7 +49,7 @@ Route::get('/book-appointment', function () {
 })->name('appointment.booking');
 
 Route::get('/find-doctor', function () {
-    $doctors = \App\Models\Doctor::with('user')->get();
+    $doctors = Doctor::with('user')->get();
     return Inertia::render('FindDoctor', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -157,6 +159,10 @@ Route::middleware(['auth','verified'])->group(function() {
 
         Route::get('/doctor/messages', fn() => Inertia::render('Doctor/Messages'))->name('doctor.messages');
         Route::get('/doctor/messages/api', [DocMessageCtrl::class, 'index'])->name('doctor.messages.index');
+
+        Route::get('/doctor/appointments', [DocAppointmentCtrl::class, 'index'])->name('doctor.appointments.index');
+        Route::get('/doctor/appointments/{appointment}', [DocAppointmentCtrl::class, 'show'])->name('doctor.appointments.show');
+        Route::put('/doctor/appointments/{appointment}', [DocAppointmentCtrl::class, 'update'])->name('doctor.appointments.update');
     });
 
 });

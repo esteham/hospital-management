@@ -25,10 +25,20 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
                             <div class="bg-blue-50 p-4 rounded-lg">
                                 <h4 class="font-semibold">My Schedule</h4>
                                 <p>View and manage your availability.</p>
+                                <a
+                                    href="/doctor/schedules"
+                                    class="text-blue-600 hover:underline"
+                                    >Manage Schedule</a
+                                >
                             </div>
                             <div class="bg-green-50 p-4 rounded-lg">
                                 <h4 class="font-semibold">Appointments</h4>
                                 <p>See upcoming patient appointments.</p>
+                                <a
+                                    href="/doctor/appointments"
+                                    class="text-green-600 hover:underline"
+                                    >View Appointments</a
+                                >
                             </div>
                         </div>
                     </div>
