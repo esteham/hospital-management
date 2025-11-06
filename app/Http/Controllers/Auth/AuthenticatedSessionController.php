@@ -28,13 +28,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $request->session()->regenerateToken();
+
+        return Inertia::location(route('dashboard'));
     }
 
     /**
@@ -45,8 +47,10 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
+        
+        // Regenerate the session ID to prevent session fixation
+        $request->session()->regenerate();
 
         return redirect('/');
     }

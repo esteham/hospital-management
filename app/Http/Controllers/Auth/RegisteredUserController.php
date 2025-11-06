@@ -47,6 +47,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        // Regenerate the session and CSRF token after registration
+        $request->session()->regenerate();
+        $request->session()->regenerateToken();
+
         return redirect(RouteServiceProvider::HOME);
     }
 }
