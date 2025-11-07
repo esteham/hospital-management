@@ -47,6 +47,8 @@ const form = ref({
     lastName: "",
     email: "",
     phone: "",
+    gender: "",
+    age: "",
     preferredDate: "",
     preferredTime: "",
     speciality: "",
@@ -70,6 +72,8 @@ const submitForm = async () => {
         formData.append("last_name", form.value.lastName);
         formData.append("email", form.value.email);
         formData.append("phone", form.value.phone);
+        formData.append("gender", form.value.gender);
+        formData.append("age", form.value.age);
         formData.append("preferred_date", form.value.preferredDate);
         formData.append("preferred_time", form.value.preferredTime);
         formData.append("speciality", form.value.speciality);
@@ -97,6 +101,8 @@ const submitForm = async () => {
                 lastName: "",
                 email: "",
                 phone: "",
+                gender: "",
+                age: "",
                 preferredDate: "",
                 preferredTime: "",
                 speciality: "",
@@ -586,6 +592,45 @@ const hospitalStats = ref([
                                             required
                                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
                                             placeholder="+88 (013) 1235-4567"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Gender *
+                                        </label>
+                                        <select
+                                            v-model="form.gender"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                        >
+                                            <option value="">
+                                                Select Gender
+                                            </option>
+                                            <option value="male">Male</option>
+                                            <option value="female">
+                                                Female
+                                            </option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Age *
+                                        </label>
+                                        <input
+                                            v-model="form.age"
+                                            type="number"
+                                            required
+                                            min="1"
+                                            max="120"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            placeholder="Enter your age"
                                         />
                                     </div>
                                 </div>

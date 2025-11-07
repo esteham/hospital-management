@@ -6,16 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Appointment — {{ $appointment->booking_id }}</title>
     <style>
-        /* ----------------------
-           PDF / Print Defaults
-        ----------------------- */
         @page { size: A4; margin: 22mm 18mm; }
         html, body { height: 100%; }
         body {
             font-family: 'DejaVu Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            color: #0f172a; /* slate-900 */
+            color: #0f172a;
             line-height: 1.55;
             font-size: 12.5px;
             margin: 0;
@@ -24,7 +19,6 @@
         * { box-sizing: border-box; }
         .container { position: relative; z-index: 0; }
 
-        /* Watermark (Logo) */
         .watermark {
             position: fixed;
             top: 50%; left: 50%;
@@ -38,42 +32,29 @@
         }
         .watermark img { max-width: 100%; height: auto; }
 
-        /* Header / Footer fixed for one-page layout */
         .header {
-            display: flex; align-items: flex-start; justify-content: space-between;
-            border-bottom: 1px solid #e2e8f0; /* slate-200 */
+            border-bottom: 1px solid #e2e8f0;
             padding-bottom: 10px; margin-bottom: 16px;
             position: relative; z-index: 2;
+            width: 100%;
         }
-        .brand { display: flex; align-items: center; gap: 10px; }
-        .brand-logo {
-            width: 40px; height: 40px; object-fit: contain;
-        }
-        .brand-title { font-weight: 800; letter-spacing: .2px; color: #1d4ed8; /* blue-700 */ }
+        .brand-logo { width: 40px; height: 40px; object-fit: contain; }
+        .brand-title { font-weight: 800; letter-spacing: .2px; color: #1d4ed8; }
         .brand-subtitle { color: #64748b; font-size: 10.5px; }
 
         .meta {
             text-align: right;
             font-size: 11px;
-            color: #334155; /* slate-700 */
+            color: #334155;
         }
 
-        /* QR Code in top right */
         .qr-container {
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 14px;
-            height: 14px;
+            top: 0; right: 0;
+            width: 14px; height: 14px;
             overflow: hidden;
         }
-        .qr-container .qr-code {
-            width: 14px;
-            height: 14px;
-            object-fit: contain;
-        }
 
-        /* Badge */
         .badge {
             display: inline-block;
             padding: 3px 8px;
@@ -82,30 +63,22 @@
             border: 1px solid currentColor;
             letter-spacing: .3px;
         }
-        .badge--confirmed { color: #16a34a; }  /* green-600 */
-        .badge--pending   { color: #d97706; }  /* amber-600 */
-        .badge--cancelled { color: #dc2626; }  /* red-600 */
+        .badge--confirmed { color: #16a34a; }
+        .badge--pending { color: #d97706; }
+        .badge--cancelled { color: #dc2626; }
 
-        /* Booking strip */
         .booking {
-            background: #f8fafc; /* slate-50 */
-            border: 1px solid #e2e8f0; /* slate-200 */
-            border-radius: 10px; padding: 10px 12px; margin: 10px 0 18px;
-            display: flex; align-items: center; justify-content: space-between;
-            gap: 12px;
-        }
-        .booking .id { font-weight: 800; color: #1d4ed8; letter-spacing:.3px; }
-        .booking .small { color: #64748b; font-size: 11px; }
-
-        /* Two-column layout for patient and appointment info */
-        .info-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin: 10px 0 18px;
+            width: 100%;
         }
 
-        /* Sections */
+        .small { color: #64748b; font-size: 11px; }
+        .id { font-weight: 800; color: #1d4ed8; letter-spacing:.3px; }
+
         .section { margin-bottom: 16px; position: relative; z-index: 1; }
         .section-title {
             font-weight: 800; font-size: 12.5px; color: #1d4ed8;
@@ -113,36 +86,28 @@
             letter-spacing: .2px;
         }
 
-        /* Grid details */
-        .grid { display: grid; grid-template-columns: 135px 1fr; row-gap: 7px; column-gap: 14px; }
-        .label { font-weight: 700; color: #0f172a; }
+        .info-table { width: 100%; border-collapse: collapse; }
+        .info-table td { padding: 4px 6px; vertical-align: top; }
+        .label { font-weight: 700; color: #0f172a; width: 135px; }
         .value { color: #334155; }
-        .muted { color: #64748b; }
 
-        /* Info note */
         .note {
-            background: #fffbeb; /* amber-50 */
-            border: 1px solid #fde68a; /* amber-300 */
-            padding: 10px 12px; border-radius: 10px; font-size: 11.5px; color: #713f12; /* amber-900 */
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 10px 12px; border-radius: 10px;
+            font-size: 11.5px; color: #713f12;
             margin: 14px 0;
         }
 
-        /* Contact row */
-        .contact-card {
-            border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;
-            background: #ffffffcc; /* slight white for over watermark */
-        }
-
-        /* Footer */
         .footer {
             margin-top: 16px; padding-top: 10px;
             border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 10.5px;
             position: relative; z-index: 2;
         }
+
         .nowrap { white-space: nowrap; }
 
-        /* Keep to one page: prevent awkward breaks */
-        .section, .booking, .info-columns { page-break-inside: avoid; }
+        table { page-break-inside: avoid; }
     </style>
 </head>
 <body>
@@ -161,88 +126,91 @@
 
 <div class="container">
     <!-- Header -->
-    <div class="header">
-        <div class="brand">
-            <img class="brand-logo" src="{{ $logoPath ?? public_path('images/logo.png') }}" alt="Xet Logo" />
-            <div>
-                <div class="brand-title">Xet Specialized Hospital</div>
-                <div class="brand-subtitle">Appointment Confirmation • Official Document</div>
+    <table class="header">
+        <tr>
+            <td style="width:70%; vertical-align:top;">
+                <table>
+                    <tr>
+                        <td style="width:45px;">
+                            <img class="brand-logo" src="{{ $logoPath ?? public_path('images/logo.png') }}" alt="Xet Logo" />
+                        </td>
+                        <td>
+                            <div class="brand-title">Xet Specialized Hospital</div>
+                            <div class="brand-subtitle">Appointment Confirmation • Official Document</div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:30%; text-align:right; vertical-align:top;" class="meta">
+                <div><strong>Date:</strong> {{ now()->format('F j, Y') }}</div>
+                <div><strong>Time:</strong> {{ now()->format('g:i A') }}</div>
+                <div><span class="{{ $badgeClass }}">{{ ucfirst($status) }}</span></div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="qr-container">
+        @if(!empty($qrSvg))
+            {!! $qrSvg !!}
+        @elseif(class_exists('SimpleSoftwareIO\\QrCode\\Facades\\QrCode'))
+            {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(14)->generate($appointment->booking_id) !!}
+        @else
+            <div class="qr-code" style="border:1px dashed #cbd5e1; padding:2px; text-align:center; font-size:6px;">
+                QR
             </div>
-        </div>
-        <div class="meta">
-            <div><strong>Date:</strong> {{ now()->format('F j, Y') }}</div>
-            <div><strong>Time:</strong> {{ now()->format('g:i A') }}</div>
-            <div><span class="{{ $badgeClass }}">{{ ucfirst($status) }}</span></div>
-        </div>
-        
-        <!-- QR Code in top right corner -->
-        <div class="qr-container">
-            @if(!empty($qrSvg))
-                {!! $qrSvg !!}
-            @elseif(class_exists('SimpleSoftwareIO\\QrCode\\Facades\\QrCode'))
-                {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(14)->generate($appointment->booking_id) !!}
-            @else
-                <div class="qr-code" style="border:1px dashed #cbd5e1; padding:2px; text-align:center; font-size:6px;">
-                    QR
+        @endif
+    </div>
+
+    <!-- Booking Info -->
+    <table class="booking">
+        <tr>
+            <td style="width:50%;">
+                <div class="small">Booking ID</div>
+                <div class="id">{{ $appointment->booking_id }}</div>
+            </td>
+            <td style="text-align:right;">
+                <div class="small">Please bring a valid photo ID and arrive 15 minutes early.</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Two-column layout using table -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+        <tr valign="top">
+            <!-- Patient Info -->
+            <td style="width:50%; padding-right:10px;">
+                <div class="section">
+                    <div class="section-title">Patient Information</div>
+                    <table class="info-table">
+                        <tr><td class="label">Full Name</td><td class="value">{{ $appointment->first_name }} {{ $appointment->last_name }}</td></tr>
+                        <tr><td class="label">Gender</td><td class="value">{{ $appointment->gender }}</td></tr>
+                        <tr><td class="label">Age</td><td class="value">{{ $appointment->age }}</td></tr>
+                        <tr><td class="label">Email</td><td class="value">{{ $appointment->email }}</td></tr>
+                        <tr><td class="label">Phone</td><td class="value">{{ $appointment->phone }}</td></tr>
+                    </table>
                 </div>
-            @endif
-        </div>
-    </div>
+            </td>
 
-    <!-- Booking Strip -->
-    <div class="booking">
-        <div>
-            <div class="small">Booking ID</div>
-            <div class="id">{{ $appointment->booking_id }}</div>
-        </div>
-        <div class="small">Please bring a valid photo ID and arrive 15 minutes early.</div>
-    </div>
-
-    <!-- Two-column layout for Patient Information and Appointment Details -->
-    <div class="info-columns">
-        <!-- Patient Information -->
-        <div class="section">
-            <div class="section-title">Patient Information</div>
-            <div class="grid">
-                <div class="label">Full Name</div>
-                <div class="value">{{ $appointment->first_name }} {{ $appointment->last_name }}</div>
-
-                <div class="label">Email</div>
-                <div class="value">{{ $appointment->email }}</div>
-
-                <div class="label">Phone</div>
-                <div class="value">{{ $appointment->phone }}</div>
-            </div>
-        </div>
-
-        <!-- Appointment Details -->
-        <div class="section">
-            <div class="section-title">Appointment Details</div>
-            <div class="grid">
-                <div class="label">Preferred Date</div>
-                <div class="value">{{ \Carbon\Carbon::parse($appointment->preferred_date)->format('F j, Y') }}</div>
-
-                <div class="label">Preferred Time</div>
-                <div class="value">{{ $appointment->preferred_time }}</div>
-
-                <div class="label">Speciality</div>
-                <div class="value">{{ $appointment->speciality }}</div>
-
-                <div class="label">Status</div>
-                <div class="value">{{ ucfirst($appointment->status) }}</div>
-
-                @if($appointment->doctor_name)
-                    <div class="label">Doctor</div>
-                    <div class="value">{{ $appointment->doctor_name }}</div>
-                @endif
-
-                @if(!empty($appointment->additional_notes))
-                    <div class="label">Notes</div>
-                    <div class="value">{{ $appointment->additional_notes }}</div>
-                @endif
-            </div>
-        </div>
-    </div>
+            <!-- Appointment Info -->
+            <td style="width:50%; padding-left:10px;">
+                <div class="section">
+                    <div class="section-title">Appointment Details</div>
+                    <table class="info-table">
+                        <tr><td class="label">Preferred Date</td><td class="value">{{ \Carbon\Carbon::parse($appointment->preferred_date)->format('F j, Y') }}</td></tr>
+                        <tr><td class="label">Preferred Time</td><td class="value">{{ $appointment->preferred_time }}</td></tr>
+                        <tr><td class="label">Speciality</td><td class="value">{{ $appointment->speciality }}</td></tr>
+                        <tr><td class="label">Status</td><td class="value">{{ ucfirst($appointment->status) }}</td></tr>
+                        @if($appointment->doctor_name)
+                            <tr><td class="label">Doctor</td><td class="value">{{ $appointment->doctor_name }}</td></tr>
+                        @endif
+                        @if(!empty($appointment->additional_notes))
+                            <tr><td class="label">Notes</td><td class="value">{{ $appointment->additional_notes }}</td></tr>
+                        @endif
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <!-- Important Note -->
     <div class="note">

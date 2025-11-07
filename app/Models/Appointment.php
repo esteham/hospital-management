@@ -13,6 +13,8 @@ class Appointment extends Model
         'last_name',
         'email',
         'phone',
+        'gender',
+        'age',
         'preferred_date',
         'preferred_time',
         'speciality',
