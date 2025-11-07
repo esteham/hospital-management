@@ -14,6 +14,7 @@ use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
 use App\Http\Controllers\Doctor\AppointmentController as DocAppointmentCtrl;
 use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
 use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
+use App\Http\Controllers\Staff\StaffController as StaffCtrl;
 
 use App\Models\Appointment;
 use App\Models\Doctor;
@@ -80,6 +81,8 @@ Route::middleware(['auth','verified'])->group(function() {
             return Inertia::render('Admin/Dashboard');
         } elseif ($user->role === 'doctor') {
             return Inertia::render('Doctor/Dashboard');
+        } elseif ($user->role === 'staff') {
+            return Inertia::render('Staff/Dashboard');
         } else {
             return Inertia::render('Patient/Dashboard');
         }
@@ -142,6 +145,11 @@ Route::middleware(['auth','verified'])->group(function() {
 
         Route::resource('/admin/news', AdminNewsCtrl::class, ['as' => 'admin']);
         Route::post('/admin/news/upload-image', [AdminNewsCtrl::class, 'uploadImage'])->name('admin.news.upload-image');
+    });
+
+    // Staff Routes
+    Route::middleware(['auth','verified','role:staff'])->group(function(){
+        Route::get('/staff/dashboard', [StaffCtrl::class, 'dashboard'])->name('staff.dashboard');
     });
 
     //Doctors Routes
