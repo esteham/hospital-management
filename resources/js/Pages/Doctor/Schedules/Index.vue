@@ -30,7 +30,7 @@ const editing = ref(null);
 const showForm = ref(false);
 
 const form = reactive({
-    day_of_week: "sat",
+    day_of_week: [],
     start_time: "09:00",
     end_time: "13:00",
     slot_minutes: 15,
@@ -66,7 +66,7 @@ function resetForm() {
     editing.value = null;
     showForm.value = false;
     Object.assign(form, {
-        day_of_week: "sat",
+        day_of_week: [],
         start_time: "09:00",
         end_time: "13:00",
         slot_minutes: 15,
@@ -111,7 +111,9 @@ function edit(row) {
     editing.value = row;
     showForm.value = true;
     Object.assign(form, {
-        day_of_week: row.day_of_week,
+        day_of_week: Array.isArray(row.day_of_week)
+            ? row.day_of_week
+            : [row.day_of_week],
         start_time: toHHmm(row.start_time),
         end_time: toHHmm(row.end_time),
         slot_minutes: row.slot_minutes,
@@ -214,20 +216,26 @@ onMounted(fetchList);
                                         class="flex items-center gap-2 text-sm font-medium text-gray-700"
                                     >
                                         <Calendar class="w-4 h-4" />
-                                        Day of Week
+                                        Days of Week (Available)
                                     </label>
-                                    <select
-                                        v-model="form.day_of_week"
-                                        class="input-field"
-                                    >
-                                        <option
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <label
                                             v-for="d in dayOptions"
                                             :key="d.v"
-                                            :value="d.v"
+                                            class="flex items-center gap-2 cursor-pointer"
                                         >
-                                            {{ d.t }}
-                                        </option>
-                                    </select>
+                                            <input
+                                                v-model="form.day_of_week"
+                                                :value="d.v"
+                                                type="checkbox"
+                                                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                            />
+                                            <span
+                                                class="text-sm text-gray-700"
+                                                >{{ d.t }}</span
+                                            >
+                                        </label>
+                                    </div>
                                 </div>
 
                                 <div class="space-y-2">
@@ -365,7 +373,7 @@ onMounted(fetchList);
                                         <th
                                             class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                         >
-                                            Day
+                                            Days
                                         </th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -420,20 +428,22 @@ onMounted(fetchList);
                                         class="group hover:bg-blue-50/30 transition-colors duration-200"
                                     >
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div
-                                                class="flex items-center gap-3"
-                                            >
+                                            <div class="flex flex-col gap-1">
                                                 <div
-                                                    class="w-2 h-2 bg-blue-600 rounded-full"
-                                                ></div>
-                                                <span
-                                                    class="font-medium text-gray-900"
-                                                    >{{
-                                                        getDayName(
-                                                            row.day_of_week
-                                                        )
-                                                    }}</span
+                                                    v-for="day in row.day_of_week"
+                                                    :key="day"
+                                                    class="flex items-center gap-2"
                                                 >
+                                                    <div
+                                                        class="w-2 h-2 bg-blue-600 rounded-full"
+                                                    ></div>
+                                                    <span
+                                                        class="font-medium text-gray-900 text-sm"
+                                                        >{{
+                                                            getDayName(day)
+                                                        }}</span
+                                                    >
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">

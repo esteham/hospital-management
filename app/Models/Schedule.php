@@ -18,5 +18,9 @@ class Schedule extends Model
         'max_patients_per_day',
         'fee',
     ];
+
+    protected $casts = [
+        'day_of_week' => 'array',
+    ];
     public function doctor(){ return $this->belongsTo(Doctor::class); }
 }

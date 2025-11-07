@@ -41,7 +41,8 @@ class ScheduleController extends Controller
         $doctor = Auth::user()->doctor;
 
         $data = $req->validate([
-            'day_of_week'=>['required', Rule::in(['sat','sun','mon','tue','wed','thu','fri'])],
+            'day_of_week'=>'required|array|min:1',
+            'day_of_week.*' => Rule::in(['sat','sun','mon','tue','wed','thu','fri']),
             'start_time'=>'required|date_format:H:i',
             'end_time'=>'required|date_format:H:i|after:start_time',
             'slot_minutes'=>'required|integer|min:5|max:240',
@@ -65,16 +66,17 @@ class ScheduleController extends Controller
 
     public function update(Request $req, $id)
 {
-    $doctor = \Illuminate\Support\Facades\Auth::user()->doctor;
+    $doctor = Auth::user()->doctor;
     if (!$doctor) 
     {
         return response()->json(['message' => 'No doctor profile found'], 422);
     }
   
-    $schedule = \App\Models\Schedule::where('doctor_id', $doctor->id)->findOrFail($id);
+    $schedule = Schedule::where('doctor_id', $doctor->id)->findOrFail($id);
 
-    $data = $req->validate([
-        'day_of_week' => ['required', \Illuminate\Validation\Rule::in(['sat','sun','mon','tue','wed','thu','fri'])],
+        $data = $req->validate([
+        'day_of_week' => 'required|array|min:1',
+        'day_of_week.*' => Rule::in(['sat','sun','mon','tue','wed','thu','fri']),
         'start_time'  => 'required|date_format:H:i',
         'end_time'    => 'required|date_format:H:i|after:start_time',
         'slot_minutes'=> 'required|integer|min:5|max:240',
@@ -82,8 +84,8 @@ class ScheduleController extends Controller
         'fee'         => 'required|integer|min:0|max:1000000',
     ]);
 
-    $duration = \Carbon\Carbon::parse($data['start_time'])
-        ->diffInMinutes(\Carbon\Carbon::parse($data['end_time']));
+    $duration = Carbon::parse($data['start_time'])
+        ->diffInMinutes(Carbon::parse($data['end_time']));
     if ($duration < $data['slot_minutes']) {
         return response()->json(['message' => 'Slot minutes must be <= total duration'], 422);
     }
@@ -94,12 +96,12 @@ class ScheduleController extends Controller
 
     public function destroy($id)
 	{
-    $doctor = \Illuminate\Support\Facades\Auth::user()->doctor;
+    $doctor = Auth::user()->doctor;
     if (!$doctor) {
         return response()->json(['message' => 'No doctor profile found'], 422);
     }
     
-    $schedule = \App\Models\Schedule::where('doctor_id', $doctor->id)->findOrFail($id);
+    $schedule = Schedule::where('doctor_id', $doctor->id)->findOrFail($id);
 
     $schedule->delete();
     return response()->noContent();
