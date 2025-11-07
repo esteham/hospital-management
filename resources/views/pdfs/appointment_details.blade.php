@@ -156,14 +156,14 @@
 @endphp
 
 <div class="watermark">
-    <img src="{{ $watermarkLogoPath ?? (isset($logoPath) ? $logoPath : asset('images/logo.png')) }}" alt="Xet Specialized Hospital" />
+    <img src="{{ $watermarkLogoPath ?? (isset($logoPath) ? $logoPath : public_path('images/logo.png')) }}" alt="Xet Specialized Hospital" />
 </div>
 
 <div class="container">
     <!-- Header -->
     <div class="header">
         <div class="brand">
-            <img class="brand-logo" src="{{ $logoPath ?? asset('images/logo.png') }}" alt="Xet Logo" />
+            <img class="brand-logo" src="{{ $logoPath ?? public_path('images/logo.png') }}" alt="Xet Logo" />
             <div>
                 <div class="brand-title">Xet Specialized Hospital</div>
                 <div class="brand-subtitle">Appointment Confirmation • Official Document</div>
