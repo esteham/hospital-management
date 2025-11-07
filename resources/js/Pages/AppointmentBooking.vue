@@ -13,7 +13,7 @@ const { doctors, canLogin, canRegister, laravelVersion, phpVersion } =
         doctors: Array,
     });
 
-// Function to generate time slots from doctor's schedules
+// Function to generate time slots from doctor's schedules (start and end times only)
 const generateTimeSlotsFromSchedules = (schedules) => {
     if (!schedules || schedules.length === 0) return [];
 
@@ -21,21 +21,26 @@ const generateTimeSlotsFromSchedules = (schedules) => {
     schedules.forEach((schedule) => {
         const start = new Date(`1970-01-01T${schedule.start_time}`);
         const end = new Date(`1970-01-01T${schedule.end_time}`);
-        const slotMinutes = schedule.slot_minutes;
 
-        let current = new Date(start);
-        while (current < end) {
-            const timeString = current.toTimeString().slice(0, 5);
-            const hours = current.getHours();
-            const minutes = current.getMinutes();
-            const ampm = hours >= 12 ? "PM" : "AM";
-            const displayHours = hours % 12 || 12;
-            const displayTime = `${displayHours}:${minutes
-                .toString()
-                .padStart(2, "0")} ${ampm}`;
-            slots.push(displayTime);
-            current.setMinutes(current.getMinutes() + slotMinutes);
-        }
+        // Format start time
+        const startHours = start.getHours();
+        const startMinutes = start.getMinutes();
+        const startAmpm = startHours >= 12 ? "PM" : "AM";
+        const startDisplayHours = startHours % 12 || 12;
+        const startDisplayTime = `${startDisplayHours}:${startMinutes
+            .toString()
+            .padStart(2, "0")} ${startAmpm}`;
+        slots.push(startDisplayTime);
+
+        // Format end time
+        const endHours = end.getHours();
+        const endMinutes = end.getMinutes();
+        const endAmpm = endHours >= 12 ? "PM" : "AM";
+        const endDisplayHours = endHours % 12 || 12;
+        const endDisplayTime = `${endDisplayHours}:${endMinutes
+            .toString()
+            .padStart(2, "0")} ${endAmpm}`;
+        slots.push(endDisplayTime);
     });
 
     // Remove duplicates and sort
@@ -124,23 +129,7 @@ const submitForm = async () => {
 };
 
 // Available time slots
-const timeSlots = ref([
-    "08:00 AM",
-    "08:30 AM",
-    "09:00 AM",
-    "09:30 AM",
-    "10:00 AM",
-    "10:30 AM",
-    "11:00 AM",
-    "11:30 AM",
-    "02:00 PM",
-    "02:30 PM",
-    "03:00 PM",
-    "03:30 PM",
-    "04:00 PM",
-    "04:30 PM",
-    "05:00 PM",
-]);
+const timeSlots = ref([]);
 
 // Computed property for unique specialties from doctors
 const specialties = computed(() => {
@@ -152,18 +141,7 @@ const specialties = computed(() => {
     });
     return Array.from(uniqueSpecialties).map((speciality) => {
         // Map speciality to label and icon (you can customize this mapping)
-        const mappings = {
-            cardiology: { label: "Cardiology", icon: "❤️" },
-            dermatology: { label: "Dermatology", icon: "🔬" },
-            neurology: { label: "Neurology", icon: "🧠" },
-            orthopedics: { label: "Orthopedics", icon: "🦴" },
-            general: { label: "General Medicine", icon: "👨‍⚕️" },
-            pediatrics: { label: "Pediatrics", icon: "👶" },
-            gynecology: { label: "Gynecology", icon: "🌸" },
-            ophthalmology: { label: "Ophthalmology", icon: "👁️" },
-            ent: { label: "ENT Specialist", icon: "👂" },
-            gastroenterology: { label: "Gastroenterology", icon: "🩺" },
-        };
+        const mappings = {};
         const mapping = mappings[speciality] || {
             label: speciality,
             icon: "👨‍⚕️",
@@ -174,13 +152,59 @@ const specialties = computed(() => {
 
 // Computed property for filtered doctors based on selected speciality
 const filteredDoctors = computed(() => {
-    if (!form.value.speciality) return doctors;
+    if (!form.value.speciality) return [];
     return doctors.filter(
         (doctor) => doctor.speciality === form.value.speciality
     );
 });
 
-// Computed property for available time slots based on selected doctor
+// Computed property for available dates based on selected doctor's schedule
+const availableDates = computed(() => {
+    if (!form.value.doctorId) return []; // No dates if no doctor selected
+
+    const selectedDoctor = doctors.find(
+        (doctor) => doctor.id == form.value.doctorId
+    );
+    if (
+        !selectedDoctor ||
+        !selectedDoctor.schedules ||
+        selectedDoctor.schedules.length === 0
+    ) {
+        return []; // No dates available
+    }
+
+    // Collect all available days of the week from doctor's schedules
+    const availableDays = new Set();
+    selectedDoctor.schedules.forEach((schedule) => {
+        schedule.day_of_week.forEach((day) => availableDays.add(day));
+    });
+
+    // Generate available dates for the next 60 days
+    const dates = [];
+    const today = new Date();
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        const dayName = date
+            .toLocaleDateString("en-US", { weekday: "long" })
+            .toLowerCase()
+            .slice(0, 3); // 'sat', 'sun', 'mon', etc.
+        if (availableDays.has(dayName)) {
+            const value = date.toISOString().split("T")[0];
+            const label = date.toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+            });
+            dates.push({ value, label });
+        }
+    }
+
+    return dates;
+});
+
+// Computed property for available time slots based on selected doctor and date
 const availableTimeSlots = computed(() => {
     if (!form.value.doctorId) return timeSlots.value; // Default slots if no doctor selected
 
@@ -195,7 +219,23 @@ const availableTimeSlots = computed(() => {
         return []; // No slots available
     }
 
-    return generateTimeSlotsFromSchedules(selectedDoctor.schedules);
+    let schedulesToUse = selectedDoctor.schedules;
+
+    if (form.value.preferredDate) {
+        // Get day of week for the selected date
+        const selectedDate = new Date(form.value.preferredDate);
+        const dayName = selectedDate
+            .toLocaleDateString("en-US", { weekday: "long" })
+            .toLowerCase()
+            .slice(0, 3); // 'sat', 'sun', etc.
+
+        // Filter schedules for that day
+        schedulesToUse = selectedDoctor.schedules.filter((schedule) =>
+            schedule.day_of_week.includes(dayName)
+        );
+    }
+
+    return generateTimeSlotsFromSchedules(schedulesToUse);
 });
 
 // Watch for speciality changes to reset doctor selection
@@ -212,6 +252,17 @@ watch(
             ) {
                 form.value.doctorId = "";
             }
+        }
+    }
+);
+
+// Watch for doctor changes to reset date and time selection
+watch(
+    () => form.value.doctorId,
+    (newDoctorId) => {
+        if (newDoctorId !== form.value.doctorId) {
+            form.value.preferredDate = "";
+            form.value.preferredTime = "";
         }
     }
 );
@@ -707,13 +758,37 @@ const hospitalStats = ref([
                                         >
                                             Preferred Date *
                                         </label>
-                                        <input
+                                        <select
                                             v-model="form.preferredDate"
-                                            type="date"
-                                            :min="minDate"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                                        />
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                        >
+                                            <option value="">
+                                                Select Preferred Date
+                                            </option>
+                                            <option
+                                                v-for="date in availableDates"
+                                                :key="date.value"
+                                                :value="date.value"
+                                            >
+                                                {{ date.label }}
+                                            </option>
+                                        </select>
+                                        <p
+                                            v-if="!form.doctorId"
+                                            class="text-sm text-gray-500 mt-1"
+                                        >
+                                            Please select a doctor first to see
+                                            available dates
+                                        </p>
+                                        <p
+                                            v-else-if="
+                                                availableDates.length === 0
+                                            "
+                                            class="text-sm text-red-500 mt-1"
+                                        >
+                                            No available dates for this doctor
+                                        </p>
                                     </div>
                                     <div>
                                         <label

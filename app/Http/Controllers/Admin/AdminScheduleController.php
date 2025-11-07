@@ -30,7 +30,7 @@ class AdminScheduleController extends Controller
     		'doctor_id' => $s->doctor_id,
     		'doctor' => $s->doctor?->user?->name,
     		'email' => $s->doctor?->user?->email,
-    		'day' => strtoupper($s->day_of_week),
+    		'day' => strtoupper(implode(', ', $s->day_of_week)),
     		'time' => "{$s->start_time} - { $s->end_time}",
     		'slot' => $s->slot_minutes,
     		'max' => $s->max_patients_per_day,
