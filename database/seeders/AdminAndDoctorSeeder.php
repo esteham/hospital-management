@@ -26,16 +26,16 @@ class AdminAndDoctorSeeder extends Seeder
         // 20 Doctors
         $doctors = [
             [
-                'name' => 'Dr. Asad',
-                'email' => 'asad@example.com',
+                'name' => 'Dr. Xihad Ansari',
+                'email' => 'xihad.ansari@gmail.com',
                 'designation' => 'MBBS, FCPS (Medicine)',
                 'speciality' => 'General Physician',
                 'phone' => '01711000001',
-                'about' => 'Demo Doctor Profile Testing',
+                'about' => 'Mental health & counseling.',
             ],
             [
                 'name' => 'Dr. Mahmud Hasan',
-                'email' => 'mahmud.hasan@example.com',
+                'email' => 'doctor@example.com',
                 'designation' => 'MBBS, MD (Cardiology)',
                 'speciality' => 'Cardiology',
                 'phone' => '01711000002',
@@ -220,7 +220,7 @@ class AdminAndDoctorSeeder extends Seeder
         }
 
 		$this->command->info('Demo admin and doctor create successfully');
-        $this->command->warn('Admin Login: admin@clinic.test | password');
-        $this->command->warn('Doctor Login: asad@clinic.test | password');
+        $this->command->warn('Admin Login: admin@example.com | admin123');
+        $this->command->warn('Doctor Login: doctor@example.com | doctor123');
     }
 }
