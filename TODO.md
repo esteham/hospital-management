@@ -1,22 +1,25 @@
-# Staff Management Implementation Plan
+# TODO: Implement Prescription Functionality for Doctors
 
-## Tasks to Complete
+## Completed Backend Tasks
 
-- [x] Update users table role enum to include 'staff'
-- [x] Create Staff model and migration
-- [x] Create Admin Staff Controller with CRUD operations
-- [x] Add routes for staff management
-- [x] Create Vue pages for staff management (Index.vue)
-- [x] Update User model to include staff relationship
+-   [x] Create prescriptions table migration
+-   [x] Create Prescription model with relationship to Appointment
+-   [x] Update Appointment model with prescriptions relationship
+-   [x] Add storePrescription method to Doctor/AppointmentController
+-   [x] Create PrescriptionMail class
+-   [x] Create email view for prescription
+-   [x] Create PDF view for prescription
+-   [x] Add route for storing prescription
+-   [x] Update show method to load prescriptions
 
-## Progress Tracking
+## Frontend Tasks
 
-- [x] Step 1: Update role enum in migration
-- [x] Step 2: Create Staff model
-- [x] Step 3: Create Staff migration
-- [x] Step 4: Create AdminStaffController
-- [x] Step 5: Add staff routes to web.php
-- [x] Step 6: Create Staff/Index.vue page
-- [x] Step 7: Update User model
-- [x] Step 8: Run migrations
-- [ ] Step 9: Test the implementation
+-   [ ] Update Index.vue to link to show page instead of modal
+-   [ ] Create Show.vue component for appointment details and prescription management
+
+## Testing and Followup
+
+-   [ ] Run migrations if not already done
+-   [ ] Test adding prescription and email sending
+-   [ ] Verify PDF attachment in email
+-   [ ] Optionally add patient view for prescriptions

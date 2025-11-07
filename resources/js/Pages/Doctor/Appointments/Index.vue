@@ -192,12 +192,12 @@ const updateStatus = async (appointmentId, status) => {
                                 >
                                     Cancel
                                 </button>
-                                <button
-                                    @click="openModal(appointment)"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                <Link
+                                    :href="`/doctor/appointments/${appointment.id}`"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block text-center"
                                 >
                                     View Details
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

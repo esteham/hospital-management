@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Prescription;
 
 class Appointment extends Model
 {
@@ -28,5 +29,10 @@ class Appointment extends Model
     public function getDoctorNameAttribute()
     {
         return $this->doctor ? $this->doctor->user->name : null;
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
     }
 }

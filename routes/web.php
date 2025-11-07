@@ -163,6 +163,8 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::get('/doctor/appointments', [DocAppointmentCtrl::class, 'index'])->name('doctor.appointments.index');
         Route::get('/doctor/appointments/{appointment}', [DocAppointmentCtrl::class, 'show'])->name('doctor.appointments.show');
         Route::put('/doctor/appointments/{appointment}', [DocAppointmentCtrl::class, 'update'])->name('doctor.appointments.update');
+        Route::post('/doctor/appointments/{appointment}/prescription', [DocAppointmentCtrl::class, 'storePrescription'])->name('doctor.appointments.store-prescription');
+        Route::get('/doctor/appointments/{appointment}/prescriptions/{prescription}/download-pdf', [DocAppointmentCtrl::class, 'downloadPrescriptionPdf'])->name('doctor.appointments.download-prescription-pdf');
     });
 
 });
