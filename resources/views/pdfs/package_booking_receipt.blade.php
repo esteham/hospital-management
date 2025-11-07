@@ -103,7 +103,7 @@
 @endphp
 
 <div class="watermark">
-    <img src="{{ $watermarkLogoPath ?? (isset($logoPath) ? $logoPath : asset('images/logo.png')) }}" alt="Xet Specialized Hospital" />
+    <img src="{{ $watermarkLogoPath ?? (isset($logoPath) ? $logoPath : public_path('images/logo.png')) }}" alt="Xet Specialized Hospital" />
 </div>
 
 <div class="container">
@@ -115,7 +115,7 @@
                 <table>
                     <tr>
                         <td style="width:45px;">
-                            <img class="brand-logo" src="{{ $logoPath ?? asset('images/logo.png') }}" alt="Xet Logo" />
+                            <img class="brand-logo" src="{{ $logoPath ?? public_path('images/logo.png') }}" alt="Xet Logo" />
                         </td>
                         <td>
                             <div class="brand-title">Xet Specialized Hospital</div>
