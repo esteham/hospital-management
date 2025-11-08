@@ -16,8 +16,9 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
 use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
 use App\Http\Controllers\Staff\StaffController as StaffCtrl;
 
-use App\Models\Appointment;
+
 use App\Models\Doctor;
+use App\Models\Appointment;
 
 
 /*
@@ -38,17 +39,6 @@ Route::get('/', fn() => Inertia::render('Welcome', [
     'phpVersion' => PHP_VERSION,
 ]))->name('welcome');
 
-Route::get('/book-appointment', function () {
-    $doctors = Doctor::with('user', 'schedules')->get();
-    return Inertia::render('AppointmentBooking', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => app()->version(),
-        'phpVersion' => PHP_VERSION,
-        'doctors' => $doctors,
-    ]);
-})->name('appointment.booking');
-
 Route::get('/find-doctor', function () {
     $doctors = Doctor::with('user')->get();
     return Inertia::render('FindDoctor', [
@@ -57,6 +47,8 @@ Route::get('/find-doctor', function () {
         'doctors' => $doctors,
     ]);
 })->name('find.doctor');
+
+Route::get('/book-appointment', [AppointmentController::class, 'create'])->name('appointment.booking');
 
 Route::get('/news/{id}', fn($id) => Inertia::render('NewsDetail', ['id' => $id]))->name('news.detail');
 

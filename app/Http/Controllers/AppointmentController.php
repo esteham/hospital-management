@@ -2,16 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+
 use App\Mail\AppointmentConfirmationMail;
 use App\Mail\DoctorAppointmentNotificationMail;
-use Illuminate\Support\Facades\Mail;
+
+use App\Models\Doctor;
+use App\Models\Schedule;
+use App\Models\Appointment;
 
 class AppointmentController extends Controller
-{
+{   
+    public function create()
+    {
+        $doctors = Doctor::with('user', 'schedules')->get();
+
+        $startDate = now()->addDay()->toDateString();
+        $endDate = now()->addDays(7)->toDateString();
+
+        $appointments = Appointment::whereBetween('preferred_date', [$startDate, $endDate])
+            ->where('status', '!=', 'cancelled')
+            ->select('doctor_id', 'preferred_date', DB::raw('count(*) as count'))
+            ->groupBy('doctor_id', 'preferred_date')
+            ->get()
+            ->keyBy(function ($item) {
+                return $item->doctor_id . '-' . $item->preferred_date;
+            });
+
+        return Inertia::render('AppointmentBooking', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => app()->version(),
+            'phpVersion' => PHP_VERSION,
+            'doctors' => $doctors,
+            'appointments' => $appointments,
+        ]);
+    }
+    
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -20,13 +54,43 @@ class AppointmentController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'gender' => 'required|in:male,female,other',
-            'age' => 'required|integer|min:1|max:120',
+            'age' => 'required|integer|min:1|max:99',
             'preferred_date' => 'required|date|after:today',
             'preferred_time' => 'required|string',
             'speciality' => 'required|string|max:255',
             'doctor_id' => 'nullable|exists:doctors,id',
             'additional_notes' => 'nullable|string',
         ]);
+
+        // Check if doctor is fully booked for the selected date
+        if ($validated['doctor_id']) {
+            $date = $validated['preferred_date'];
+            $doctorId = $validated['doctor_id'];
+
+            // Get day of week (e.g., 'mon', 'tue', etc.)
+            $dayOfWeek = strtolower(date('D', strtotime($date)));
+
+            // Find the schedule for this doctor and day
+            $schedule = Schedule::where('doctor_id', $doctorId)
+                ->whereJsonContains('day_of_week', $dayOfWeek)
+                ->first();
+
+            if ($schedule) {
+                $maxPatients = $schedule->max_patients_per_day;
+
+                // Count existing appointments for this doctor on this date (excluding cancelled)
+                $existingAppointments = Appointment::where('doctor_id', $doctorId)
+                    ->where('preferred_date', $date)
+                    ->where('status', '!=', 'cancelled')
+                    ->count();
+
+                if ($existingAppointments >= $maxPatients) {
+                    return response()->json([
+                        'message' => 'This doctor is fully booked for the selected date. Please choose another date or a different doctor.'
+                    ], 422);
+                }
+            }
+        }
 
         // Generate unique booking ID
         $bookingId = 'APT-' . strtoupper(Str::random(8));

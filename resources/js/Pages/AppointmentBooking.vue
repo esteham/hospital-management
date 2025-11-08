@@ -4,14 +4,21 @@ import { ref, onMounted, computed, watch } from "vue";
 import Header from "@/Components/Landing/Header.vue";
 import Footer from "@/Components/Landing/Footer.vue";
 
-const { doctors, canLogin, canRegister, laravelVersion, phpVersion } =
-    defineProps({
-        canLogin: Boolean,
-        canRegister: Boolean,
-        laravelVersion: String,
-        phpVersion: String,
-        doctors: Array,
-    });
+const {
+    doctors,
+    canLogin,
+    canRegister,
+    laravelVersion,
+    phpVersion,
+    appointments,
+} = defineProps({
+    canLogin: Boolean,
+    canRegister: Boolean,
+    laravelVersion: String,
+    phpVersion: String,
+    doctors: Array,
+    appointments: Object,
+});
 
 // Function to generate time slots from doctor's schedules (start and end times only)
 const generateTimeSlotsFromSchedules = (schedules) => {
@@ -209,7 +216,23 @@ const availableDates = computed(() => {
                 month: "short",
                 day: "numeric",
             });
-            dates.push({ value, label });
+
+            // Check if the date is fully booked
+            const appointmentKey = `${selectedDoctor.id}-${value}`;
+            const appointmentCount = appointments[appointmentKey]?.count || 0;
+            const maxPatients =
+                selectedDoctor.schedules.find((schedule) =>
+                    schedule.day_of_week.includes(dayName)
+                )?.max_patients_per_day || 0;
+
+            let status = "";
+            if (appointmentCount >= maxPatients) {
+                status = "Fully Booked";
+            } else if (appointmentCount > 0) {
+                status = "Limited";
+            }
+
+            dates.push({ value, label, status });
         }
     }
 
@@ -782,8 +805,26 @@ const hospitalStats = ref([
                                                 v-for="date in availableDates"
                                                 :key="date.value"
                                                 :value="date.value"
+                                                :disabled="
+                                                    date.status ===
+                                                    'Fully Booked'
+                                                "
+                                                :class="
+                                                    date.status ===
+                                                    'Fully Booked'
+                                                        ? 'text-red-500'
+                                                        : date.status ===
+                                                          'Limited'
+                                                        ? 'text-yellow-600'
+                                                        : ''
+                                                "
                                             >
                                                 {{ date.label }}
+                                                {{
+                                                    date.status
+                                                        ? `(${date.status})`
+                                                        : ""
+                                                }}
                                             </option>
                                         </select>
                                         <p
