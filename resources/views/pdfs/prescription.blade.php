@@ -6,9 +6,9 @@
     <title>Prescription - {{ $appointment->booking_id }}</title>
     <style>
         body {
-            font-family: 'DejaVu Sans', sans-serif;
+            font-family: "Tinos";
             margin: 20px 40px;
-            font-size: 13px;
+            font-size: 14px;
             color: #222;
             line-height: 1.5;
             position: relative;
@@ -41,7 +41,7 @@
 
         .doctor-info p {
             margin: 2px 0;
-            font-size: 10px;
+            font-size: 12px;
         }
 
         .hospital-info {
@@ -61,16 +61,13 @@
         .hospital-info p {
             margin: 3px 0;
             color: #333;
-            font-size: 10px;
+            font-size: 12px;
         }
-
-        /* Patient & medicine font */
-        .patients{
-            font-family: "Tinos";
-        }
+        
 
         .medicine{
-            font-family: "Tinos";
+            
+            font-size: 14px;
         }
 
         /* Patient & diagnosis section */
@@ -181,7 +178,7 @@
     <table style="width:100%; border-collapse: collapse; margin-top: 15px;">
         <tr>
             <!-- Left column: Diagnosis + Advice -->
-            <td style="width:30.33%; vertical-align: top; padding-right:10px; border:none;">
+            <td style="width:33.33%; vertical-align: top; padding-right:10px; border:none;">
                 <!-- Diagnosis -->
                 @php
                     preg_match('/Diagnosis:\s*(.*?)(\d+\)|Advice:|$)/s', $prescription->prescription_text, $matches);
@@ -206,7 +203,7 @@
             <td style="width:1%; border-left:1px solid #aaa;"></td>
 
             <!-- Right column: Medicines -->
-            <td style="width:69.66%; vertical-align: top; padding-left:10px; border:none;">
+            <td style="width:66.66%; vertical-align: top; padding-left:10px; border:none;">
                 <table style="width:100%; border-collapse: collapse;">
                     <thead>
                         <tr>

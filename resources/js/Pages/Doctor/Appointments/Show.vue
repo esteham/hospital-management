@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 const props = defineProps({
@@ -23,6 +23,15 @@ const removeMedicineRow = (index) => {
     medicines.value.splice(index, 1);
 };
 
+const getStatusColor = (status) => {
+    const colors = {
+        pending: "bg-amber-50 text-amber-700 ring-amber-600/20",
+        confirmed: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
+        cancelled: "bg-rose-50 text-rose-700 ring-rose-600/20",
+    };
+    return colors[status] || "bg-gray-50 text-gray-700 ring-gray-600/20";
+};
+
 const submitPrescription = async () => {
     isSubmitting.value = true;
     try {
@@ -40,7 +49,7 @@ ${medicines.value
     .join("\n")}
 
 Advice: ${advice.value}
-`;
+`.trim();
 
         const response = await fetch(
             `/doctor/appointments/${appointment.value.id}/prescription`,
@@ -53,110 +62,198 @@ Advice: ${advice.value}
                         .getAttribute("content"),
                 },
                 body: JSON.stringify({
-                    prescription_text: prescriptionText.trim(),
+                    prescription_text: prescriptionText,
                 }),
             }
         );
 
         if (response.ok) {
-            alert("Prescription added successfully!");
+            showNotification("Prescription added successfully!", "success");
+            // Reset form
             diagnosis.value = "";
             advice.value = "";
             medicines.value = [{ name: "", dosage: "", duration: "" }];
-            window.location.reload();
+            // Reload to show new prescription
+            setTimeout(() => window.location.reload(), 1500);
         } else {
-            alert("Failed to add prescription.");
+            throw new Error("Failed to add prescription");
         }
     } catch (error) {
         console.error("Error:", error);
-        alert("An error occurred.");
+        showNotification("Failed to add prescription", "error");
     } finally {
         isSubmitting.value = false;
     }
 };
+
+const showNotification = (message, type = "info") => {
+    // In a real app, you'd use a proper notification system
+    const alertClass = type === "success" ? "alert-success" : "alert-error";
+    alert(message);
+};
+
+// Computed property for latest prescription
+const latestPrescription = computed(() => {
+    if (
+        !appointment.value.prescriptions ||
+        appointment.value.prescriptions.length === 0
+    ) {
+        return null;
+    }
+    return appointment.value.prescriptions[
+        appointment.value.prescriptions.length - 1
+    ];
+});
 </script>
 
 <template>
     <Head title="Appointment Details - Doctor Dashboard" />
 
     <AuthenticatedLayout>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <h2 class="text-2xl font-bold">
-                                Appointment Details
-                            </h2>
-                            <Link
-                                href="/doctor/appointments"
-                                class="text-blue-600"
+        <div class="min-h-screen bg-gray-50/30 py-8">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4">
+                <!-- Header -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="p-3 bg-white rounded-2xl shadow-sm border border-gray-100"
                             >
-                                Back to Appointments
-                            </Link>
-                        </div>
-
-                        <!-- Appointment Info -->
-                        <div class="mt-4 space-y-1 text-sm">
-                            <p>
-                                <strong>Booking ID:</strong>
-                                {{ appointment.booking_id }}
-                            </p>
-                            <p>
-                                <strong>Name:</strong>
-                                {{ appointment.first_name }}
-                                {{ appointment.last_name }}
-                            </p>
-                            <p>
-                                <strong>Email:</strong> {{ appointment.email }}
-                            </p>
-                            <p>
-                                <strong>Phone:</strong> {{ appointment.phone }}
-                            </p>
-                            <p>
-                                <strong>Date:</strong>
-                                {{ appointment.preferred_date }}
-                            </p>
-                            <p>
-                                <strong>Time:</strong>
-                                {{ appointment.preferred_time }}
-                            </p>
-                            <p>
-                                <strong>Speciality:</strong>
-                                {{ appointment.speciality }}
-                            </p>
-                            <p>
-                                <strong>Status:</strong>
-                                {{ appointment.status }}
-                            </p>
-                        </div>
-
-                        <!-- Existing Prescriptions -->
-                        <div class="mt-8">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-xl font-semibold">
-                                    Prescriptions
-                                </h3>
-                                <div
-                                    v-if="
-                                        appointment.prescriptions &&
-                                        appointment.prescriptions.length > 0
-                                    "
+                                <svg
+                                    class="w-7 h-7 text-indigo-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
                                 >
-                                    <a
-                                        :href="`/doctor/appointments/${
-                                            appointment.id
-                                        }/prescriptions/${
-                                            appointment.prescriptions[
-                                                appointment.prescriptions
-                                                    .length - 1
-                                            ].id
-                                        }/download-pdf`"
-                                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                                        target="_blank"
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.5"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 class="text-3xl font-bold text-gray-900">
+                                    Appointment Details
+                                </h1>
+                                <p class="text-gray-600 mt-1">
+                                    Patient consultation and prescription
+                                    management
+                                </p>
+                            </div>
+                        </div>
+                        <Link
+                            href="/doctor/appointments"
+                            class="inline-flex items-center px-4 py-2.5 border border-black-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                        >
+                            <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                />
+                            </svg>
+                            Back to Appointments
+                        </Link>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column - Patient Information -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <!-- Patient Card -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                        >
+                            <div class="flex items-center space-x-4 mb-6">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center"
+                                >
+                                    <span
+                                        class="text-white font-semibold text-lg"
                                     >
+                                        {{ appointment.first_name.charAt(0)
+                                        }}{{ appointment.last_name.charAt(0) }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl font-bold text-gray-900">
+                                        {{ appointment.first_name }}
+                                        {{ appointment.last_name }}
+                                    </h2>
+                                    <p class="text-gray-600 text-sm">
+                                        {{ appointment.email }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-500"
+                                        >Status</span
+                                    >
+                                    <span
+                                        :class="[
+                                            'px-3 py-1 rounded-full text-xs font-medium ring-1 ring-inset',
+                                            getStatusColor(appointment.status),
+                                        ]"
+                                    >
+                                        {{ appointment.status }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-500"
+                                        >Age</span
+                                    >
+                                    <span class="text-sm text-gray-900"
+                                        >{{ appointment.age }} years</span
+                                    >
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-500"
+                                        >Phone</span
+                                    >
+                                    <span class="text-sm text-gray-900">{{
+                                        appointment.phone
+                                    }}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-500"
+                                        >Booking ID</span
+                                    >
+                                    <span
+                                        class="text-sm font-mono text-gray-900"
+                                        >{{ appointment.booking_id }}</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appointment Details Card -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                        >
+                            <h3
+                                class="text-lg font-semibold text-gray-900 mb-4"
+                            >
+                                Appointment Details
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="p-2 bg-blue-50 rounded-lg">
                                         <svg
-                                            class="w-4 h-4 mr-2"
+                                            class="w-5 h-5 text-blue-600"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -165,43 +262,71 @@ Advice: ${advice.value}
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 stroke-width="2"
-                                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                            ></path>
+                                                d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m0 5V9a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2v-6a2 2 0 00-2-2h-8z"
+                                            />
                                         </svg>
-                                        Download Latest Prescription
-                                    </a>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="text-sm font-medium text-gray-500"
+                                        >
+                                            Date
+                                        </p>
+                                        <p class="text-sm text-gray-900">
+                                            {{ appointment.preferred_date }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="p-2 bg-green-50 rounded-lg">
+                                        <svg
+                                            class="w-5 h-5 text-green-600"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="text-sm font-medium text-gray-500"
+                                        >
+                                            Time
+                                        </p>
+                                        <p class="text-sm text-gray-900">
+                                            {{ appointment.preferred_time }}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                            <div
-                                v-if="
-                                    appointment.prescriptions &&
-                                    appointment.prescriptions.length > 0
-                                "
-                                class="mt-4"
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                        >
+                            <h3
+                                class="text-lg font-semibold text-gray-900 mb-4"
                             >
-                                <div
-                                    v-for="prescription in appointment.prescriptions"
-                                    :key="prescription.id"
-                                    class="border p-4 mb-4 rounded bg-gray-50"
+                                Quick Actions
+                            </h3>
+                            <div class="space-y-3">
+                                <a
+                                    v-if="latestPrescription"
+                                    :href="`/doctor/appointments/${appointment.id}/prescriptions/${latestPrescription.id}/download-pdf`"
+                                    target="_blank"
+                                    class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors group"
                                 >
-                                    <div
-                                        class="flex items-center justify-between mb-2"
-                                    >
-                                        <p class="text-sm text-gray-500">
-                                            Created at:
-                                            {{
-                                                new Date(
-                                                    prescription.created_at
-                                                ).toLocaleString()
-                                            }}
-                                        </p>
-                                        <a
-                                            :href="`/doctor/appointments/${appointment.id}/prescriptions/${prescription.id}/download-pdf`"
-                                            class="inline-flex items-center px-3 py-1 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                            target="_blank"
-                                        >
+                                    <div class="flex items-center space-x-3">
+                                        <div class="p-2 bg-red-50 rounded-lg">
                                             <svg
-                                                class="w-3 h-3 mr-1"
+                                                class="w-5 h-5 text-red-600"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -211,159 +336,377 @@ Advice: ${advice.value}
                                                     stroke-linejoin="round"
                                                     stroke-width="2"
                                                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                                ></path>
+                                                />
                                             </svg>
-                                            Download
-                                        </a>
-                                    </div>
-                                    <pre class="whitespace-pre-wrap">{{
-                                        prescription.prescription_text
-                                    }}</pre>
-                                </div>
-                            </div>
-                            <div v-else class="mt-4">
-                                <p>No prescriptions yet.</p>
-                            </div>
-
-                            <!-- Add New Prescription Form -->
-                            <div class="mt-8">
-                                <h4 class="text-lg font-medium">
-                                    Add New Prescription
-                                </h4>
-
-                                <form
-                                    @submit.prevent="submitPrescription"
-                                    class="mt-4 space-y-4"
-                                >
-                                    <!-- Diagnosis -->
-                                    <div>
-                                        <label class="block font-semibold mb-1"
-                                            >Diagnosis:</label
+                                        </div>
+                                        <span
+                                            class="text-sm font-medium text-gray-700"
+                                            >Download Latest Prescription</span
                                         >
-                                        <input
-                                            v-model="diagnosis"
-                                            type="text"
-                                            class="w-full border rounded p-2"
-                                            placeholder="e.g. Fever, Cough"
-                                            required
+                                    </div>
+                                    <svg
+                                        class="w-4 h-4 text-gray-400 group-hover:text-gray-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M9 5l7 7-7 7"
                                         />
+                                    </svg>
+                                </a>
+                                <button
+                                    class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors group"
+                                >
+                                    <div class="flex items-center space-x-3">
+                                        <div
+                                            class="p-2 bg-purple-50 rounded-lg"
+                                        >
+                                            <svg
+                                                class="w-5 h-5 text-purple-600"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <span
+                                            class="text-sm font-medium text-gray-700"
+                                            >Add Hospital Notes</span
+                                        >
                                     </div>
+                                    <svg
+                                        class="w-4 h-4 text-gray-400 group-hover:text-gray-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M9 5l7 7-7 7"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-                                    <!-- Medicine Table -->
-                                    <div>
-                                        <label class="block font-semibold mb-1"
-                                            >Medicines:</label
-                                        >
-                                        <table
-                                            class="w-full border border-gray-300"
-                                        >
-                                            <thead class="bg-gray-100">
-                                                <tr>
-                                                    <th class="p-2 border">
-                                                        Medicine Name
-                                                    </th>
-                                                    <th class="p-2 border">
-                                                        Dosage
-                                                    </th>
-                                                    <th class="p-2 border">
-                                                        Duration
-                                                    </th>
-                                                    <th class="p-2 border"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr
-                                                    v-for="(
-                                                        m, index
-                                                    ) in medicines"
-                                                    :key="index"
-                                                >
-                                                    <td class="p-2 border">
-                                                        <input
-                                                            v-model="m.name"
-                                                            type="text"
-                                                            class="w-full border p-1 rounded"
-                                                            placeholder="Medicine name"
-                                                            required
-                                                        />
-                                                    </td>
-                                                    <td class="p-2 border">
-                                                        <input
-                                                            v-model="m.dosage"
-                                                            type="text"
-                                                            class="w-full border p-1 rounded"
-                                                            placeholder="e.g. 1 tab thrice daily"
-                                                            required
-                                                        />
-                                                    </td>
-                                                    <td class="p-2 border">
-                                                        <input
-                                                            v-model="m.duration"
-                                                            type="text"
-                                                            class="w-full border p-1 rounded"
-                                                            placeholder="e.g. 5 days"
-                                                            required
-                                                        />
-                                                    </td>
-                                                    <td
-                                                        class="p-2 border text-center"
+                    <!-- Right Column - Prescriptions -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- New Prescription Form -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-black-300 overflow-hidden"
+                        >
+                            <div class="px-6 py-4 border-b border-black-200">
+                                <h3 class="text-lg font-semibold text-gray-900">
+                                    New Prescription
+                                </h3>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    Fill out the prescription details below
+                                </p>
+                            </div>
+
+                            <form
+                                @submit.prevent="submitPrescription"
+                                class="p-6 space-y-6"
+                            >
+                                <!-- Diagnosis -->
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                    >
+                                        Diagnosis
+                                        <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        v-model="diagnosis"
+                                        type="text"
+                                        class="w-full px-4 py-3 border border-black-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                        placeholder="Enter diagnosis (e.g., Upper respiratory infection, Hypertension)"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Medicines -->
+                                <div>
+                                    <label class="block font-semibold mb-2"
+                                        >Medicines:</label
+                                    >
+
+                                    <table
+                                        class="w-full rounded-lg overflow-hidden"
+                                    >
+                                        <thead class="text-gray-700">
+                                            <tr>
+                                                <th>Medicine Name</th>
+                                                <th>Dosage</th>
+                                                <th>Duration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(
+                                                    medicine, index
+                                                ) in medicines"
+                                                :key="index"
+                                                class="bg-white"
+                                            >
+                                                <td>
+                                                    <input
+                                                        v-model="medicine.name"
+                                                        type="text"
+                                                        class="w-full px-2 py-1 border rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                                        placeholder="Medicine name"
+                                                        required
+                                                    />
+                                                </td>
+                                                <td class="p-3">
+                                                    <input
+                                                        v-model="
+                                                            medicine.dosage
+                                                        "
+                                                        type="text"
+                                                        class="w-full px-2 py-1 border rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                                        placeholder="e.g. 1 tab thrice daily"
+                                                        required
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        v-model="
+                                                            medicine.duration
+                                                        "
+                                                        type="text"
+                                                        class="w-full px-2 py-1 border rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                                        placeholder="e.g. 5 days"
+                                                        required
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        v-if="
+                                                            medicines.length > 1
+                                                        "
+                                                        type="button"
+                                                        @click="
+                                                            removeMedicineRow(
+                                                                index
+                                                            )
+                                                        "
+                                                        class="text-red-500 hover:text-red-700 font-bold"
                                                     >
-                                                        <button
-                                                            type="button"
-                                                            @click="
-                                                                removeMedicineRow(
-                                                                    index
-                                                                )
-                                                            "
-                                                            class="text-red-500 hover:text-red-700"
-                                                            v-if="
-                                                                medicines.length >
-                                                                1
-                                                            "
-                                                        >
-                                                            ✖
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                        ✖
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                                        <button
-                                            type="button"
-                                            @click="addMedicineRow"
-                                            class="mt-2 text-blue-600 hover:underline"
-                                        >
-                                            + Add Medicine
-                                        </button>
-                                    </div>
+                                    <button
+                                        type="button"
+                                        @click="addMedicineRow"
+                                        class="mt-2 text-indigo-600 hover:underline font-medium"
+                                    >
+                                        + Add Medicine
+                                    </button>
+                                </div>
 
-                                    <!-- Advice -->
-                                    <div>
-                                        <label class="block font-semibold mb-1"
-                                            >Advice:</label
-                                        >
-                                        <textarea
-                                            v-model="advice"
-                                            rows="3"
-                                            class="w-full border rounded p-2"
-                                            placeholder="e.g. Drink boiled water, Take rest"
-                                            required
-                                        ></textarea>
-                                    </div>
+                                <!-- Advice -->
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                    >
+                                        Advice
+                                        <span class="text-red-500">*</span>
+                                    </label>
+                                    <textarea
+                                        v-model="advice"
+                                        rows="4"
+                                        class="w-full px-4 py-3 border border-black-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                        placeholder="Provide medical advice and instructions (e.g., Rest, Hydration, Follow-up in 3 days)"
+                                        required
+                                    ></textarea>
+                                </div>
 
-                                    <!-- Submit -->
+                                <!-- Submit Button -->
+                                <div
+                                    class="flex items-center justify-end pt-4 border-t border-gray-200"
+                                >
                                     <button
                                         type="submit"
                                         :disabled="isSubmitting"
-                                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                        class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"
                                     >
+                                        <svg
+                                            v-if="isSubmitting"
+                                            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                class="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                stroke-width="4"
+                                            ></circle>
+                                            <path
+                                                class="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            ></path>
+                                        </svg>
+                                        <svg
+                                            v-else
+                                            class="w-5 h-5 mr-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
+                                        </svg>
                                         {{
                                             isSubmitting
-                                                ? "Submitting..."
-                                                : "Add Prescription"
+                                                ? "Creating Prescription..."
+                                                : "Create Prescription"
                                         }}
                                     </button>
-                                </form>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Existing Prescriptions -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden"
+                        >
+                            <div class="px-6 py-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3
+                                        class="text-lg font-semibold text-gray-900"
+                                    >
+                                        Prescription History
+                                    </h3>
+                                    <span
+                                        v-if="
+                                            appointment.prescriptions &&
+                                            appointment.prescriptions.length > 0
+                                        "
+                                        class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
+                                    >
+                                        {{ appointment.prescriptions.length }}
+                                        prescription{{
+                                            appointment.prescriptions.length !==
+                                            1
+                                                ? "s"
+                                                : ""
+                                        }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div
+                                v-if="
+                                    appointment.prescriptions &&
+                                    appointment.prescriptions.length > 0
+                                "
+                                class="divide-y divide-gray-200"
+                            >
+                                <div
+                                    v-for="prescription in appointment.prescriptions"
+                                    :key="prescription.id"
+                                    class="p-6 hover:bg-gray-50/50 transition-colors"
+                                >
+                                    <div
+                                        class="flex items-center justify-between mb-4"
+                                    >
+                                        <p class="text-sm text-gray-500">
+                                            {{
+                                                new Date(
+                                                    prescription.created_at
+                                                ).toLocaleString()
+                                            }}
+                                        </p>
+                                        <div
+                                            class="flex items-center space-x-2"
+                                        >
+                                            <a
+                                                :href="`/doctor/appointments/${appointment.id}/prescriptions/${prescription.id}/download-pdf`"
+                                                target="_blank"
+                                                class="inline-flex items-center px-3 py-1.5 bg-white border border-black-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4 mr-1.5"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                    />
+                                                </svg>
+                                                Download PDF
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="bg-gray-50 rounded-xl p-4 border border-gray-200"
+                                    >
+                                        <pre
+                                            class="whitespace-pre-wrap font-sans text-sm text-gray-700"
+                                            >{{
+                                                prescription.prescription_text
+                                            }}</pre
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="p-12 text-center">
+                                <div
+                                    class="p-4 bg-gray-50 rounded-2xl inline-flex mb-4"
+                                >
+                                    <svg
+                                        class="w-8 h-8 text-gray-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.5"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                        />
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-lg font-semibold text-gray-900 mb-2"
+                                >
+                                    No prescriptions yet
+                                </h3>
+                                <p class="text-gray-500 max-w-md mx-auto">
+                                    Create your first prescription for this
+                                    patient using the form below.
+                                </p>
                             </div>
                         </div>
                     </div>
