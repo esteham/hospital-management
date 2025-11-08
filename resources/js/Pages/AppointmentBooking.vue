@@ -96,7 +96,19 @@ const submitForm = async () => {
             body: formData,
         });
 
-        const result = await response.json();
+        let result;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            result = await response.json();
+        } else {
+            // If not JSON, treat as error and get text
+            const text = await response.text();
+            console.error("Non-JSON response:", text);
+            result = {
+                message:
+                    "Server returned an unexpected response. Please try again.",
+            };
+        }
 
         if (response.ok) {
             alert("Appointment booked successfully!");
@@ -179,10 +191,10 @@ const availableDates = computed(() => {
         schedule.day_of_week.forEach((day) => availableDays.add(day));
     });
 
-    // Generate available dates for the next 60 days
+    // Generate available dates starting from tomorrow for the next 7 days
     const dates = [];
     const today = new Date();
-    for (let i = 0; i < 7; i++) {
+    for (let i = 1; i < 8; i++) {
         const date = new Date(today);
         date.setDate(today.getDate() + i);
         const dayName = date
