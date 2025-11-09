@@ -1,6 +1,6 @@
 <script setup>
 import { Link, usePage } from "@inertiajs/vue3";
-import { computed, ref } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import Logo from "@/assets/images/logo/logo.png";
 
 defineProps({ title: { type: String, default: "" } });
@@ -10,10 +10,46 @@ const user = computed(() => page.props.auth?.user ?? null);
 const isAdmin = computed(() => user.value && user.value.role === "admin");
 const isDoctor = computed(() => user.value && user.value.role === "doctor");
 const sidebarOpen = ref(false);
+const sidebarWidth = ref(320); // Default width in px (w-80 = 20rem = 320px)
+const isResizing = ref(false);
+const isSidebarCollapsed = ref(false);
 
 const isRouteActive = (routeName) => {
     return route().current() === routeName;
 };
+
+const startResize = (e) => {
+    isResizing.value = true;
+    document.addEventListener("mousemove", resize);
+    document.addEventListener("mouseup", stopResize);
+    e.preventDefault();
+};
+
+const resize = (e) => {
+    if (isResizing.value) {
+        const newWidth = e.clientX;
+        if (newWidth >= 200 && newWidth <= 600) {
+            // Min 200px, max 600px
+            sidebarWidth.value = newWidth;
+            isSidebarCollapsed.value = false; // Expand if resizing
+        }
+    }
+};
+
+const toggleSidebar = () => {
+    isSidebarCollapsed.value = !isSidebarCollapsed.value;
+};
+
+const stopResize = () => {
+    isResizing.value = false;
+    document.removeEventListener("mousemove", resize);
+    document.removeEventListener("mouseup", stopResize);
+};
+
+onUnmounted(() => {
+    document.removeEventListener("mousemove", resize);
+    document.removeEventListener("mouseup", stopResize);
+});
 </script>
 
 <template>
@@ -45,16 +81,21 @@ const isRouteActive = (routeName) => {
         <!-- Admin Sidebar -->
         <aside
             v-if="isAdmin"
-            class="w-80 bg-white/10 backdrop-blur-2xl border-r border-white/80 shadow-2xl flex flex-col"
+            :style="{
+                width: isSidebarCollapsed ? '130px' : sidebarWidth + 'px',
+            }"
+            class="bg-white/10 backdrop-blur-2xl border-r border-white/80 shadow-2xl flex flex-col relative transition-all duration-300"
         >
             <!-- Sidebar Header -->
             <div class="p-8 border-b border-white/10">
                 <div class="flex items-center space-x-4">
-                    <div
-                        class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"
+                    <button
+                        @click="toggleSidebar"
+                        class="p-2 hover:bg-white/20 rounded-xl transition-colors duration-200"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
-                            class="w-7 h-7 text-white"
+                            class="w-5 h-5 text-slate-700"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -63,17 +104,26 @@ const isRouteActive = (routeName) => {
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                :d="
+                                    isSidebarCollapsed
+                                        ? 'M9 5l7 7-7 7'
+                                        : 'M15 19l-7-7 7-7'
+                                "
                             />
                         </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-800">
-                            Admin Panel
-                        </h2>
-                        <p class="text-slate-600 mt-1 text-sm">
-                            Welcome back, {{ user.name }} 👋
-                        </p>
+                    </button>
+                    <div
+                        v-if="!isSidebarCollapsed"
+                        class="flex items-center space-x-4"
+                    >
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">
+                                Admin Panel
+                            </h2>
+                            <p class="text-slate-600 mt-1 text-sm">
+                                Welcome back, {{ user.name }} 👋
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,6 +140,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-blue-600 group-hover:text-white"
@@ -105,7 +156,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Dashboard</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Dashboard</span
+                    >
                 </Link>
 
                 <Link
@@ -119,6 +172,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-green-600 group-hover:text-white"
@@ -134,7 +188,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Manage Doctors</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Manage Doctors</span
+                    >
                 </Link>
 
                 <Link
@@ -147,6 +203,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center group-hover:bg-cyan-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-cyan-600 group-hover:text-white"
@@ -162,7 +219,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Manage Staff</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Manage Staff</span
+                    >
                 </Link>
 
                 <Link
@@ -176,6 +235,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-purple-600 group-hover:text-white"
@@ -191,7 +251,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Doctors Schedules</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Doctors Schedules</span
+                    >
                 </Link>
 
                 <Link
@@ -205,6 +267,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-indigo-600 group-hover:text-white"
@@ -220,7 +283,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Booking Package</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Booking Package</span
+                    >
                 </Link>
 
                 <Link
@@ -234,6 +299,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-teal-600 group-hover:text-white"
@@ -249,7 +315,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Dr. Appointments</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Dr. Appointments</span
+                    >
                 </Link>
 
                 <Link
@@ -263,6 +331,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-orange-600 group-hover:text-white"
@@ -278,7 +347,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Manage Packages</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Manage Packages</span
+                    >
                 </Link>
 
                 <Link
@@ -291,6 +362,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center group-hover:bg-rose-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-rose-600 group-hover:text-white"
@@ -306,7 +378,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Manage News</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Manage News</span
+                    >
                 </Link>
             </nav>
 
@@ -335,25 +409,38 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Log Out</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Log Out</span
+                    >
                 </Link>
             </div>
+
+            <!-- Resize Handle -->
+            <div
+                class="absolute top-0 right-0 w-1 h-full bg-gray-300 cursor-col-resize hover:bg-gray-400 transition-colors"
+                @mousedown="startResize"
+            ></div>
         </aside>
         <!-- Admin Sidebar -->
 
         <!-- Doctor Sidebar -->
         <aside
             v-if="isDoctor"
-            class="w-80 bg-white/10 backdrop-blur-2xl border-r border-white/80 shadow-2xl flex flex-col"
+            :style="{
+                width: isSidebarCollapsed ? '130px' : sidebarWidth + 'px',
+            }"
+            class="bg-white/10 backdrop-blur-2xl border-r border-white/80 shadow-2xl flex flex-col relative transition-all duration-300"
         >
             <!-- Sidebar Header -->
             <div class="p-8 border-b border-white/10">
                 <div class="flex items-center space-x-4">
-                    <div
-                        class="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg"
+                    <button
+                        @click="toggleSidebar"
+                        class="p-2 hover:bg-white/20 rounded-xl transition-colors duration-200"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
-                            class="w-7 h-7 text-white"
+                            class="w-5 h-5 text-slate-700"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -362,17 +449,26 @@ const isRouteActive = (routeName) => {
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                :d="
+                                    isSidebarCollapsed
+                                        ? 'M9 5l7 7-7 7'
+                                        : 'M15 19l-7-7 7-7'
+                                "
                             />
                         </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-800">
-                            Doctor Portal
-                        </h2>
-                        <p class="text-slate-600 mt-1 text-sm">
-                            Welcome back, {{ user.name }} 👋
-                        </p>
+                    </button>
+                    <div
+                        v-if="!isSidebarCollapsed"
+                        class="flex items-center space-x-4"
+                    >
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">
+                                Doctor Portal
+                            </h2>
+                            <p class="text-slate-600 mt-1 text-sm">
+                                Welcome back, {{ user.name }} 👋
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -389,6 +485,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-blue-600 group-hover:text-white"
@@ -404,7 +501,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Dashboard</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Dashboard</span
+                    >
                 </Link>
 
                 <Link
@@ -417,6 +516,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-purple-600 group-hover:text-white"
@@ -432,7 +532,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">My Schedules</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >My Schedules</span
+                    >
                 </Link>
 
                 <Link
@@ -446,6 +548,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-teal-600 group-hover:text-white"
@@ -461,7 +564,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Appointments</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Appointments</span
+                    >
                 </Link>
 
                 <Link
@@ -474,6 +579,7 @@ const isRouteActive = (routeName) => {
                 >
                     <div
                         class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
                             class="w-5 h-5 text-yellow-600 group-hover:text-white"
@@ -489,7 +595,9 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Messages</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Messages</span
+                    >
                 </Link>
             </nav>
 
@@ -518,9 +626,17 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Log Out</span>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Log Out</span
+                    >
                 </Link>
             </div>
+
+            <!-- Resize Handle -->
+            <div
+                class="absolute top-0 right-0 w-1 h-full bg-gray-300 cursor-col-resize hover:bg-gray-400 transition-colors"
+                @mousedown="startResize"
+            ></div>
         </aside>
 
         <!-- Mobile Sidebar Overlay -->
