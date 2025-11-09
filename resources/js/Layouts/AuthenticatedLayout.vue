@@ -10,6 +10,14 @@ const user = computed(() => page.props.auth?.user ?? null);
 const isAdmin = computed(() => user.value && user.value.role === "admin");
 const isDoctor = computed(() => user.value && user.value.role === "doctor");
 const sidebarOpen = ref(false);
+
+const isActive = (path) => {
+    return page.url.value === path;
+};
+
+const isRouteActive = (routeName) => {
+    return route().current() === routeName;
+};
 </script>
 
 <template>
@@ -79,6 +87,10 @@ const sidebarOpen = ref(false);
                 <Link
                     :href="route('dashboard')"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isRouteActive('dashboard'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
@@ -103,6 +115,10 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/admin/doctors"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isActive('/admin/doctors'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300"
@@ -127,6 +143,10 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/admin/staff"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isActive('/admin/staff'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center group-hover:bg-cyan-500 transition-colors duration-300"
@@ -151,6 +171,10 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/admin/schedules"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isActive('/admin/schedules'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
@@ -175,6 +199,11 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/admin/health-checks"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20': isActive(
+                            '/admin/health-checks'
+                        ),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
@@ -199,6 +228,11 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/admin/package-bookings"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20': isActive(
+                            '/admin/package-bookings'
+                        ),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-500 transition-colors duration-300"
@@ -223,6 +257,11 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/admin/appointments"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20': isActive(
+                            '/admin/appointments'
+                        ),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors duration-300"
@@ -247,6 +286,10 @@ const sidebarOpen = ref(false);
                 <Link
                     :href="route('admin.news.index')"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isRouteActive('admin.news.index'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center group-hover:bg-rose-500 transition-colors duration-300"
@@ -341,6 +384,10 @@ const sidebarOpen = ref(false);
                 <Link
                     :href="route('dashboard')"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isRouteActive('dashboard'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
@@ -365,6 +412,10 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/doctor/schedules"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isActive('/doctor/schedules'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
@@ -389,6 +440,11 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/doctor/appointments"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20': isActive(
+                            '/doctor/appointments'
+                        ),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors duration-300"
@@ -413,6 +469,10 @@ const sidebarOpen = ref(false);
                 <Link
                     href="/doctor/messages"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :class="{
+                        'bg-white/50 shadow-lg border-white/20':
+                            isActive('/doctor/messages'),
+                    }"
                 >
                     <div
                         class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-500 transition-colors duration-300"
@@ -539,18 +599,21 @@ const sidebarOpen = ref(false);
                     v-if="user?.role === 'doctor'"
                     href="/doctor"
                     class="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200 font-medium"
+                    :class="{ 'bg-slate-50': isActive('/doctor') }"
                     >Doctor Portal</Link
                 >
                 <Link
                     v-if="user?.role === 'doctor'"
                     href="/doctor/schedules"
                     class="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200 font-medium"
+                    :class="{ 'bg-slate-50': isActive('/doctor/schedules') }"
                     >My Schedules</Link
                 >
                 <Link
                     v-if="user?.role === 'doctor'"
                     href="/doctor/messages"
                     class="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-xl transition-all duration-200 font-medium"
+                    :class="{ 'bg-slate-50': isActive('/doctor/messages') }"
                     >Messages</Link
                 >
             </nav>

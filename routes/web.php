@@ -13,6 +13,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Doctor\MessageController as DocMessageCtrl;
 use App\Http\Controllers\Doctor\AppointmentController as DocAppointmentCtrl;
 use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
 use App\Http\Controllers\Staff\StaffController as StaffCtrl;
 
@@ -70,7 +71,7 @@ Route::middleware(['auth','verified'])->group(function() {
     Route::get('/dashboard', function () {
         $user = auth()->user();
         if ($user->role === 'admin') {
-            return Inertia::render('Admin/Dashboard');
+            return app(DashboardController::class)->index();
         } elseif ($user->role === 'doctor') {
             return Inertia::render('Doctor/Dashboard');
         } elseif ($user->role === 'staff') {

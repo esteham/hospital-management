@@ -166,6 +166,9 @@
                     <table class="info-table">
                         <tr><td class="label">Full Name</td><td class="value">{{ $packageBooking->user->name }}</td></tr>
                         <tr><td class="label">Email</td><td class="value">{{ $packageBooking->user->email }}</td></tr>
+                        <br/>
+                        <tr class="section-title" />
+                        <tr><td class="label">Features</td><td class="value">{{ implode(', ', $packageBooking->healthCheck->features ?? []) }}</td></tr>
                     </table>
                 </div>
             </td>
