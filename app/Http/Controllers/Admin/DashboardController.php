@@ -43,6 +43,23 @@ class DashboardController extends Controller
         // Appointments today
         $appointmentsToday = Appointment::where('preferred_date', $now->toDateString())->count();
 
+        // Recent Appointments
+        $recentAppointments = Appointment::with('doctor.user')
+            ->orderBy('preferred_date', 'desc')
+            ->orderBy('preferred_time', 'desc')
+            ->take(3)
+            ->get()
+            ->map(function ($appointment) {
+                return [
+                    'id' => $appointment->id,
+                    'doctor_name' => $appointment->doctor_name,
+                    'speciality' => $appointment->speciality,
+                    'preferred_date' => $appointment->preferred_date,
+                    'preferred_time' => $appointment->preferred_time,
+                    'status' => $appointment->status,
+                ];
+            });
+
         $summaries = [
             'doctors' => $doctorsCurrent,
             'doctors_percentage' => $doctorsPercentage,
@@ -58,6 +75,7 @@ class DashboardController extends Controller
 
         return inertia('Admin/Dashboard', [
             'summaries' => $summaries,
+            'recentAppointments' => $recentAppointments,
         ]);
     }
 }

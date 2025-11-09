@@ -11,10 +11,6 @@ const isAdmin = computed(() => user.value && user.value.role === "admin");
 const isDoctor = computed(() => user.value && user.value.role === "doctor");
 const sidebarOpen = ref(false);
 
-const isActive = (path) => {
-    return page.url.value === path;
-};
-
 const isRouteActive = (routeName) => {
     return route().current() === routeName;
 };
@@ -29,7 +25,7 @@ const isRouteActive = (routeName) => {
         <button
             v-if="!isAdmin && !isDoctor"
             @click="sidebarOpen = true"
-            class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white/90 backdrop-blur-md rounded-xl shadow-lg border border-white/20"
+            class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white/90 backdrop-blur-md rounded-xl shadow-lg border border-white/80"
         >
             <svg
                 class="w-6 h-6 text-slate-700"
@@ -49,7 +45,7 @@ const isRouteActive = (routeName) => {
         <!-- Admin Sidebar -->
         <aside
             v-if="isAdmin"
-            class="w-80 bg-white/10 backdrop-blur-2xl border-r border-white/20 shadow-2xl flex flex-col"
+            class="w-80 bg-white/10 backdrop-blur-2xl border-r border-white/80 shadow-2xl flex flex-col"
         >
             <!-- Sidebar Header -->
             <div class="p-8 border-b border-white/10">
@@ -86,9 +82,9 @@ const isRouteActive = (routeName) => {
             <nav class="flex-1 p-6 space-y-3 overflow-y-auto">
                 <Link
                     :href="route('dashboard')"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
+                        'bg-sky-200 shadow-lg border-white/80':
                             isRouteActive('dashboard'),
                     }"
                 >
@@ -113,11 +109,12 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/admin/doctors"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('admin.doctors.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
-                            isActive('/admin/doctors'),
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'admin.doctors.index'
+                        ),
                     }"
                 >
                     <div
@@ -141,11 +138,11 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/admin/staff"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('admin.staff.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
-                            isActive('/admin/staff'),
+                        'bg-sky-200 shadow-lg border-white/80':
+                            isRouteActive('admin.staff.index'),
                     }"
                 >
                     <div
@@ -169,11 +166,12 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/admin/schedules"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('admin.schedules.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
-                            isActive('/admin/schedules'),
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'admin.schedules.index'
+                        ),
                     }"
                 >
                     <div
@@ -197,40 +195,11 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/admin/health-checks"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('admin.package-bookings.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20': isActive(
-                            '/admin/health-checks'
-                        ),
-                    }"
-                >
-                    <div
-                        class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
-                    >
-                        <svg
-                            class="w-5 h-5 text-orange-600 group-hover:text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                            />
-                        </svg>
-                    </div>
-                    <span class="font-semibold">Manage Packages</span>
-                </Link>
-
-                <Link
-                    href="/admin/package-bookings"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
-                    :class="{
-                        'bg-white/50 shadow-lg border-white/20': isActive(
-                            '/admin/package-bookings'
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'admin.package-bookings.index'
                         ),
                     }"
                 >
@@ -255,11 +224,11 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/admin/appointments"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('admin.appointments.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20': isActive(
-                            '/admin/appointments'
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'admin.appointments.index'
                         ),
                     }"
                 >
@@ -280,14 +249,43 @@ const isRouteActive = (routeName) => {
                             />
                         </svg>
                     </div>
-                    <span class="font-semibold">Manage Appointments</span>
+                    <span class="font-semibold">Dr. Appointments</span>
+                </Link>
+
+                <Link
+                    :href="route('admin.health-checks.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
+                    :class="{
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'admin.health-checks.index'
+                        ),
+                    }"
+                >
+                    <div
+                        class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-orange-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Manage Packages</span>
                 </Link>
 
                 <Link
                     :href="route('admin.news.index')"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
+                        'bg-sky-200 shadow-lg border-white/80':
                             isRouteActive('admin.news.index'),
                     }"
                 >
@@ -346,7 +344,7 @@ const isRouteActive = (routeName) => {
         <!-- Doctor Sidebar -->
         <aside
             v-if="isDoctor"
-            class="w-80 bg-white/10 backdrop-blur-2xl border-r border-white/20 shadow-2xl flex flex-col"
+            class="w-80 bg-white/10 backdrop-blur-2xl border-r border-white/80 shadow-2xl flex flex-col"
         >
             <!-- Sidebar Header -->
             <div class="p-8 border-b border-white/10">
@@ -383,9 +381,9 @@ const isRouteActive = (routeName) => {
             <nav class="flex-1 p-6 space-y-3 overflow-y-auto">
                 <Link
                     :href="route('dashboard')"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
+                        'bg-sky-200 shadow-lg border-white/80':
                             isRouteActive('dashboard'),
                     }"
                 >
@@ -410,11 +408,11 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/doctor/schedules"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('doctor.schedules')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
-                            isActive('/doctor/schedules'),
+                        'bg-sky-200 shadow-lg border-white/80':
+                            isRouteActive('doctor.schedules'),
                     }"
                 >
                     <div
@@ -438,11 +436,11 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/doctor/appointments"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('doctor.appointments.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20': isActive(
-                            '/doctor/appointments'
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'doctor.appointments.index'
                         ),
                     }"
                 >
@@ -467,11 +465,11 @@ const isRouteActive = (routeName) => {
                 </Link>
 
                 <Link
-                    href="/doctor/messages"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-white/50 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/20"
+                    :href="route('doctor.messages')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-white/50 shadow-lg border-white/20':
-                            isActive('/doctor/messages'),
+                        'bg-sky-200 shadow-lg border-white/80':
+                            isRouteActive('doctor.messages'),
                     }"
                 >
                     <div
@@ -535,7 +533,7 @@ const isRouteActive = (routeName) => {
         <!-- Mobile Sidebar -->
         <aside
             v-if="sidebarOpen && !isAdmin && !isDoctor"
-            class="lg:hidden fixed top-0 left-0 w-80 h-full bg-white/95 backdrop-blur-2xl shadow-2xl border-r border-white/20 z-50 transform transition-transform duration-300"
+            class="lg:hidden fixed top-0 left-0 w-80 h-full bg-white/95 backdrop-blur-2xl shadow-2xl border-r border-white/80 z-50 transform transition-transform duration-300"
         >
             <div class="p-6 border-b border-white/10">
                 <div class="flex items-center justify-between">
@@ -627,7 +625,7 @@ const isRouteActive = (routeName) => {
             <!-- Top Navigation for Non-Admin -->
             <nav
                 v-if="!isAdmin && !isDoctor"
-                class="bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm sticky top-0 z-30"
+                class="bg-white/80 backdrop-blur-xl border-b border-white/80 shadow-sm sticky top-0 z-30"
             >
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-20 items-center">
@@ -656,7 +654,7 @@ const isRouteActive = (routeName) => {
                         <!-- User Info & Logout -->
                         <div class="flex items-center space-x-6">
                             <div
-                                class="flex items-center space-x-4 bg-white/50 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-sm border border-white/20"
+                                class="flex items-center space-x-4 bg-sky-200 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-sm border border-white/80"
                             >
                                 <div
                                     class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg"
@@ -704,7 +702,7 @@ const isRouteActive = (routeName) => {
             <!-- Header (hidden for admin and doctor) -->
             <header
                 v-if="!isAdmin && !isDoctor && title"
-                class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border-b border-white/20"
+                class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border-b border-white/80"
             >
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-4 lg:px-10">
                     <div class="flex items-center space-x-4">
@@ -751,8 +749,8 @@ const isRouteActive = (routeName) => {
                     <div
                         :class="
                             isDoctor
-                                ? 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/20 overflow-hidden'
-                                : 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/20 overflow-hidden'
+                                ? 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/80 overflow-hidden'
+                                : 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/80 overflow-hidden'
                         "
                     >
                         <slot />

@@ -18,6 +18,10 @@ defineProps({
             staff_percentage: 0,
         }),
     },
+    recentAppointments: {
+        type: Array,
+        default: () => [],
+    },
 });
 </script>
 
@@ -97,11 +101,6 @@ defineProps({
                                     }}% from last month
                                 </p>
                             </div>
-                            <div class="bg-blue-50 p-3 rounded-full">
-                                <i
-                                    class="fas fa-user-md text-blue-500 text-xl"
-                                ></i>
-                            </div>
                         </div>
                     </div>
 
@@ -139,11 +138,6 @@ defineProps({
                                     }}% from last month
                                 </p>
                             </div>
-                            <div class="bg-green-50 p-3 rounded-full">
-                                <i
-                                    class="fas fa-user-injured text-green-500 text-xl"
-                                ></i>
-                            </div>
                         </div>
                     </div>
 
@@ -168,11 +162,6 @@ defineProps({
                                     scheduled today
                                 </p>
                             </div>
-                            <div class="bg-purple-50 p-3 rounded-full">
-                                <i
-                                    class="fas fa-calendar-check text-purple-500 text-xl"
-                                ></i>
-                            </div>
                         </div>
                     </div>
 
@@ -196,11 +185,6 @@ defineProps({
                                     {{ summaries.pending_reviews }} pending
                                     reviews
                                 </p>
-                            </div>
-                            <div class="bg-yellow-50 p-3 rounded-full">
-                                <i
-                                    class="fas fa-heartbeat text-yellow-500 text-xl"
-                                ></i>
                             </div>
                         </div>
                     </div>
@@ -251,22 +235,17 @@ defineProps({
                                     >
                                 </p>
                             </div>
-                            <div class="bg-red-50 p-3 rounded-full">
-                                <i
-                                    class="fas fa-users text-red-500 text-xl"
-                                ></i>
-                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Management Cards -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <div
                         class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 management-card hover:shadow-md hover:border-blue-200"
                     >
                         <div class="flex items-center mb-4">
-                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <div class="bg-sky-100 p-3 rounded-lg mr-4">
                                 <i
                                     class="fas fa-user-md text-blue-600 text-xl"
                                 ></i>
@@ -287,7 +266,7 @@ defineProps({
                         <div class="flex space-x-3">
                             <Link
                                 href="/admin/doctors"
-                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium flex items-center"
+                                class="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium flex items-center"
                             >
                                 <i class="fas fa-plus mr-2"></i> Add Doctor
                             </Link>
@@ -295,7 +274,7 @@ defineProps({
                                 href="/admin/doctors"
                                 class="bg-white text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium"
                             >
-                                View All
+                                All Doctors
                             </Link>
                         </div>
                     </div>
@@ -304,7 +283,7 @@ defineProps({
                         class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 management-card hover:shadow-md hover:border-green-200"
                     >
                         <div class="flex items-center mb-4">
-                            <div class="bg-green-100 p-3 rounded-lg mr-4">
+                            <div class="bg-sky-100 p-3 rounded-lg mr-4">
                                 <i
                                     class="fas fa-calendar-alt text-green-600 text-xl"
                                 ></i>
@@ -325,13 +304,13 @@ defineProps({
                         <div class="flex space-x-3">
                             <Link
                                 href="/admin/schedules"
-                                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center"
+                                class="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center"
                             >
-                                <i class="fas fa-plus mr-2"></i> New Schedule
+                                <i class="fas fa-plus mr-2"></i> Schedule
                             </Link>
                             <Link
                                 href="/admin/schedules"
-                                class="bg-white text-green-600 border border-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition-colors text-sm font-medium"
+                                class="bg-white text-sky-600 border border-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition-colors text-sm font-medium"
                             >
                                 Calendar View
                             </Link>
@@ -342,7 +321,7 @@ defineProps({
                         class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 management-card hover:shadow-md hover:border-yellow-200"
                     >
                         <div class="flex items-center mb-4">
-                            <div class="bg-yellow-100 p-3 rounded-lg mr-4">
+                            <div class="bg-sky-100 p-3 rounded-lg mr-4">
                                 <i
                                     class="fas fa-heartbeat text-yellow-600 text-xl"
                                 ></i>
@@ -363,14 +342,14 @@ defineProps({
                         <div class="flex space-x-3">
                             <Link
                                 href="/admin/health-checks/create"
-                                class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors text-sm font-medium flex items-center"
+                                class="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors text-sm font-medium flex items-center"
                             >
                                 <i class="fas fa-file-medical mr-2"></i> New
                                 Record
                             </Link>
                             <Link
                                 href="/admin/health-checks"
-                                class="bg-white text-yellow-600 border border-yellow-600 px-4 py-2 rounded-lg hover:bg-yellow-50 transition-colors text-sm font-medium"
+                                class="bg-white text-sky-600 border border-yellow-600 px-4 py-2 rounded-lg hover:bg-yellow-50 transition-colors text-sm font-medium"
                             >
                                 View Reports
                             </Link>
@@ -387,85 +366,47 @@ defineProps({
                             <h3 class="font-semibold text-gray-800 text-lg">
                                 Recent Appointments
                             </h3>
-                            <button class="text-blue-600 text-sm font-medium">
+                            <Link
+                                href="/admin/appointments"
+                                class="text-blue-600 text-sm font-medium"
+                            >
                                 View All
-                            </button>
+                            </Link>
                         </div>
                         <div class="space-y-4">
                             <div
-                                class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
+                                v-for="appointment in recentAppointments"
+                                :key="appointment.id"
+                                class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
                             >
                                 <div class="flex items-center">
-                                    <div
-                                        class="bg-blue-100 p-2 rounded-lg mr-3"
-                                    >
-                                        <i
-                                            class="fas fa-user-md text-blue-600"
-                                        ></i>
-                                    </div>
                                     <div>
                                         <p class="font-medium text-gray-800">
-                                            Dr. Sarah Johnson
+                                            {{ appointment.doctor_name }}
                                         </p>
                                         <p class="text-sm text-gray-500">
-                                            Cardiology • 10:00 AM
+                                            {{ appointment.speciality }} •
+                                            {{ appointment.preferred_time }}
                                         </p>
                                     </div>
                                 </div>
                                 <span
-                                    class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"
-                                    >Completed</span
+                                    :class="[
+                                        'text-xs px-2 py-1 rounded-full',
+                                        appointment.status === 'completed'
+                                            ? 'bg-green-100 text-green-800'
+                                            : appointment.status ===
+                                              'in_progress'
+                                            ? 'bg-blue-100 text-blue-800'
+                                            : 'bg-yellow-100 text-yellow-800',
+                                    ]"
                                 >
-                            </div>
-                            <div
-                                class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
-                            >
-                                <div class="flex items-center">
-                                    <div
-                                        class="bg-purple-100 p-2 rounded-lg mr-3"
-                                    >
-                                        <i
-                                            class="fas fa-user-md text-purple-600"
-                                        ></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-gray-800">
-                                            Dr. Michael Chen
-                                        </p>
-                                        <p class="text-sm text-gray-500">
-                                            Orthopedics • 11:30 AM
-                                        </p>
-                                    </div>
-                                </div>
-                                <span
-                                    class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
-                                    >In Progress</span
-                                >
-                            </div>
-                            <div
-                                class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
-                            >
-                                <div class="flex items-center">
-                                    <div
-                                        class="bg-green-100 p-2 rounded-lg mr-3"
-                                    >
-                                        <i
-                                            class="fas fa-user-md text-green-600"
-                                        ></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-gray-800">
-                                            Dr. Emily Wilson
-                                        </p>
-                                        <p class="text-sm text-gray-500">
-                                            Pediatrics • 2:15 PM
-                                        </p>
-                                    </div>
-                                </div>
-                                <span
-                                    class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full"
-                                    >Scheduled</span
-                                >
+                                    {{
+                                        appointment.status
+                                            .replace("_", " ")
+                                            .toUpperCase()
+                                    }}
+                                </span>
                             </div>
                         </div>
                     </div>

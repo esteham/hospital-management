@@ -129,37 +129,6 @@ const formattedDate = computed(() => {
     <Head :title="`Appointments - ${doctor?.user?.name} - ${date}`" />
 
     <AuthenticatedLayout>
-        <div class="flex p-3 items-center justify-between">
-            <div>
-                <h2 class="font-semibold text-2xl text-gray-900 leading-tight">
-                    Appointment Management
-                </h2>
-                <p class="text-gray-600 mt-1 text-sm">
-                    Managing appointments for {{ doctor?.user?.name }} on
-                    {{ formattedDate }}
-                </p>
-            </div>
-            <Link
-                href="/admin/appointments"
-                class="inline-flex items-center px-4 py-2.5 border border-gray-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-            >
-                <svg
-                    class="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                    />
-                </svg>
-                Back to Overview
-            </Link>
-        </div>
-
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- Doctor Information Card -->
@@ -168,19 +137,6 @@ const formattedDate = computed(() => {
                 >
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
-                            <div
-                                class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center"
-                            >
-                                <span class="text-white font-bold text-xl">
-                                    {{
-                                        doctor?.user?.name
-                                            ?.split(" ")
-                                            .map((n) => n[0])
-                                            .join("")
-                                            .toUpperCase()
-                                    }}
-                                </span>
-                            </div>
                             <div>
                                 <h3 class="text-xl font-bold text-gray-900">
                                     {{ doctor?.user?.name }}
@@ -193,7 +149,27 @@ const formattedDate = computed(() => {
                                 </p>
                             </div>
                         </div>
+
                         <div class="text-right">
+                            <Link
+                                href="/admin/appointments"
+                                class="inline-flex items-center px-5 py-2 border border-gray-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                            >
+                                <svg
+                                    class="w-4 h-4 mr-2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                    />
+                                </svg>
+                                Back
+                            </Link>
                             <p class="text-sm text-gray-500">
                                 Appointment Date
                             </p>
@@ -356,7 +332,7 @@ const formattedDate = computed(() => {
                                     v-model="searchQuery"
                                     type="text"
                                     placeholder="Search by patient name, email, or phone..."
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                                 />
                             </div>
                         </div>
@@ -369,7 +345,7 @@ const formattedDate = computed(() => {
                             </label>
                             <select
                                 v-model="statusFilter"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                             >
                                 <option value="all">All Status</option>
                                 <option value="pending">Pending</option>
@@ -386,7 +362,7 @@ const formattedDate = computed(() => {
                             </label>
                             <select
                                 v-model="timeFilter"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                             >
                                 <option value="">All Times</option>
                                 <option
@@ -407,7 +383,7 @@ const formattedDate = computed(() => {
 
                         <button
                             @click="clearFilters"
-                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
+                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
                         >
                             Clear Filters
                         </button>
@@ -415,7 +391,7 @@ const formattedDate = computed(() => {
                 </div>
 
                 <!-- Appointments Table -->
-                <div
+                <div  
                     class="bg-white overflow-hidden rounded-2xl shadow-sm border border-gray-200"
                 >
                     <div class="px-6 py-4 border-b border-gray-200">
@@ -469,22 +445,9 @@ const formattedDate = computed(() => {
                                     :key="appointment.id"
                                     class="hover:bg-gray-50/50 transition-colors"
                                 >
-                                    <td class="px-6 py-4">
+                                    <td class="px-4 py-3">
                                         <div class="flex items-center">
-                                            <div
-                                                class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center"
-                                            >
-                                                <span
-                                                    class="text-white font-semibold text-sm"
-                                                >
-                                                    {{
-                                                        appointment
-                                                            .first_name[0]
-                                                    }}{{
-                                                        appointment.last_name[0]
-                                                    }}
-                                                </span>
-                                            </div>
+                                            
                                             <div class="ml-4">
                                                 <div
                                                     class="text-sm font-semibold text-gray-900"
@@ -504,7 +467,7 @@ const formattedDate = computed(() => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-4 py-3">
                                         <div class="text-sm text-gray-900">
                                             {{ appointment.email }}
                                         </div>
@@ -512,7 +475,7 @@ const formattedDate = computed(() => {
                                             {{ appointment.phone }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-3 whitespace-nowrap">
                                         <div
                                             class="text-sm font-semibold text-gray-900"
                                         >
@@ -522,7 +485,7 @@ const formattedDate = computed(() => {
                                             {{ appointment.preferred_date }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-3 whitespace-nowrap">
                                         <select
                                             :value="appointment.status"
                                             @change="
@@ -550,7 +513,7 @@ const formattedDate = computed(() => {
                                         </select>
                                     </td>
                                     <td
-                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                                        class="px-4 py-3 whitespace-nowrap text-sm font-medium"
                                     >
                                         <Link
                                             :href="`/admin/appointments/${appointment.id}`"

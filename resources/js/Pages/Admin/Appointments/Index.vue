@@ -12,7 +12,7 @@ const { groupedAppointments } = defineProps({
 
 const searchQuery = ref("");
 const statusFilter = ref("all");
-const dateFilter = ref("");
+const dateFilter = ref(new Date().toISOString().slice(0, 10));
 
 // Status options for filtering
 const statusOptions = [
@@ -110,7 +110,7 @@ const clearFilters = () => {
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- Statistics Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
                     <div
                         class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
                     >
@@ -261,7 +261,7 @@ const clearFilters = () => {
                                     v-model="searchQuery"
                                     type="text"
                                     placeholder="Search by doctor name, speciality, or date..."
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                                 />
                             </div>
                         </div>
@@ -275,13 +275,13 @@ const clearFilters = () => {
                             <input
                                 v-model="dateFilter"
                                 type="date"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                             />
                         </div>
 
                         <button
                             @click="clearFilters"
-                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
+                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
                         >
                             Clear Filters
                         </button>
@@ -292,7 +292,7 @@ const clearFilters = () => {
                 <div
                     class="bg-white overflow-hidden rounded-2xl shadow-sm border border-gray-200"
                 >
-                    <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="px-4 py-4 border-b border-gray-200">
                         <div class="flex items-center justify-between">
                             <h3 class="text-lg font-semibold text-gray-900">
                                 Doctor Appointment Sessions
@@ -311,22 +311,22 @@ const clearFilters = () => {
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th
-                                        class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                                        class="px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                                     >
                                         Doctor Information
                                     </th>
                                     <th
-                                        class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                                        class="px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                                     >
                                         Session Date
                                     </th>
                                     <th
-                                        class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                                        class="px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                                     >
                                         Capacity
                                     </th>
                                     <th
-                                        class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                                        class="px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                                     >
                                         Actions
                                     </th>
@@ -338,23 +338,8 @@ const clearFilters = () => {
                                     :key="`${group.doctor_id}-${group.date}`"
                                     class="hover:bg-gray-50/50 transition-colors"
                                 >
-                                    <td class="px-6 py-4">
+                                    <td class="px-4 py-2">
                                         <div class="flex items-center">
-                                            <div
-                                                class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center"
-                                            >
-                                                <span
-                                                    class="text-white font-semibold text-sm"
-                                                >
-                                                    {{
-                                                        group.doctor_name
-                                                            .split(" ")
-                                                            .map((n) => n[0])
-                                                            .join("")
-                                                            .toUpperCase()
-                                                    }}
-                                                </span>
-                                            </div>
                                             <div class="ml-4">
                                                 <div
                                                     class="text-sm font-semibold text-gray-900"
@@ -369,7 +354,7 @@ const clearFilters = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-2 whitespace-nowrap">
                                         <div
                                             class="text-sm text-gray-900 font-medium"
                                         >
@@ -388,7 +373,7 @@ const clearFilters = () => {
                                             {{ group.date }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-2 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-1">
                                                 <div
@@ -444,7 +429,7 @@ const clearFilters = () => {
                                         </div>
                                     </td>
                                     <td
-                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                                        class="px-4 py-2 whitespace-nowrap text-sm font-medium"
                                     >
                                         <Link
                                             :href="`/admin/appointments/${group.doctor_id}/${group.date}`"

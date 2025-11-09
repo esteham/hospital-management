@@ -418,22 +418,8 @@ const formatCurrency = (amount) => {
                 <div
                     class="bg-white overflow-hidden rounded-2xl shadow-sm border border-gray-200"
                 >
-                    <div class="px-6 py-4 border-b border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-semibold text-gray-900">
-                                Package Bookings
-                            </h3>
-                            <span
-                                class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
-                            >
-                                Showing {{ filteredBookings.length }} of
-                                {{ packageBookings.length }} bookings
-                            </span>
-                        </div>
-                    </div>
-
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
+                        <table class="min-w-full divide-y divide-gray">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th
@@ -463,7 +449,7 @@ const formatCurrency = (amount) => {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="bg-white divide-y divide-black">
                                 <tr
                                     v-for="booking in filteredBookings"
                                     :key="booking.id"
@@ -471,24 +457,9 @@ const formatCurrency = (amount) => {
                                 >
                                     <td class="px-6 py-4">
                                         <div class="flex items-start space-x-4">
-                                            <div
-                                                class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center"
-                                            >
-                                                <span
-                                                    class="text-white font-semibold text-sm"
-                                                >
-                                                    {{
-                                                        booking.user.name
-                                                            .split(" ")
-                                                            .map((n) => n[0])
-                                                            .join("")
-                                                            .toUpperCase()
-                                                    }}
-                                                </span>
-                                            </div>
                                             <div class="flex-1 min-w-0">
                                                 <div
-                                                    class="flex items-center space-x-2 mb-2"
+                                                    class="flex items-center space-x-2 mb-1"
                                                 >
                                                     <p
                                                         class="text-sm font-semibold text-gray-900 truncate"
@@ -511,11 +482,11 @@ const formatCurrency = (amount) => {
                                                             .name
                                                     }}
                                                 </p>
-                                                <p
+                                                <!-- <p
                                                     class="text-xs text-gray-500"
                                                 >
                                                     Booking ID: {{ booking.id }}
-                                                </p>
+                                                </p> -->
                                             </div>
                                         </div>
                                     </td>
@@ -614,7 +585,7 @@ const formatCurrency = (amount) => {
                                                 )
                                             "
                                             target="_blank"
-                                            class="inline-flex items-center p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+                                            class="inline-flex items-center bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
                                             title="Download Receipt"
                                         >
                                             <svg
@@ -628,8 +599,9 @@ const formatCurrency = (amount) => {
                                                     stroke-linejoin="round"
                                                     stroke-width="2"
                                                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                                /></svg
-                                            >Download
+                                                />
+                                            </svg>
+                                            Download
                                         </a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -774,6 +746,12 @@ const formatCurrency = (amount) => {
                         </div>
                     </div>
                 </div>
+                <span
+                    class="text-right mt-4 inline-block text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
+                >
+                    Showing {{ filteredBookings.length }} of
+                    {{ packageBookings.length }} bookings
+                </span>
             </div>
         </div>
     </AppLayout>

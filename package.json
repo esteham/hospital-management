@@ -20,6 +20,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^7.1.0",
         "@vueup/vue-quill": "^1.2.0",
         "lodash": "^4.17.21",
         "lucide-vue-next": "^0.548.0",
