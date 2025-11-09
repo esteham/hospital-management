@@ -360,7 +360,7 @@ const formatCurrency = (amount) => {
                                     v-model="searchQuery"
                                     type="text"
                                     placeholder="Search by user name, package name, or payment type..."
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                                 />
                             </div>
                         </div>
@@ -373,7 +373,7 @@ const formatCurrency = (amount) => {
                             </label>
                             <select
                                 v-model="statusFilter"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                             >
                                 <option
                                     v-for="option in statusOptions"
@@ -393,7 +393,7 @@ const formatCurrency = (amount) => {
                             </label>
                             <select
                                 v-model="paymentTypeFilter"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                             >
                                 <option
                                     v-for="option in paymentTypeOptions"
@@ -407,7 +407,7 @@ const formatCurrency = (amount) => {
 
                         <button
                             @click="clearFilters"
-                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
+                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
                         >
                             Clear Filters
                         </button>
