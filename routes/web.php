@@ -132,6 +132,7 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::get('/admin/package-bookings/{package_booking}/download-pdf', [AdminPackageBookingController::class, 'downloadPdf'])->name('admin.package-bookings.download-pdf');
 
         Route::get('/admin/appointments', [AppointmentController::class, 'index'])->name('admin.appointments.index');
+        Route::get('/admin/appointments/{doctor}/{date}', [AppointmentController::class, 'showByDoctorDate'])->name('admin.appointments.show.by.doctor.date');
         Route::get('/admin/appointments/{appointment}', [AppointmentController::class, 'show'])->name('admin.appointments.show');
         Route::put('/admin/appointments/{appointment}', [AppointmentController::class, 'update'])->name('admin.appointments.update');
 

@@ -126,10 +126,29 @@ class AppointmentController extends Controller
 
     public function index()
     {
-        $appointments = Appointment::latest()->get();
+        $groupedAppointments = Appointment::where('status', '!=', 'cancelled')
+            ->select('doctor_id', 'preferred_date', DB::raw('count(*) as booked'))
+            ->groupBy('doctor_id', 'preferred_date')
+            ->with('doctor.user', 'doctor.schedules')
+            ->get()
+            ->map(function ($item) {
+                $dayOfWeek = strtolower(date('D', strtotime($item->preferred_date)));
+                $schedule = $item->doctor->schedules->first(function ($s) use ($dayOfWeek) {
+                    return in_array($dayOfWeek, $s->day_of_week);
+                });
+                $max = $schedule ? $schedule->max_patients_per_day : 0;
+                return [
+                    'doctor_id' => $item->doctor_id,
+                    'date' => $item->preferred_date,
+                    'doctor_name' => $item->doctor->user->name,
+                    'speciality' => $item->doctor->speciality,
+                    'booked' => $item->booked,
+                    'max' => $max,
+                ];
+            });
 
         return Inertia::render('Admin/Appointments/Index', [
-            'appointments' => $appointments
+            'groupedAppointments' => $groupedAppointments
         ]);
     }
 
@@ -137,6 +156,20 @@ class AppointmentController extends Controller
     {
         return Inertia::render('Admin/Appointments/Show', [
             'appointment' => $appointment
+        ]);
+    }
+
+    public function showByDoctorDate($doctorId, $date)
+    {
+        $appointments = Appointment::where('doctor_id', $doctorId)
+            ->where('preferred_date', $date)
+            ->with('doctor.user')
+            ->get();
+
+        return Inertia::render('Admin/Appointments/ShowByDoctorDate', [
+            'appointments' => $appointments,
+            'doctor' => $appointments->first()->doctor ?? null,
+            'date' => $date
         ]);
     }
 
@@ -148,9 +181,6 @@ class AppointmentController extends Controller
 
         $appointment->update($validated);
 
-        return response()->json([
-            'message' => 'Appointment updated successfully!',
-            'appointment' => $appointment
-        ]);
+        return redirect()->back()->with('success', 'Appointment updated successfully!');
     }
 }

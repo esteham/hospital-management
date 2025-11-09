@@ -35,14 +35,18 @@ const filteredAppointments = computed(() => {
             email.includes(query) ||
             date.includes(query);
 
-        const matchesStatus =
-            statusFilter.value === "all" || app.status === statusFilter.value;
-
-        return matchesSearch && matchesStatus;
+        if (searchQuery.value) {
+            return matchesSearch;
+        } else {
+            const matchesStatus =
+                statusFilter.value === "all" ||
+                app.status === statusFilter.value;
+            return matchesSearch && matchesStatus;
+        }
     });
 
-    // Filter by selected date if not "all"
-    if (selectedDate.value) {
+    // Filter by selected date if not "all" and not searching
+    if (selectedDate.value && !searchQuery.value) {
         filtered = filtered.filter(
             (app) => app.preferred_date === selectedDate.value
         );
@@ -82,44 +86,6 @@ const openModal = (appointment) => {
 const closeModal = () => {
     showModal.value = false;
     selectedAppointment.value = null;
-};
-
-const updateStatus = async (appointmentId, status) => {
-    if (isLoading.value) return;
-
-    isLoading.value = true;
-    try {
-        const response = await fetch(`/doctor/appointments/${appointmentId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-            },
-            body: JSON.stringify({ status }),
-        });
-
-        if (response.ok) {
-            const updatedAppointment = await response.json();
-            const index = appointments.value.findIndex(
-                (app) => app.id === appointmentId
-            );
-            if (index !== -1) {
-                appointments.value[index] = updatedAppointment.appointment;
-            }
-
-            // Show success notification
-            showNotification(`Appointment ${status} successfully`, "success");
-        } else {
-            throw new Error("Failed to update appointment status");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        showNotification("Failed to update appointment status", "error");
-    } finally {
-        isLoading.value = false;
-    }
 };
 
 const showNotification = (message, type = "info") => {
@@ -434,58 +400,6 @@ const clearFilters = () => {
                                 </div>
 
                                 <div class="flex flex-wrap gap-2">
-                                    <button
-                                        v-if="appointment.status === 'pending'"
-                                        @click="
-                                            updateStatus(
-                                                appointment.id,
-                                                'confirmed'
-                                            )
-                                        "
-                                        :disabled="isLoading"
-                                        class="flex-1 min-w-[120px] px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white rounded-xl font-medium transition-colors flex items-center justify-center space-x-2"
-                                    >
-                                        <svg
-                                            class="w-4 h-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M5 13l4 4L19 7"
-                                            />
-                                        </svg>
-                                        <span>Confirm</span>
-                                    </button>
-                                    <button
-                                        v-if="appointment.status === 'pending'"
-                                        @click="
-                                            updateStatus(
-                                                appointment.id,
-                                                'cancelled'
-                                            )
-                                        "
-                                        :disabled="isLoading"
-                                        class="flex-1 min-w-[120px] px-4 py-2.5 bg-rose-500 hover:bg-rose-600 disabled:bg-rose-300 text-white rounded-xl font-medium transition-colors flex items-center justify-center space-x-2"
-                                    >
-                                        <svg
-                                            class="w-4 h-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12"
-                                            />
-                                        </svg>
-                                        <span>Cancel</span>
-                                    </button>
                                     <Link
                                         :href="`/doctor/appointments/${appointment.id}`"
                                         class="flex-1 min-w-[120px] px-4 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2"
@@ -509,7 +423,8 @@ const clearFilters = () => {
                                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                             />
                                         </svg>
-                                        <span>Details</span>
+                                        <span>Details and Make Prescription
+                                        </span>
                                     </Link>
                                 </div>
                             </div>
