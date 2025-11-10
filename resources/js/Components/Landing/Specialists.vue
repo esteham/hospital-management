@@ -23,7 +23,12 @@ onMounted(() => {
         <div class="mx-auto overflow-hidden">
             <div class="text-card">
                 <h2 class="text-3xl font-semibold text-gray-900">
-                    Our Specialists
+                    Our
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
+                    >
+                        Specialists </span
+                    >👨‍⚕️
                 </h2>
                 <p class="text-l text-gray-600 max-w-2xl mt-2">
                     Highly Experienced, Internationally Trained Specialists from
@@ -121,14 +126,14 @@ onMounted(() => {
 <style scoped>
 .text-card {
     margin: 0 130px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 .specialties-offered {
     background-color: #fff;
 }
 
 .doctor-card {
-    width: 320px;
+    width: 340px;
     height: 180px;
     display: flex;
     transition: transform 0.3s ease;

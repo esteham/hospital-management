@@ -30,14 +30,14 @@ defineProps({
     <!-- Banner Slider Section -->
     <Banner />
 
-    <!-- Why Choose Us Section -->
-    <WhyChoose />
+    <!-- Specialists  Section -->
+    <Specialists />
 
     <!-- Health Check Packages Section -->
     <HealthCheck />
 
-    <!-- Shasthoshongi Blog Section -->
-    <Specialists />
+    <!-- Why Choose Us Section -->
+    <WhyChoose />
 
     <!-- News & Media Section -->
     <NewsMedia />
