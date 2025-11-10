@@ -28,8 +28,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <section id="news" class="py-10 md:py-12 bg-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="news" class="py-12 bg-gray-100">
+        <div>
             <div
                 class="text-card flex flex-col md:flex-row md:justify-between md:items-center"
             >
@@ -148,8 +148,8 @@ onMounted(() => {
 }
 
 .news-card {
-    width: 280px;
-    height: 380px;
+    width: 340px;
+    height: 440px;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
