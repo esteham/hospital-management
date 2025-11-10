@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use App\Models\News;
 
 class NewsSeeder extends Seeder
@@ -13,6 +14,9 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
+
+        DB::table('news')->truncate();
+
         News::create([
             'title' => 'Xet Hospital Launches Advanced Cancer Center',
             'excerpt' => 'New state-of-the-art cancer treatment facility now open with latest technology.',
