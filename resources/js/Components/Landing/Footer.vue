@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import { HeartOff, Link } from "lucide-vue-next";
 import Logo from "@/assets/images/logo/logo.png";
+
+// Payment logos
+import BkashLogo from "@/assets/images/payment/bkash.png";
+import NagadLogo from "@/assets/images/payment/nagad.png";
+import RocketLogo from "@/assets/images/payment/rocket.png";
+import UpayLogo from "@/assets/images/payment/upay.png";
+import VisaLogo from "@/assets/images/payment/visa.png";
+import MasterCardLogo from "@/assets/images/payment/mastercard.png";
 </script>
 
 <template>
-    <footer class="bg-gray-900 text-white py-16">
+    <footer
+        class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-20"
+    >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
                 <!-- Brand Section -->
                 <div class="lg:col-span-2">
                     <div class="flex items-center gap-4 mb-6">
@@ -26,15 +36,14 @@ import Logo from "@/assets/images/logo/logo.png";
                         patient well-being.
                     </p>
                     <div class="flex space-x-4 mt-6">
+                        <!-- Social Links -->
                         <a
                             href="https://facebook.com/esteham"
                             target="_blank"
-                            class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-blue-600 transition-colors duration-200"
+                            class="group w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-white transition-all duration-300 hover:scale-110"
                         >
                             <span class="sr-only">Facebook</span>
-                            <i class="fa-brands fa-facebook"></i>
                             <svg
-                                class="transition-all duration-300 group-hover:scale-110"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="28"
                                 height="28"
@@ -47,14 +56,14 @@ import Logo from "@/assets/images/logo/logo.png";
                                 />
                             </svg>
                         </a>
+
                         <a
                             href="https://x.com/esteham6"
                             target="_blank"
-                            class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-blue-400 transition-colors duration-200"
+                            class="group w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-white transition-all duration-300 hover:scale-110"
                         >
                             <span class="sr-only">Twitter</span>
                             <svg
-                                class="transition-all duration-300 group-hover:scale-110"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="28"
                                 height="28"
@@ -67,14 +76,14 @@ import Logo from "@/assets/images/logo/logo.png";
                                 />
                             </svg>
                         </a>
+
                         <a
                             href="https://www.linkedin.com/in/esteham"
                             target="_blank"
-                            class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-blue-700 transition-colors duration-200"
+                            class="group w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-white transition-all duration-300 hover:scale-110"
                         >
                             <span class="sr-only">LinkedIn</span>
                             <svg
-                                class="rounded-md transition-all duration-300 group-hover:scale-110"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="28"
                                 height="28"
@@ -99,35 +108,35 @@ import Logo from "@/assets/images/logo/logo.png";
                         <li>
                             <a
                                 href="#home"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                                class="text-gray-400 hover:text-white"
                                 >Home</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#services"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                                class="text-gray-400 hover:text-white"
                                 >Services</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#health-s"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                                class="text-gray-400 hover:text-white"
                                 >Health s</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#patient-stories"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                                class="text-gray-400 hover:text-white"
                                 >Patient Stories</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#blog"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                                class="text-gray-400 hover:text-white"
                                 >Blog</a
                             >
                         </li>
@@ -139,58 +148,98 @@ import Logo from "@/assets/images/logo/logo.png";
                     <h5 class="text-lg font-bold mb-6">Our Services</h5>
                     <ul class="space-y-3">
                         <li>
-                            <a
-                                href="#"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                            <a href="#" class="text-gray-400 hover:text-white"
                                 >Emergency Care</a
                             >
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                            <a href="#" class="text-gray-400 hover:text-white"
                                 >Cardiology</a
                             >
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                            <a href="#" class="text-gray-400 hover:text-white"
                                 >Neurology</a
                             >
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                            <a href="#" class="text-gray-400 hover:text-white"
                                 >Surgery</a
                             >
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                class="text-gray-400 hover:text-white transition-colors duration-200"
+                            <a href="#" class="text-gray-400 hover:text-white"
                                 >Diagnostics</a
                             >
                         </li>
                     </ul>
                 </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h5 class="text-lg font-bold mb-6">Stay Updated</h5>
+                    <p class="text-gray-400 mb-4">
+                        Subscribe to our newsletter for the latest health tips,
+                        news, and updates.
+                    </p>
+                    <div class="flex">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            class="flex-1 px-4 py-3 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button
+                            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-r-lg transition-all duration-200 hover:scale-105"
+                        >
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+            </div>
+            <div>
+                <h5 class="text-xl font-bold mb-4 mt-16">We Accept</h5>
+                <div class="flex gap-6 items-center">
+                    <img
+                        :src="BkashLogo"
+                        alt="bKash"
+                        class="h-8 rounded object-contain hover:scale-110 transition-all duration-300"
+                    />
+                    <img
+                        :src="NagadLogo"
+                        alt="Nagad"
+                        class="h-8 rounded object-contain hover:scale-110 transition-all duration-300"
+                    />
+                    <img
+                        :src="RocketLogo"
+                        alt="Rocket"
+                        class="h-8 rounded object-contain hover:scale-110 transition-all duration-300"
+                    />
+                    <img
+                        :src="UpayLogo"
+                        alt="Upay"
+                        class="h-8 rounded object-contain hover:scale-110 transition-all duration-300"
+                    />
+                    <img
+                        :src="VisaLogo"
+                        alt="Visa"
+                        class="h-8 rounded object-contain hover:scale-110 transition-all duration-300"
+                    />
+                    <img
+                        :src="MasterCardLogo"
+                        alt="MasterCard"
+                        class="h-8 rounded object-contain hover:scale-110 transition-all duration-300"
+                    />
+                </div>
             </div>
 
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-                <p class="text-gray-400">
+            <!-- Copyright -->
+            <div class="border-t border-gray-700 mt-10 pt-10 text-center">
+                <p class="text-gray-400 text-sm">
                     &copy; 2024 Xet Specialized Hospital. All rights reserved. |
-                    <a
-                        href="#"
-                        class="hover:text-white transition-colors duration-200"
-                        >Privacy Policy</a
-                    >
-                    •
-                    <a
-                        href="#"
-                        class="hover:text-white transition-colors duration-200"
-                        >Terms of Service</a
-                    >
+                    <a href="#" class="hover:text-white">Privacy Policy</a> •
+                    <a href="#" class="hover:text-white">Terms of Service</a>
                 </p>
             </div>
         </div>
