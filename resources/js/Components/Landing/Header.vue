@@ -1,6 +1,6 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 import Logo from "@/assets/images/logo/logo.png";
 // import { Rotate3D } from "lucide-vue-next"; // not used; remove if unnecessary
@@ -13,6 +13,9 @@ defineProps({
 const isMenuOpen = ref(false);
 const isServicesDropdownOpen = ref(false);
 
+// Computed to get current route name
+const currentRoute = computed(() => route().current());
+
 // optional helpers
 const closeAll = () => {
     isMenuOpen.value = false;
@@ -24,7 +27,7 @@ const closeAll = () => {
     <header
         class="bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100/50 sticky top-0 z-50"
     >
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
             <div class="flex justify-between items-center py-4">
                 <!-- Logo and Hospital Name -->
                 <Link :href="route('welcome')" @click.stop>
@@ -53,11 +56,21 @@ const closeAll = () => {
                 <nav class="hidden lg:flex space-x-8" @click.stop>
                     <Link
                         :href="route('welcome')"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
+                        :class="[
+                            'font-semibold transition-all duration-300 relative group py-2',
+                            currentRoute === 'welcome'
+                                ? 'text-blue-600'
+                                : 'text-gray-600 hover:text-blue-600',
+                        ]"
                     >
                         <span class="relative z-10">Home</span>
                         <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
+                            :class="[
+                                'absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300 rounded-full',
+                                currentRoute === 'welcome'
+                                    ? 'w-full'
+                                    : 'w-0 group-hover:w-full',
+                            ]"
                         />
                     </Link>
 
@@ -70,11 +83,16 @@ const closeAll = () => {
                     >
                         <button
                             type="button"
-                            class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2 flex items-center space-x-1"
+                            :class="[
+                                'font-semibold transition-all duration-300 relative group py-2 flex items-center space-x-1',
+                                currentRoute === 'news.all'
+                                    ? 'text-blue-600'
+                                    : 'text-gray-600 hover:text-blue-600',
+                            ]"
                             aria-haspopup="menu"
                             :aria-expanded="isServicesDropdownOpen"
                         >
-                            <span class="relative z-10">Services</span>
+                            <span class="relative z-10">News And Media</span>
                             <svg
                                 class="w-4 h-4 transition-transform duration-200"
                                 :class="{
@@ -92,7 +110,12 @@ const closeAll = () => {
                                 />
                             </svg>
                             <span
-                                class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
+                                :class="[
+                                    'absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300 rounded-full',
+                                    currentRoute === 'news.all'
+                                        ? 'w-full'
+                                        : 'w-0 group-hover:w-full',
+                                ]"
                             />
                         </button>
 
@@ -101,11 +124,11 @@ const closeAll = () => {
                             class="absolute top-8 left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                         >
                             <Link
-                                :href="route('appointment.booking')"
+                                href="#patient-stories"
                                 class="block px-4 py-2 text-gray-700 hover:bg-blue-50 font-semibold hover:text-blue-600 transition-colors duration-200"
                                 @click="isServicesDropdownOpen = false"
                             >
-                                Book Appointment
+                                Patient Stories
                             </Link>
                             <Link
                                 href="#health-s"
@@ -115,33 +138,54 @@ const closeAll = () => {
                                 Health Packages
                             </Link>
                             <Link
-                                :href="route('find.doctor')"
+                                :href="route('news.all')"
                                 class="block px-4 py-2 text-gray-700 hover:bg-blue-50 font-semibold hover:text-blue-600 transition-colors duration-200"
                                 @click="isServicesDropdownOpen = false"
                             >
-                                Find Doctor
+                                News
                             </Link>
                         </div>
                     </div>
 
-                    <a
-                        href="#patient-stories"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
+                    <Link
+                        :href="route('find.doctor')"
+                        :class="[
+                            'font-semibold transition-all duration-300 relative group py-2',
+                            currentRoute === 'find.doctor'
+                                ? 'text-blue-600'
+                                : 'text-gray-600 hover:text-blue-600',
+                        ]"
                     >
-                        <span class="relative z-10">Patient Stories</span>
+                        <span class="relative z-10">Find Doctor</span>
                         <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
+                            :class="[
+                                'absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300 rounded-full',
+                                currentRoute === 'find.doctor'
+                                    ? 'w-full'
+                                    : 'w-0 group-hover:w-full',
+                            ]"
                         />
-                    </a>
-                    <a
-                        href="#news"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
+                    </Link>
+
+                    <Link
+                        :href="route('appointment.booking')"
+                        :class="[
+                            'font-semibold transition-all duration-300 relative group py-2',
+                            currentRoute === 'appointment.booking'
+                                ? 'text-blue-600'
+                                : 'text-gray-600 hover:text-blue-600',
+                        ]"
                     >
-                        <span class="relative z-10">News</span>
+                        <span class="relative z-10">Appointment</span>
                         <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
+                            :class="[
+                                'absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300 rounded-full',
+                                currentRoute === 'appointment.booking'
+                                    ? 'w-full'
+                                    : 'w-0 group-hover:w-full',
+                            ]"
                         />
-                    </a>
+                    </Link>
                 </nav>
 
                 <!-- Right side (auth + hamburger) -->
@@ -216,7 +260,12 @@ const closeAll = () => {
                 <nav class="flex flex-col space-y-4">
                     <Link
                         :href="route('welcome')"
-                        class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-blue-50"
+                        :class="[
+                            'font-semibold transition-colors duration-200 py-2 px-4 rounded-lg',
+                            currentRoute === 'welcome'
+                                ? 'text-blue-600 bg-blue-50'
+                                : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50',
+                        ]"
                         @click="closeAll"
                     >
                         Home
@@ -229,7 +278,12 @@ const closeAll = () => {
                             @click.stop="
                                 isServicesDropdownOpen = !isServicesDropdownOpen
                             "
-                            class="text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-200 py-4 px-4 rounded-lg hover:bg-blue-50 flex items-center justify-between w-full"
+                            :class="[
+                                'font-semibold transition-colors duration-200 py-4 px-4 rounded-lg flex items-center justify-between w-full',
+                                currentRoute === 'news.all'
+                                    ? 'text-blue-600 bg-blue-50'
+                                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50',
+                            ]"
                             :aria-expanded="isServicesDropdownOpen"
                             aria-haspopup="menu"
                         >
