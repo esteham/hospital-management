@@ -49,7 +49,16 @@ Route::get('/find-doctor', function () {
     ]);
 })->name('find.doctor');
 
-Route::get('/book-appointment', [AppointmentController::class, 'create'])->name('appointment.booking');
+Route::get('/doctor/{id}', function ($id) {
+    $doctor = Doctor::with('user')->findOrFail($id);
+    return Inertia::render('DoctorDetail', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'doctor' => $doctor,
+    ]);
+})->name('doctor.detail');
+
+Route::get('/appointment-booking', [AppointmentController::class, 'create'])->name('appointment.booking');
 
 Route::get('/news/{id}', fn($id) => Inertia::render('NewsDetail', ['id' => $id]))->name('news.detail');
 

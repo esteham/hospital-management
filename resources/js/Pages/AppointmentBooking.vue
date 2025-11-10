@@ -11,6 +11,7 @@ const {
     laravelVersion,
     phpVersion,
     appointments,
+    selectedDoctor,
 } = defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
@@ -18,6 +19,7 @@ const {
     phpVersion: String,
     doctors: Array,
     appointments: Object,
+    selectedDoctor: Object,
 });
 
 // Function to generate time slots from doctor's schedules (start and end times only)
@@ -301,6 +303,14 @@ watch(
         }
     }
 );
+
+// Pre-fill form if selectedDoctor is provided
+onMounted(() => {
+    if (selectedDoctor) {
+        form.value.doctorId = selectedDoctor.id;
+        form.value.speciality = selectedDoctor.speciality;
+    }
+});
 
 // Benefits information
 const benefits = ref([
@@ -609,119 +619,6 @@ const hospitalStats = ref([
                         </div>
 
                         <form @submit.prevent="submitForm" class="space-y-8">
-                            <!-- Personal Information -->
-                            <div>
-                                <h3
-                                    class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3"
-                                >
-                                    <div
-                                        class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600"
-                                    >
-                                        👤
-                                    </div>
-                                    Personal Information
-                                </h3>
-                                <div class="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-1"
-                                        >
-                                            First Name *
-                                        </label>
-                                        <input
-                                            v-model="form.firstName"
-                                            type="text"
-                                            required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
-                                            placeholder="Enter your first name"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-1"
-                                        >
-                                            Last Name *
-                                        </label>
-                                        <input
-                                            v-model="form.lastName"
-                                            type="text"
-                                            required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
-                                            placeholder="Enter your last name"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="grid md:grid-cols-2 gap-6 mt-6">
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-1"
-                                        >
-                                            Email Address *
-                                        </label>
-                                        <input
-                                            v-model="form.email"
-                                            type="email"
-                                            required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
-                                            placeholder="your@email.com"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-1"
-                                        >
-                                            Phone Number *
-                                        </label>
-                                        <input
-                                            v-model="form.phone"
-                                            type="tel"
-                                            required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
-                                            placeholder="+88 (013) 1235-4567"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="grid md:grid-cols-2 gap-6 mt-6">
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-1"
-                                        >
-                                            Gender *
-                                        </label>
-                                        <select
-                                            v-model="form.gender"
-                                            required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
-                                        >
-                                            <option value="">
-                                                Select Gender
-                                            </option>
-                                            <option value="male">Male</option>
-                                            <option value="female">
-                                                Female
-                                            </option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label
-                                            class="block text-sm font-semibold text-gray-700 mb-1"
-                                        >
-                                            Age *
-                                        </label>
-                                        <input
-                                            v-model="form.age"
-                                            type="number"
-                                            required
-                                            min="1"
-                                            max="120"
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
-                                            placeholder="Enter your age"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Appointment Details -->
                             <div>
                                 <h3
@@ -865,6 +762,119 @@ const hospitalStats = ref([
                                                 {{ time }}
                                             </option>
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Personal Information -->
+                            <div>
+                                <h3
+                                    class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3"
+                                >
+                                    <div
+                                        class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600"
+                                    >
+                                        👤
+                                    </div>
+                                    Personal Information
+                                </h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            First Name *
+                                        </label>
+                                        <input
+                                            v-model="form.firstName"
+                                            type="text"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            placeholder="Enter your first name"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Last Name *
+                                        </label>
+                                        <input
+                                            v-model="form.lastName"
+                                            type="text"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            placeholder="Enter your last name"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Email Address *
+                                        </label>
+                                        <input
+                                            v-model="form.email"
+                                            type="email"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            placeholder="your@email.com"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Phone Number *
+                                        </label>
+                                        <input
+                                            v-model="form.phone"
+                                            type="tel"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            placeholder="+88 (013) 1235-4567"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Gender *
+                                        </label>
+                                        <select
+                                            v-model="form.gender"
+                                            required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                        >
+                                            <option value="">
+                                                Select Gender
+                                            </option>
+                                            <option value="male">Male</option>
+                                            <option value="female">
+                                                Female
+                                            </option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Age *
+                                        </label>
+                                        <input
+                                            v-model="form.age"
+                                            type="number"
+                                            required
+                                            min="1"
+                                            max="120"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            placeholder="Enter your age"
+                                        />
                                     </div>
                                 </div>
                                 <div class="mt-6">

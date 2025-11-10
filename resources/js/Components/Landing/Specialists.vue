@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { Link } from "@inertiajs/vue3";
 import api from "@/lib/api";
 
 const doctors = ref([]);
@@ -45,12 +46,13 @@ onMounted(() => {
                 <!-- Top Row -->
                 <div class="marquee-track">
                     <div class="marquee-segment flex gap-4">
-                        <div
+                        <Link
                             v-for="doctor in doctors.slice(
                                 0,
                                 Math.ceil(doctors.length / 2)
                             )"
                             :key="'top-' + doctor.id"
+                            :href="`/doctor/${doctor.id}`"
                             class="doctor-card flex items-center gap-4 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition"
                         >
                             <div
@@ -78,18 +80,19 @@ onMounted(() => {
                                     {{ doctor.speciality }}
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
 
                 <!-- Bottom Row -->
                 <div class="marquee-track reverse">
                     <div class="marquee-segment flex gap-4">
-                        <div
+                        <<Link
                             v-for="doctor in doctors.slice(
                                 Math.ceil(doctors.length / 2)
                             )"
                             :key="'bottom-' + doctor.id"
+                            :href="`/doctor/${doctor.id}`"
                             class="doctor-card flex items-center gap-4 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition"
                         >
                             <div
@@ -115,7 +118,7 @@ onMounted(() => {
                                     {{ doctor.speciality }}
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>

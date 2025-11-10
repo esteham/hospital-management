@@ -158,7 +158,7 @@ onMounted(() => {
                             class="w-full py-3 rounded-xl font-semibold transition-all duration-300"
                             :class="
                                 health.popular
-                                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:shadow-lg'
+                                    ? 'bg-gradient-to-r from-blue-400 text-black hover:text-white hover:bg-blue-800 hover:shadow-lg'
                                     : 'bg-blue-100 text-gray-700 hover:bg-blue-500 hover:text-white'
                             "
                         >

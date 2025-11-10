@@ -19,7 +19,7 @@ use App\Models\Appointment;
 
 class AppointmentController extends Controller
 {   
-    public function create()
+    public function create(Request $request)
     {
         $doctors = Doctor::with('user', 'schedules')->get();
 
@@ -35,6 +35,11 @@ class AppointmentController extends Controller
                 return $item->doctor_id . '-' . $item->preferred_date;
             });
 
+        $selectedDoctor = null;
+        if ($request->has('doctor')) {
+            $selectedDoctor = Doctor::with('user', 'schedules')->find($request->doctor);
+        }
+
         return Inertia::render('AppointmentBooking', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
@@ -42,6 +47,7 @@ class AppointmentController extends Controller
             'phpVersion' => PHP_VERSION,
             'doctors' => $doctors,
             'appointments' => $appointments,
+            'selectedDoctor' => $selectedDoctor,
         ]);
     }
     

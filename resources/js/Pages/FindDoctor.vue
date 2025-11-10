@@ -132,25 +132,25 @@ const specialties = computed(() => {
             </div>
 
             <!-- Doctors Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div
                     v-for="doctor in filteredDoctors"
                     :key="doctor.id"
-                    class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300"
+                    class="group relative bg-white rounded-l shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-300"
                 >
-                    <!-- Doctor Avatar -->
+                    <!-- Doctor Photo -->
                     <div
-                        class="w-full h-48 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-t-3xl flex items-center justify-center mb-6"
+                        class="relative w-full h-64 bg-gradient-to-br from-blue-100 to-cyan-100"
                     >
                         <img
                             v-if="doctor.user.photo"
                             :src="`/storage/${doctor.user.photo}`"
                             alt="Doctor Photo"
-                            class="w-full h-full object-cover rounded-t-3xl"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <svg
                             v-else
-                            class="w-16 h-16 text-blue-600"
+                            class="w-20 h-20 text-blue-600 absolute inset-0 m-auto"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -163,8 +163,10 @@ const specialties = computed(() => {
                             ></path>
                         </svg>
                     </div>
-                    <div class="text-center mb-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-1">
+
+                    <!-- Doctor Info -->
+                    <div class="p-6 text-center space-y-2">
+                        <h3 class="text-xl font-bold text-gray-900">
                             {{ doctor.user.name }}
                         </h3>
                         <p class="text-blue-600 font-semibold">
@@ -173,11 +175,12 @@ const specialties = computed(() => {
                         <p class="text-gray-600 text-sm">
                             {{ doctor.designation }}
                         </p>
-                    </div>
-
-                    <!-- Doctor Info -->
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 text-gray-600">
+                        <p class="text-gray-700 text-sm leading-relaxed mt-3">
+                            {{ doctor.about }}
+                        </p>
+                        <div
+                            class="flex items-center justify-center gap-2 text-gray-600 mt-2"
+                        >
                             <svg
                                 class="w-5 h-5 text-blue-500"
                                 fill="none"
@@ -193,18 +196,34 @@ const specialties = computed(() => {
                             </svg>
                             <span>{{ doctor.phone }}</span>
                         </div>
-                        <p class="text-gray-700 text-sm leading-relaxed">
-                            {{ doctor.about }}
-                        </p>
                     </div>
 
-                    <!-- Action Button -->
-                    <div class="mt-6">
+                    <!-- Hover Overlay (Buttons in center) -->
+                    <div
+                        class="absolute inset-0 flex flex-col items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                    >
+                        <!-- Call Button -->
+                        <a
+                            :href="`tel:${doctor.phone}`"
+                            class="mb-3 bg-white text-blue-600 px-5 py-2 rounded-full font-semibold shadow hover:bg-blue-600 hover:text-white transition-all duration-300"
+                        >
+                            📞 Call Now
+                        </a>
+
+                        <!-- Book Appointment Button -->
                         <Link
-                            :href="route('appointment.booking')"
-                            class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 text-center block"
+                            :href="`/appointment-booking?doctor=${doctor.id}`"
+                            class="mb-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-3 rounded-full font-semibold shadow hover:scale-105 transition-all duration-300"
                         >
                             Book Appointment
+                        </Link>
+
+                        <!-- Doctors Details -->
+                        <Link
+                            :href="`/doctor/${doctor.id}`"
+                            class="bg-white text-blue-600 px-5 py-2 rounded-full font-semibold shadow hover:bg-blue-600 hover:text-white transition-all duration-300"
+                        >
+                            Details
                         </Link>
                     </div>
                 </div>
