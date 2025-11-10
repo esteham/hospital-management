@@ -1,4 +1,5 @@
 <script setup>
+import Background from "@/assets/images/background/background1.png";
 const corporateServices = [
     {
         title: "Corporate Health Checkups",
@@ -24,17 +25,13 @@ const corporateServices = [
 </script>
 
 <template>
-    <section
-        class="py-20 bg-gradient-to-br from-blue-600 to-cyan-500 text-white"
-    >
+    <section class="py-14 bg-gradient-to-br from-blue-100 to-yellow-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl lg:text-5xl font-black mb-4">
+            <div class="text-card">
+                <h2 class="text-4xl font-semibold text-gray-900">
                     Corporate Services
                 </h2>
-                <p
-                    class="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
-                >
+                <p class="text-l text-white max-w-2xl mt-2">
                     Comprehensive healthcare solutions for your organization and
                     employees.
                 </p>
@@ -44,13 +41,13 @@ const corporateServices = [
                 <div
                     v-for="service in corporateServices"
                     :key="service.title"
-                    class="text-center p-8 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2"
+                    class="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/80 transition-all duration-500 transform hover:-translate-y-2"
                 >
                     <div class="text-5xl mb-6">{{ service.icon }}</div>
 
-                    <h3 class="text-xl font-bold mb-4">{{ service.title }}</h3>
+                    <h3 class="text-l font-bold mb-4">{{ service.title }}</h3>
 
-                    <p class="text-blue-100 leading-relaxed">
+                    <p class="text-blue-700 leading-relaxed">
                         {{ service.description }}
                     </p>
                 </div>
@@ -80,3 +77,10 @@ const corporateServices = [
         </div>
     </section>
 </template>
+
+<style scoped>
+.text-card {
+    margin: 0 50px;
+    margin-bottom: 50px;
+}
+</style>

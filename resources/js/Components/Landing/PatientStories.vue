@@ -25,30 +25,28 @@ const patientStories = [
 </script>
 
 <template>
-    <section id="patient-stories" class="py-20 bg-white">
+    <section id="patient-stories" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-                    Our Incredible Patients
+            <div class="text-card">
+                <h2 class="text-4xl font-semibold text-gray-900">
+                    Our Patients
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
                     >
                         Share Their Stories
                     </span>
                 </h2>
-                <p
-                    class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-                >
+                <p class="text-l text-gray-600 max-w-2xl mt-2">
                     Real stories from patients who have experienced exceptional
                     care at Xet Hospital.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="mb-6 grid md:grid-cols-3 gap-8">
                 <div
                     v-for="story in patientStories"
                     :key="story.name"
-                    class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl border border-gray-200 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
+                    class="bg-gradient-to-br from-gray-50 to-white p-4 rounded-2xl border border-gray-200 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
                 >
                     <!-- Star Rating -->
                     <div class="flex mb-4">
@@ -61,9 +59,7 @@ const patientStories = [
                         </span>
                     </div>
 
-                    <p
-                        class="text-gray-700 italic text-lg leading-relaxed mb-6"
-                    >
+                    <p class="text-gray-700 text-l leading-relaxed mb-6">
                         "{{ story.story }}"
                     </p>
 
@@ -87,3 +83,10 @@ const patientStories = [
         </div>
     </section>
 </template>
+
+<style scoped>
+.text-card {
+    margin: 0 50px;
+    margin-bottom: 30px;
+}
+</style>

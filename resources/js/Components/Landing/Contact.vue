@@ -1,14 +1,14 @@
 <template>
-    <section id="contact" class="py-20 bg-white">
+    <section id="contact" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-16 items-start">
                 <div>
                     <h2
-                        class="text-4xl lg:text-5xl font-black text-gray-900 mb-6"
+                        class="text-4xl lg:text-5xl font-black text-gray-900 mb-2"
                     >
                         Get In Touch
                     </h2>
-                    <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                    <p class="text-l text-gray-600 leading-relaxed mb-8">
                         Have questions or need to schedule an appointment? Our
                         team is here to help you with all your healthcare needs.
                     </p>

@@ -134,10 +134,10 @@ const closeAll = () => {
                         />
                     </a>
                     <a
-                        href="#blog"
+                        href="#news"
                         class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 relative group py-2"
                     >
-                        <span class="relative z-10">Blog</span>
+                        <span class="relative z-10">News</span>
                         <span
                             class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-full transition-all duration-300 rounded-full"
                         />

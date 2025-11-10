@@ -1,5 +1,4 @@
 <script setup>
-import Background from "@/assets/images/background/background1.png";
 import api from "@/lib/api";
 import Modal from "@/Components/Modal.vue";
 import { ref, onMounted, computed } from "vue";
@@ -81,21 +80,20 @@ onMounted(() => {
 <template>
     <section
         id="health-s"
-        class="py-20 bg-fixed bg-cover bg-center"
-        :style="{ backgroundImage: `url(${Background})` }"
+        class="py-10 bg-gradient-to-br from-blue-200 to-yellow-200 text-white/10"
     >
         <div class="absolute inset-0 bg-white/85 pointer-events-none z-0"></div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl lg:text-5xl font-black text-white mb-4">
-                    Health Check
-                    <span
-                        class="text-transparent bg-clip-text from-blue-600 to-cyan-500"
-                    >
+            <div class="text-center mb-14">
+                <h2 class="text-4xl font-semibold lg:text-5xl text-black mb-2">
+                    Health Package
+                    <span class="text-gradient-to-br from-blue-600 to-cyan-500">
                         s
                     </span>
                 </h2>
-                <p class="text-xl text-white max-w-3xl mx-auto leading-relaxed">
+                <p
+                    class="text-l text-gray-400 max-w-3xl mx-auto leading-relaxed"
+                >
                     Comprehensive health screening s designed for preventive
                     care and early detection.
                 </p>
@@ -105,7 +103,7 @@ onMounted(() => {
                 <div
                     v-for="health in healths"
                     :key="health.name"
-                    class="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2"
+                    class="text-center bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white transition-all duration-500 transform hover:-translate-y-2"
                     :class="
                         health.popular
                             ? 'border-blue-500 scale-105'
@@ -161,7 +159,7 @@ onMounted(() => {
                             :class="
                                 health.popular
                                     ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:shadow-lg'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    : 'bg-blue-100 text-gray-700 hover:bg-blue-500 hover:text-white'
                             "
                         >
                             Select
@@ -289,3 +287,10 @@ onMounted(() => {
         </Modal>
     </section>
 </template>
+
+<style scoped>
+.text-card {
+    margin: 0 100px;
+    margin-bottom: 10px;
+}
+</style>

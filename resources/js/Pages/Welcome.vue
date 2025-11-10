@@ -8,7 +8,7 @@ import WhyChoose from "@/Components/Landing/WhyChooseUs.vue";
 import HealthCheck from "@/Components/Landing/HealthChecks.vue";
 import PatientStories from "@/Components/Landing/PatientStories.vue";
 import NewsMedia from "@/Components/Landing/NewsMedia.vue";
-import Blog from "@/Components/Landing/Blog.vue";
+import Specialists from "@/Components/Landing/Specialists.vue";
 import CorporateServices from "@/Components/Landing/CorporateServices.vue";
 import Contact from "@/Components/Landing/Contact.vue";
 import Footer from "@/Components/Landing/Footer.vue";
@@ -36,14 +36,14 @@ defineProps({
     <!-- Health Check Packages Section -->
     <HealthCheck />
 
-    <!-- Patient Stories Section -->
-    <PatientStories />
+    <!-- Shasthoshongi Blog Section -->
+    <Specialists />
 
     <!-- News & Media Section -->
     <NewsMedia />
 
-    <!-- Shasthoshongi Blog Section -->
-    <Blog />
+    <!-- Patient Stories Section -->
+    <PatientStories />
 
     <!-- Corporate Services Section -->
     <CorporateServices />

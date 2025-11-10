@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/css";
 
 const newsItems = ref([]);
 
@@ -19,7 +17,7 @@ const imageUrl = (img) => {
     if (!img) return null;
     if (typeof img === "string") {
         if (img.startsWith("http://") || img.startsWith("https://")) return img;
-        if (img.startsWith("/")) return img; // already a full path like /storage/...
+        if (img.startsWith("/")) return img;
     }
     return "/storage/" + img;
 };
@@ -30,40 +28,43 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="py-14 bg-gradient-to-br from-gray-50 to-blue-50/30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-10">
-                <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-                    News & Media
-                </h2>
-                <p
-                    class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+    <section id="news" class="py-12 bg-gray-100">
+        <div>
+            <div class="text-card flex justify-between items-center">
+                <div>
+                    <h2 class="text-4xl font-semibold text-gray-900">
+                        News & Media
+                    </h2>
+                    <p class="text-l text-gray-600 max-w-2xl mt-2">
+                        Stay updated with the latest news, innovations, and
+                        community initiatives from Xet Hospital.
+                    </p>
+                </div>
+                <a
+                    href="/news-all"
+                    class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
                 >
-                    Stay updated with the latest news, innovations, and
-                    community initiatives from Xet Hospital.
-                </p>
+                    All News
+                </a>
             </div>
 
-            <div class="relative">
-                <Swiper
-                    :slides-per-view="1"
-                    :space-between="30"
-                    :breakpoints="{
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
-                    }"
-                    :autoplay="{ delay: 3000, disableOnInteraction: false }"
-                    :loop="true"
-                    :pagination="{ clickable: true }"
-                    :navigation="true"
-                    class="news-swiper"
-                >
-                    <SwiperSlide
-                        v-for="news in newsItems"
-                        :key="news.id || news.title"
-                    >
-                        <div
-                            class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden"
+            <div v-if="newsItems.length === 0" class="text-center">
+                <p class="text-gray-500">Loading news...</p>
+            </div>
+
+            <div v-else class="marquee-container space-y-6">
+                <!-- Top Row -->
+                <div class="marquee-track">
+                    <div class="marquee-segment flex gap-4">
+                        <a
+                            v-for="news in newsItems.slice(
+                                0,
+                                Math.ceil(newsItems.length)
+                            )"
+                            :key="'top-' + (news.id || news.title)"
+                            :href="`/news/${news.id}`"
+                            target="_blank"
+                            class="news-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden"
                         >
                             <img
                                 :src="imageUrl(news.image)"
@@ -102,25 +103,12 @@ onMounted(() => {
                                     {{ news.excerpt }}
                                 </p>
 
-                                <a
-                                    :href="`/news/${news.id}`"
-                                    target="_blank"
-                                    class="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200"
-                                >
+                                <span class="text-blue-600 font-semibold">
                                     Read More →
-                                </a>
+                                </span>
                             </div>
-                        </div>
-                    </SwiperSlide>
-                </Swiper>
-
-                <div v-if="newsItems.length > 3" class="text-right">
-                    <a
-                        href="/news-all"
-                        class="inline-block px-5 py-2 bg-blue-400 text-black font-semibold rounded-lg hover:bg-blue-600 transition-colors duration-200 mt-4"
-                    >
-                        Show All
-                    </a>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,12 +116,61 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.news-swiper .swiper-pagination-bullet-active {
-    background-color: #2563eb;
+.text-card {
+    margin: 0 130px;
+    margin-bottom: 30px;
 }
 
-.news-swiper .swiper-button-next,
-.news-swiper .swiper-button-prev {
-    color: #2563eb;
+.news-card {
+    width: 360px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-4px);
+}
+
+/* --- Continuous Scroll --- */
+.marquee-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-right 60s linear infinite;
+}
+
+.marquee-track.reverse {
+    animation: scroll-left 60s linear infinite;
+}
+
+.marquee-segment {
+    display: flex;
+    gap: 18px;
+}
+
+/* adjust speed by changing duration (lower = faster) */
+@keyframes scroll-right {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(-50%);
+    }
+    1000% {
+        transform: translateX(0);
+    }
 }
 </style>

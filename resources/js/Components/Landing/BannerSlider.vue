@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-// উদাহরণ ইমেজ (আপনারগুলোই ব্যবহার করছি)
 import Cardiac from "@/assets/images/slide/cardiacs.png";
 import Emergency from "@/assets/images/slide/emergency.png";
 import Package from "@/assets/images/slide/package.png";

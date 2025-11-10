@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\HealthCheckController;
 use App\Http\Controllers\Api\PackageBookingController;
 use App\Http\Controllers\Api\EmailCheckController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\DoctorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,5 @@ Route::post('/email-check', [EmailCheckController::class, 'check']);
 
 Route::get('/news', [NewsController::class, 'index']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
+
+Route::get('/doctors', [DoctorController::class, 'index']);

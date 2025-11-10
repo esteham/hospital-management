@@ -24,10 +24,10 @@ const features = [
 </script>
 
 <template>
-    <section class="py-20 bg-white">
+    <section class="py-6 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+            <div class="text-card">
+                <h2 class="text-3xl font-semibold text-gray-900">
                     Why Choose
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
@@ -35,9 +35,7 @@ const features = [
                         Xet Hospital?
                     </span>
                 </h2>
-                <p
-                    class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-                >
+                <p class="text-l text-gray-600 max-w-2xl mt-2">
                     Experience healthcare excellence with our patient-centered
                     approach and cutting-edge medical technology.
                 </p>
@@ -47,13 +45,13 @@ const features = [
                 <div
                     v-for="feature in features"
                     :key="feature.title"
-                    class="text-center p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
+                    class="text-center p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
                 >
-                    <div class="text-5xl mb-6">{{ feature.icon }}</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                    <div class="text-4xl mb-4">{{ feature.icon }}</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
                         {{ feature.title }}
                     </h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 text-l leading-relaxed">
                         {{ feature.desc }}
                     </p>
                 </div>
@@ -61,3 +59,10 @@ const features = [
         </div>
     </section>
 </template>
+
+<style scoped>
+.text-card {
+    margin: 0 100px;
+    margin-bottom: 10px;
+}
+</style>
