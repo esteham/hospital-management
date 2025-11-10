@@ -27,7 +27,9 @@ onMounted(() => {
     <Head :title="news ? news.title : 'News Detail'" />
 
     <div class="min-h-screen bg-gray-50">
-        <div class="flex">
+        <div
+            class="flex flex-col gap-4 sm:flex-row sm:gap-4 px-4 sm:px-6 lg:px-8 py-4"
+        >
             <div class="flex items-center gap-2">
                 <Link
                     href="/news-all"
@@ -60,13 +62,15 @@ onMounted(() => {
                 <img
                     :src="news.image"
                     :alt="news.title"
-                    class="w-full h-64 object-cover"
+                    class="w-full h-48 sm:h-64 object-cover"
                 />
 
-                <div class="p-8">
-                    <div class="flex items-center justify-between mb-4">
+                <div class="p-4 sm:p-6 lg:p-8">
+                    <div
+                        class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4"
+                    >
                         <span
-                            class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold"
+                            class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold self-start"
                         >
                             {{ news.category }}
                         </span>
@@ -79,11 +83,13 @@ onMounted(() => {
                         }}</span>
                     </div>
 
-                    <h1 class="text-3xl font-bold text-gray-900 mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6"
+                    >
                         {{ news.title }}
                     </h1>
 
-                    <div class="prose prose-lg max-w-none">
+                    <div class="prose sm:prose-lg max-w-none">
                         <p class="text-gray-600 leading-relaxed mb-6">
                             {{ news.excerpt }}
                         </p>

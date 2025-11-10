@@ -1,27 +1,31 @@
 <template>
-    <section id="contact" class="py-16 bg-white">
+    <section id="contact" class="py-12 md:py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-start">
+            <div
+                class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start"
+            >
                 <div>
                     <h2
-                        class="text-4xl lg:text-5xl font-black text-gray-900 mb-2"
+                        class="text-2xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-2"
                     >
                         Get In Touch
                     </h2>
-                    <p class="text-l text-gray-600 leading-relaxed mb-8">
+                    <p
+                        class="text-base md:text-lg text-gray-600 leading-relaxed mb-6 md:mb-8"
+                    >
                         Have questions or need to schedule an appointment? Our
                         team is here to help you with all your healthcare needs.
                     </p>
 
-                    <div class="space-y-6">
+                    <div class="space-y-4 md:space-y-6">
                         <div
-                            class="flex items-center gap-4 p-6 bg-gray-50 rounded-2xl"
+                            class="flex items-center gap-3 md:gap-4 p-4 md:p-6 bg-gray-50 rounded-2xl"
                         >
                             <div
-                                class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600"
+                                class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6"
+                                    class="w-5 h-5 md:w-6 md:h-6"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -34,22 +38,26 @@
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-gray-900">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-bold text-gray-900 text-sm md:text-base"
+                                >
                                     Emergency
                                 </h4>
-                                <p class="text-gray-600">(555) 123-HELP</p>
+                                <p class="text-gray-600 text-sm md:text-base">
+                                    (555) 123-HELP
+                                </p>
                             </div>
                         </div>
 
                         <div
-                            class="flex items-center gap-4 p-6 bg-gray-50 rounded-2xl"
+                            class="flex items-center gap-3 md:gap-4 p-4 md:p-6 bg-gray-50 rounded-2xl"
                         >
                             <div
-                                class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600"
+                                class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6"
+                                    class="w-5 h-5 md:w-6 md:h-6"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -62,24 +70,26 @@
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-gray-900">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-bold text-gray-900 text-sm md:text-base"
+                                >
                                     Location
                                 </h4>
-                                <p class="text-gray-600">
+                                <p class="text-gray-600 text-sm md:text-base">
                                     123 Medical Avenue, Healthcare District
                                 </p>
                             </div>
                         </div>
 
                         <div
-                            class="flex items-center gap-4 p-6 bg-gray-50 rounded-2xl"
+                            class="flex items-center gap-3 md:gap-4 p-4 md:p-6 bg-gray-50 rounded-2xl"
                         >
                             <div
-                                class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600"
+                                class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6"
+                                    class="w-5 h-5 md:w-6 md:h-6"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -92,11 +102,13 @@
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-gray-900">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-bold text-gray-900 text-sm md:text-base"
+                                >
                                     Working Hours
                                 </h4>
-                                <p class="text-gray-600">
+                                <p class="text-gray-600 text-sm md:text-base">
                                     Emergency: 24/7 | OPD: 8AM-8PM
                                 </p>
                             </div>
@@ -106,13 +118,15 @@
 
                 <!-- Contact Form -->
                 <div
-                    class="bg-gradient-to-br from-blue-50 to-cyan-50/30 p-8 rounded-2xl border border-blue-200"
+                    class="bg-gradient-to-br from-blue-50 to-cyan-50/30 p-6 md:p-8 rounded-2xl border border-blue-200 mt-8 lg:mt-0"
                 >
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                    <h3
+                        class="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6"
+                    >
                         Send us a Message
                     </h3>
-                    <form class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-4">
+                    <form class="space-y-4 md:space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label
                                     class="block text-sm font-medium text-gray-700 mb-2"
@@ -120,7 +134,7 @@
                                 >
                                 <input
                                     type="text"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200 text-sm md:text-base"
                                 />
                             </div>
                             <div>
@@ -130,7 +144,7 @@
                                 >
                                 <input
                                     type="text"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200 text-sm md:text-base"
                                 />
                             </div>
                         </div>
@@ -141,7 +155,7 @@
                             >
                             <input
                                 type="email"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200 text-sm md:text-base"
                             />
                         </div>
                         <div>
@@ -151,12 +165,12 @@
                             >
                             <textarea
                                 rows="4"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200 text-sm md:text-base resize-vertical"
                             ></textarea>
                         </div>
                         <button
                             type="submit"
-                            class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
+                            class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-3 md:py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm md:text-base"
                         >
                             Send Message
                         </button>

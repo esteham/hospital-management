@@ -25,42 +25,54 @@ const corporateServices = [
 </script>
 
 <template>
-    <section class="py-14 bg-gradient-to-br from-blue-100 to-yellow-100">
+    <section
+        class="py-10 md:py-14 bg-gradient-to-br from-blue-100 to-yellow-100"
+    >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-card">
-                <h2 class="text-4xl font-semibold text-gray-900">
+                <h2 class="text-2xl md:text-4xl font-semibold text-gray-900">
                     Corporate Services
                 </h2>
-                <p class="text-l text-white max-w-2xl mt-2">
+                <p
+                    class="text-base md:text-lg text-white max-w-lg md:max-w-2xl mt-2"
+                >
                     Comprehensive healthcare solutions for your organization and
                     employees.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+            >
                 <div
                     v-for="service in corporateServices"
                     :key="service.title"
-                    class="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/80 transition-all duration-500 transform hover:-translate-y-2"
+                    class="text-center p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/80 transition-all duration-500 transform hover:-translate-y-2"
                 >
-                    <div class="text-5xl mb-6">{{ service.icon }}</div>
+                    <div class="text-4xl md:text-5xl mb-4 md:mb-6">
+                        {{ service.icon }}
+                    </div>
 
-                    <h3 class="text-l font-bold mb-4">{{ service.title }}</h3>
+                    <h3 class="text-base md:text-lg font-bold mb-4">
+                        {{ service.title }}
+                    </h3>
 
-                    <p class="text-blue-700 leading-relaxed">
+                    <p
+                        class="text-blue-700 text-sm md:text-base leading-relaxed"
+                    >
                         {{ service.description }}
                     </p>
                 </div>
             </div>
 
-            <div class="text-center mt-12">
+            <div class="text-center mt-8 md:mt-12">
                 <a
                     href="#contact"
-                    class="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-xl font-semibold text-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                    class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-white text-blue-600 rounded-xl font-semibold text-base md:text-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
                 >
                     Contact Corporate Desk
                     <svg
-                        class="w-5 h-5 ml-2"
+                        class="w-4 h-4 md:w-5 md:h-5 ml-2"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -80,7 +92,21 @@ const corporateServices = [
 
 <style scoped>
 .text-card {
-    margin: 0 50px;
-    margin-bottom: 50px;
+    margin: 0 20px;
+    margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+    .text-card {
+        margin: 0 50px;
+        margin-bottom: 50px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .text-card {
+        margin: 0 100px;
+        margin-bottom: 50px;
+    }
 }
 </style>

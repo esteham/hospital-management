@@ -66,7 +66,7 @@ onMounted(fetchBookedPackages);
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <!-- Top info / hint -->
                 <div
-                    class="flex items-start sm:items-center justify-between gap-3"
+                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                     <div>
                         <nav
@@ -75,7 +75,7 @@ onMounted(fetchBookedPackages);
                         >
                             <ol class="flex items-center gap-1">
                                 <li
-                                    class="inline-flex items-center gap-2 rounded-xl bg-red-300 text-black px-4 py-1 text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
+                                    class="inline-flex items-center gap-2 rounded-xl bg-red-300 text-black px-3 py-1 sm:px-4 text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
                                 >
                                     <Link href="/dashboard">Back</Link>
                                 </li>
@@ -91,19 +91,19 @@ onMounted(fetchBookedPackages);
                             </ol>
                         </nav>
                         <h2
-                            class="font-bold text-2xl text-slate-800 leading-tight"
+                            class="font-bold text-xl sm:text-2xl text-slate-800 leading-tight"
                         >
                             Health Packages
                         </h2>
-                        <p class="text-slate-600 mt-1">
+                        <p class="text-slate-600 mt-1 text-sm sm:text-base">
                             Explore preventive care and manage your booked
                             packages.
                         </p>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
                         <Link
                             href="/#health-s"
-                            class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2.5 text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
+                            class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
                         >
                             <svg
                                 class="w-4 h-4"
@@ -242,7 +242,7 @@ onMounted(fetchBookedPackages);
                         </div>
 
                         <div
-                            class="mt-4 flex items-center justify-between text-xs text-slate-500"
+                            class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-500"
                         >
                             <span
                                 >Booked on
@@ -253,7 +253,7 @@ onMounted(fetchBookedPackages);
                             <div class="flex items-center gap-2">
                                 <Link
                                     :href="`/patient/appointments`"
-                                    class="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 font-medium text-slate-700 hover:bg-slate-50"
+                                    class="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1.5 sm:px-2.5 text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50"
                                 >
                                     View Details
                                 </Link>
@@ -264,7 +264,7 @@ onMounted(fetchBookedPackages);
                                             { package_booking: booking.id }
                                         )
                                     "
-                                    class="inline-flex items-center gap-1 rounded-lg bg-slate-800 text-white px-2.5 py-1.5 font-medium hover:bg-slate-900"
+                                    class="inline-flex items-center gap-1 rounded-lg bg-slate-800 text-white px-2 py-1.5 sm:px-2.5 text-xs sm:text-sm font-medium hover:bg-slate-900"
                                     >Receipt
                                 </a>
                             </div>
@@ -275,13 +275,13 @@ onMounted(fetchBookedPackages);
                 <!-- Empty state -->
                 <div
                     v-else
-                    class="rounded-2xl border border-slate-200/60 bg-white p-10 text-center shadow-sm"
+                    class="rounded-2xl border border-slate-200/60 bg-white p-6 sm:p-10 text-center shadow-sm"
                 >
                     <div
-                        class="mx-auto mb-4 w-16 h-16 rounded-2xl bg-slate-100 grid place-items-center"
+                        class="mx-auto mb-4 w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 grid place-items-center"
                     >
                         <svg
-                            class="w-8 h-8 text-slate-400"
+                            class="w-6 h-6 sm:w-8 sm:h-8 text-slate-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -294,7 +294,7 @@ onMounted(fetchBookedPackages);
                             />
                         </svg>
                     </div>
-                    <h3 class="text-slate-800 font-semibold">
+                    <h3 class="text-slate-800 font-semibold text-lg sm:text-xl">
                         No packages booked yet
                     </h3>
                     <p class="text-slate-600 text-sm mt-1">
@@ -303,7 +303,7 @@ onMounted(fetchBookedPackages);
                     <div class="mt-4">
                         <Link
                             href="/book-appointment"
-                            class="inline-flex items-center gap-2 rounded-xl bg-green-600 text-white px-4 py-2.5 text-sm font-medium shadow-sm hover:bg-green-700 transition-colors"
+                            class="inline-flex items-center gap-2 rounded-xl bg-green-600 text-white px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-medium shadow-sm hover:bg-green-700 transition-colors"
                         >
                             Explore Packages
                         </Link>

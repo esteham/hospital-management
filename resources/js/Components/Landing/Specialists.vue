@@ -23,7 +23,7 @@ onMounted(() => {
     <section class="specialties-offered py-16">
         <div class="mx-auto overflow-hidden">
             <div class="text-card">
-                <h2 class="text-3xl font-semibold text-gray-900">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-900">
                     Our
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
@@ -31,7 +31,7 @@ onMounted(() => {
                         Specialists </span
                     >👨‍⚕️
                 </h2>
-                <p class="text-l text-gray-600 max-w-2xl mt-2">
+                <p class="text-base text-gray-600 max-w-2xl mt-2">
                     Highly Experienced, Internationally Trained Specialists from
                     reputed medical colleges are the top choice of Bangladeshi
                     patients for their healthcare needs.
@@ -87,7 +87,7 @@ onMounted(() => {
                 <!-- Bottom Row -->
                 <div class="marquee-track reverse">
                     <div class="marquee-segment flex gap-4">
-                        <<Link
+                        <Link
                             v-for="doctor in doctors.slice(
                                 Math.ceil(doctors.length / 2)
                             )"
@@ -128,23 +128,49 @@ onMounted(() => {
 
 <style scoped>
 .text-card {
-    margin: 0 130px;
-    margin-bottom: 40px;
+    margin: 0 20px 40px;
 }
+
+@media (min-width: 768px) {
+    .text-card {
+        margin: 0 50px 40px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .text-card {
+        margin: 0 130px 40px;
+    }
+}
+
 .specialties-offered {
     background-color: #fff;
 }
 
 .doctor-card {
-    width: 340px;
-    height: 180px;
+    width: 280px;
+    height: 160px;
     display: flex;
     transition: transform 0.3s ease;
     align-items: stretch;
 }
 
+@media (min-width: 640px) {
+    .doctor-card {
+        width: 320px;
+        height: 180px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .doctor-card {
+        width: 340px;
+        height: 180px;
+    }
+}
+
 .doctor-card > div:first-child {
-    width: 112px;
+    width: 100px;
     height: 100%;
     border-radius: 0.375rem;
     overflow: hidden;
@@ -153,14 +179,26 @@ onMounted(() => {
     background-position: center;
 }
 
+@media (min-width: 640px) {
+    .doctor-card > div:first-child {
+        width: 112px;
+    }
+}
+
 .doctor-card > .flex-1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
     min-width: 0;
-    padding: 0 12px;
+    padding: 0 8px;
     word-break: break-word;
+}
+
+@media (min-width: 640px) {
+    .doctor-card > .flex-1 {
+        padding: 0 12px;
+    }
 }
 
 .doctor-card:hover {
@@ -182,7 +220,13 @@ onMounted(() => {
 
 .marquee-segment {
     display: flex;
-    gap: 18px;
+    gap: 12px;
+}
+
+@media (min-width: 640px) {
+    .marquee-segment {
+        gap: 18px;
+    }
 }
 
 /* adjust speed by changing duration (lower = faster) */

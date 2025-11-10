@@ -45,13 +45,15 @@ onMounted(() => {
     <Header :canLogin="canLogin" :canRegister="canRegister" />
 
     <div class="min-h-screen bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="text-center mb-16">
-                <h1 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div class="text-center mb-12 sm:mb-16">
+                <h1
+                    class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-4"
+                >
                     All News & Media
                 </h1>
                 <p
-                    class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+                    class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
                 >
                     Stay updated with the latest news, innovations, and
                     community initiatives from Xet Hospital.
@@ -67,7 +69,7 @@ onMounted(() => {
 
             <div
                 v-else
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
             >
                 <div
                     v-for="news in newsItems"
@@ -81,10 +83,12 @@ onMounted(() => {
                         class="w-full h-48 object-cover"
                     />
 
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
+                    <div class="p-4 sm:p-6">
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2"
+                        >
                             <span
-                                class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold"
+                                class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold self-start"
                             >
                                 {{ news.category }}
                             </span>
@@ -101,16 +105,20 @@ onMounted(() => {
                         </div>
 
                         <h3
-                            class="text-xl font-bold text-gray-900 mb-3 leading-tight"
+                            class="text-lg sm:text-xl font-bold text-gray-900 mb-3 leading-tight"
                         >
                             {{ news.title }}
                         </h3>
 
-                        <p class="text-gray-600 leading-relaxed mb-4">
+                        <p
+                            class="text-gray-600 leading-relaxed mb-4 text-sm sm:text-base"
+                        >
                             {{ news.excerpt }}
                         </p>
 
-                        <div class="text-blue-600 font-semibold">
+                        <div
+                            class="text-blue-600 font-semibold text-sm sm:text-base"
+                        >
                             Read More →
                         </div>
                     </div>

@@ -80,30 +80,34 @@ onMounted(() => {
 <template>
     <section
         id="health-s"
-        class="py-10 bg-gradient-to-br from-blue-200 to-yellow-200 text-white/10"
+        class="py-8 md:py-10 bg-gradient-to-br from-blue-200 to-yellow-200 text-white/10"
     >
         <div class="absolute inset-0 bg-white/85 pointer-events-none z-0"></div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-14">
-                <h2 class="text-4xl font-semibold lg:text-5xl text-black mb-2">
+            <div class="text-center mb-10 md:mb-14">
+                <h2
+                    class="text-2xl md:text-4xl lg:text-5xl font-semibold text-black mb-2"
+                >
                     Health Package
                     <span class="text-gradient-to-br from-blue-600 to-cyan-500">
                         s
                     </span>
                 </h2>
                 <p
-                    class="text-l text-gray-400 max-w-3xl mx-auto leading-relaxed"
+                    class="text-base md:text-lg text-gray-400 max-w-lg md:max-w-3xl mx-auto leading-relaxed"
                 >
                     Comprehensive health screening s designed for preventive
                     care and early detection.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto"
+            >
                 <div
                     v-for="health in healths"
                     :key="health.name"
-                    class="text-center bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white transition-all duration-500 transform hover:-translate-y-2"
+                    class="text-center bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white transition-all duration-500 transform hover:-translate-y-2 relative"
                     :class="
                         health.popular
                             ? 'border-blue-500 scale-105'
@@ -113,31 +117,31 @@ onMounted(() => {
                     <!-- Popular Badge -->
                     <div
                         v-if="health.popular"
-                        class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-2 rounded-full font-semibold text-sm"
+                        class="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 md:px-6 py-1 md:py-2 rounded-full font-semibold text-xs md:text-sm"
                     >
                         Most Popular
                     </div>
 
-                    <div class="p-8">
+                    <div class="p-6 md:p-8">
                         <h3
-                            class="text-2xl font-bold text-gray-900 text-center mb-4"
+                            class="text-lg md:text-2xl font-bold text-gray-900 text-center mb-4"
                         >
                             {{ health.name }}
                         </h3>
                         <div
-                            class="text-3xl font-black text-blue-600 text-center mb-6"
+                            class="text-2xl md:text-3xl font-black text-blue-600 text-center mb-6"
                         >
                             {{ health.price }}
                         </div>
 
-                        <ul class="space-y-4 mb-8">
+                        <ul class="space-y-3 md:space-y-4 mb-6 md:mb-8">
                             <li
                                 v-for="feature in health.features"
                                 :key="feature"
-                                class="flex items-center text-gray-600"
+                                class="flex items-center text-gray-600 text-sm md:text-base"
                             >
                                 <svg
-                                    class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"
+                                    class="w-4 h-4 md:w-5 md:h-5 text-green-500 mr-2 md:mr-3 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -155,7 +159,7 @@ onMounted(() => {
 
                         <button
                             @click="selectPackage(health)"
-                            class="w-full py-3 rounded-xl font-semibold transition-all duration-300"
+                            class="w-full py-2 md:py-3 rounded-xl font-semibold transition-all duration-300 text-sm md:text-base"
                             :class="
                                 health.popular
                                     ? 'bg-gradient-to-r from-blue-400 text-black hover:text-white hover:bg-blue-800 hover:shadow-lg'
@@ -171,21 +175,21 @@ onMounted(() => {
 
         <!-- Modal for Package Details -->
         <Modal :show="showModal" @close="showModal = false" max-width="md">
-            <div class="p-6">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+            <div class="p-4 md:p-6">
+                <h3 class="text-lg md:text-2xl font-bold text-gray-900 mb-4">
                     {{ selectedHealth?.name }}
                 </h3>
-                <div class="text-3xl font-black text-blue-600 mb-6">
+                <div class="text-2xl md:text-3xl font-black text-blue-600 mb-6">
                     {{ selectedHealth?.price }}
                 </div>
-                <ul class="space-y-4 mb-8">
+                <ul class="space-y-3 md:space-y-4 mb-6 md:mb-8">
                     <li
                         v-for="feature in selectedHealth?.features"
                         :key="feature"
-                        class="flex items-center text-gray-600"
+                        class="flex items-center text-gray-600 text-sm md:text-base"
                     >
                         <svg
-                            class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"
+                            class="w-4 h-4 md:w-5 md:h-5 text-green-500 mr-2 md:mr-3 flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -200,24 +204,26 @@ onMounted(() => {
                         {{ feature }}
                     </li>
                 </ul>
-                <div class="flex justify-end">
+                <div
+                    class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-0"
+                >
                     <button
                         @click="showModal = false"
-                        class="mr-4 px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                        class="px-4 md:px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors text-sm md:text-base"
                     >
                         Cancel
                     </button>
                     <button
                         @click="bookPackage('50%')"
                         :disabled="bookingLoading"
-                        class="mr-2 px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+                        class="px-4 md:px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 text-sm md:text-base"
                     >
                         {{ bookingLoading ? "Booking..." : "Pay 50%" }}
                     </button>
                     <button
                         @click="bookPackage('100%')"
                         :disabled="bookingLoading"
-                        class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+                        class="px-4 md:px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 text-sm md:text-base"
                     >
                         {{ bookingLoading ? "Booking..." : "Pay 100%" }}
                     </button>
@@ -231,24 +237,26 @@ onMounted(() => {
             @close="showLoginPrompt = false"
             max-width="md"
         >
-            <div class="p-6">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+            <div class="p-4 md:p-6">
+                <h3 class="text-lg md:text-2xl font-bold text-gray-900 mb-4">
                     Login Required
                 </h3>
-                <p class="text-gray-600 mb-6">
+                <p class="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">
                     You need to be logged in to book a health check package.
                     Please log in to continue.
                 </p>
-                <div class="flex justify-end">
+                <div
+                    class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-0"
+                >
                     <button
                         @click="showLoginPrompt = false"
-                        class="mr-4 px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                        class="px-4 md:px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors text-sm md:text-base"
                     >
                         Cancel
                     </button>
                     <button
                         @click="goToLogin"
-                        class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all"
+                        class="px-4 md:px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all text-sm md:text-base"
                     >
                         Go to Login
                     </button>
@@ -262,23 +270,25 @@ onMounted(() => {
             @close="showSuccessModal = false"
             max-width="md"
         >
-            <div class="p-6">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+            <div class="p-4 md:p-6">
+                <h3 class="text-lg md:text-2xl font-bold text-gray-900 mb-4">
                     Booking Successful
                 </h3>
-                <p class="text-gray-600 mb-6">
+                <p class="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">
                     {{ bookingMessage }}
                 </p>
-                <div class="flex justify-end space-x-4">
+                <div
+                    class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4"
+                >
                     <button
                         @click="goToLanding"
-                        class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                        class="px-4 md:px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors text-sm md:text-base"
                     >
                         OK
                     </button>
                     <button
                         @click="goToDashboardPackages"
-                        class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all"
+                        class="px-4 md:px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-all text-sm md:text-base"
                     >
                         Go to Book Package
                     </button>
@@ -290,7 +300,21 @@ onMounted(() => {
 
 <style scoped>
 .text-card {
-    margin: 0 100px;
+    margin: 0 20px;
     margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    .text-card {
+        margin: 0 50px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .text-card {
+        margin: 0 100px;
+        margin-bottom: 10px;
+    }
 }
 </style>

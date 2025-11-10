@@ -195,12 +195,12 @@ import MasterCardLogo from "@/assets/images/payment/mastercard.png";
                         </button>
                     </div>
                 </div>
-
-                <!-- Payment Methods -->
             </div>
-            <div>
-                <h5 class="text-xl font-bold mb-4 mt-16">We Accept</h5>
-                <div class="flex gap-6 items-center">
+
+            <!-- Payment Methods -->
+            <div class="mt-16">
+                <h5 class="text-xl font-bold mb-4">We Accept</h5>
+                <div class="flex flex-wrap gap-4 sm:gap-6 items-center">
                     <img
                         :src="BkashLogo"
                         alt="bKash"

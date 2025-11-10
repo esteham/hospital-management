@@ -57,8 +57,8 @@ const specialties = computed(() => {
     >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <!-- Header Section -->
-            <div class="flex mb-6">
-                <div class="w-50 flex-1">
+            <div class="flex flex-col md:flex-row mb-6">
+                <div class="w-full md:w-1/2 md:flex-1">
                     <div
                         class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-full text-blue-700 text-sm font-semibold mb-4"
                     >
@@ -69,7 +69,7 @@ const specialties = computed(() => {
                     </div>
 
                     <h1
-                        class="text-4xl lg:text-4xl font-black text-gray-900 mb-4 leading-tight"
+                        class="text-3xl md:text-4xl lg:text-4xl font-black text-gray-900 mb-4 leading-tight"
                     >
                         Discover Our
                         <span
@@ -79,7 +79,7 @@ const specialties = computed(() => {
                         </span>
                     </h1>
                     <p
-                        class="text-l text-gray-700 leading-relaxed max-w-3xl mx-auto"
+                        class="text-base text-gray-700 leading-relaxed max-w-3xl mx-auto"
                     >
                         Find the right specialist for your healthcare needs.
                         Search by name or specialty to connect with our
@@ -88,9 +88,9 @@ const specialties = computed(() => {
                 </div>
                 <!-- Search and Filter Section -->
                 <div
-                    class="w-50 flex-1 bg-white rounded-3xl shadow-xl border border-gray-100 p-5 mb-8"
+                    class="w-full md:w-1/2 md:flex-1 bg-white rounded-3xl shadow-xl border border-gray-100 p-5 mb-8"
                 >
-                    <div class="grid md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Search Bar -->
                         <div>
                             <label

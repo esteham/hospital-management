@@ -8,9 +8,13 @@ import { Head, Link } from "@inertiajs/vue3";
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center justify-between">
+            <div
+                class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0"
+            >
                 <div>
-                    <h2 class="font-bold text-2xl text-slate-800 leading-tight">
+                    <h2
+                        class="font-bold text-xl sm:text-2xl text-slate-800 leading-tight"
+                    >
                         Hospital Management Dashboard
                     </h2>
                     <p class="text-slate-600 mt-1">
@@ -43,11 +47,13 @@ import { Head, Link } from "@inertiajs/vue3";
             <div class="max-w-7l mx-auto sm:px-6 lg:px-8 space-y-8">
                 <!-- Welcome Section -->
                 <div
-                    class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-100"
+                    class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-4 sm:p-8 border border-blue-100"
                 >
-                    <div class="flex items-center space-x-6">
+                    <div
+                        class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6"
+                    >
                         <div
-                            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"
+                            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0"
                         >
                             <svg
                                 class="w-8 h-8 text-white"
@@ -63,8 +69,10 @@ import { Head, Link } from "@inertiajs/vue3";
                                 />
                             </svg>
                         </div>
-                        <div>
-                            <h3 class="text-2xl font-bold text-slate-800">
+                        <div class="text-center sm:text-left">
+                            <h3
+                                class="text-xl sm:text-2xl font-bold text-slate-800"
+                            >
                                 Welcome to Our Hospital
                             </h3>
                             <p class="text-slate-600 mt-2">
@@ -78,18 +86,20 @@ import { Head, Link } from "@inertiajs/vue3";
 
                 <!-- Quick Actions Grid -->
                 <div
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
                 >
                     <!-- Book Appointment -->
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
+                        class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
                     >
-                        <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="flex items-center space-x-3 sm:space-x-4 mb-4"
+                        >
                             <div
-                                class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
+                                class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6 text-blue-600 group-hover:text-white"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 group-hover:text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -102,18 +112,20 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-slate-800">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-semibold text-slate-800 text-sm sm:text-base"
+                                >
                                     Book Appointment
                                 </h4>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     Schedule with our doctors
                                 </p>
                             </div>
                         </div>
                         <Link
                             :href="route('patient.book-appointment')"
-                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block text-sm sm:text-base"
                         >
                             Booked Appointment
                         </Link>
@@ -121,14 +133,16 @@ import { Head, Link } from "@inertiajs/vue3";
 
                     <!-- Health Packages -->
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
+                        class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
                     >
-                        <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="flex items-center space-x-3 sm:space-x-4 mb-4"
+                        >
                             <div
-                                class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300"
+                                class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6 text-green-600 group-hover:text-white"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-green-600 group-hover:text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -141,18 +155,20 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-slate-800">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-semibold text-slate-800 text-sm sm:text-base"
+                                >
                                     Health Packages
                                 </h4>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     Explore preventive care
                                 </p>
                             </div>
                         </div>
                         <Link
                             :href="route('patient.health-packages')"
-                            class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
+                            class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block text-sm sm:text-base"
                         >
                             View Packages
                         </Link>
@@ -160,14 +176,16 @@ import { Head, Link } from "@inertiajs/vue3";
 
                     <!-- Medical Records -->
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
+                        class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
                     >
-                        <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="flex items-center space-x-3 sm:space-x-4 mb-4"
+                        >
                             <div
-                                class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
+                                class="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6 text-purple-600 group-hover:text-white"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 group-hover:text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -180,18 +198,20 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-slate-800">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-semibold text-slate-800 text-sm sm:text-base"
+                                >
                                     Medical Records
                                 </h4>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     Access your health history
                                 </p>
                             </div>
                         </div>
                         <Link
                             :href="route('patient.medical-records')"
-                            class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
+                            class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block text-sm sm:text-base"
                         >
                             View Records
                         </Link>
@@ -199,14 +219,16 @@ import { Head, Link } from "@inertiajs/vue3";
 
                     <!-- Emergency Contact -->
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
+                        class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
                     >
-                        <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="flex items-center space-x-3 sm:space-x-4 mb-4"
+                        >
                             <div
-                                class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-500 transition-colors duration-300"
+                                class="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-500 transition-colors duration-300 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6 text-red-600 group-hover:text-white"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-red-600 group-hover:text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -219,18 +241,20 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-slate-800">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-semibold text-slate-800 text-sm sm:text-base"
+                                >
                                     Emergency
                                 </h4>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     24/7 emergency services
                                 </p>
                             </div>
                         </div>
                         <a
                             href="tel:999"
-                            class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
+                            class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block text-sm sm:text-base"
                         >
                             Call Now
                         </a>
@@ -238,14 +262,16 @@ import { Head, Link } from "@inertiajs/vue3";
 
                     <!-- Health Tips -->
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
+                        class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
                     >
-                        <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="flex items-center space-x-3 sm:space-x-4 mb-4"
+                        >
                             <div
-                                class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
+                                class="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6 text-orange-600 group-hover:text-white"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 group-hover:text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -258,18 +284,20 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-slate-800">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-semibold text-slate-800 text-sm sm:text-base"
+                                >
                                     Health Tips
                                 </h4>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     Daily wellness advice
                                 </p>
                             </div>
                         </div>
                         <Link
                             :href="route('patient.health-tips')"
-                            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
+                            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block text-sm sm:text-base"
                         >
                             Read More
                         </Link>
@@ -277,14 +305,16 @@ import { Head, Link } from "@inertiajs/vue3";
 
                     <!-- Profile Settings -->
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
+                        class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-white/20 hover:shadow-lg transition-all duration-300 group"
                     >
-                        <div class="flex items-center space-x-4 mb-4">
+                        <div
+                            class="flex items-center space-x-3 sm:space-x-4 mb-4"
+                        >
                             <div
-                                class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-500 transition-colors duration-300"
+                                class="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-500 transition-colors duration-300 flex-shrink-0"
                             >
                                 <svg
-                                    class="w-6 h-6 text-indigo-600 group-hover:text-white"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 group-hover:text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -297,18 +327,20 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-slate-800">
+                            <div class="min-w-0 flex-1">
+                                <h4
+                                    class="font-semibold text-slate-800 text-sm sm:text-base"
+                                >
                                     Profile
                                 </h4>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     Manage your account
                                 </p>
                             </div>
                         </div>
                         <Link
                             :href="route('patient.profile')"
-                            class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block"
+                            class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-xl transition-colors duration-300 text-center block text-sm sm:text-base"
                         >
                             Edit Profile
                         </Link>
@@ -317,20 +349,22 @@ import { Head, Link } from "@inertiajs/vue3";
 
                 <!-- Recent Activity -->
                 <div
-                    class="bg-white rounded-2xl p-6 shadow-sm border border-white/20"
+                    class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-white/20"
                 >
-                    <h4 class="font-bold text-xl text-slate-800 mb-4">
+                    <h4
+                        class="font-bold text-lg sm:text-xl text-slate-800 mb-4"
+                    >
                         Recent Activity
                     </h4>
-                    <div class="space-y-4">
+                    <div class="space-y-3 sm:space-y-4">
                         <div
-                            class="flex items-center space-x-4 p-4 bg-slate-50 rounded-xl"
+                            class="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-slate-50 rounded-xl"
                         >
                             <div
-                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0"
                             >
                                 <svg
-                                    class="w-5 h-5 text-blue-600"
+                                    class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -343,26 +377,28 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div class="flex-1">
-                                <p class="font-medium text-slate-800">
+                            <div class="flex-1 min-w-0">
+                                <p
+                                    class="font-medium text-slate-800 text-sm sm:text-base"
+                                >
                                     Appointment booked with Dr. Smith
                                 </p>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     Tomorrow at 10:00 AM
                                 </p>
                             </div>
-                            <span class="text-xs text-slate-500"
+                            <span class="text-xs text-slate-500 flex-shrink-0"
                                 >2 hours ago</span
                             >
                         </div>
                         <div
-                            class="flex items-center space-x-4 p-4 bg-slate-50 rounded-xl"
+                            class="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-slate-50 rounded-xl"
                         >
                             <div
-                                class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0"
                             >
                                 <svg
-                                    class="w-5 h-5 text-green-600"
+                                    class="w-4 h-4 sm:w-5 sm:h-5 text-green-600"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -375,15 +411,17 @@ import { Head, Link } from "@inertiajs/vue3";
                                     />
                                 </svg>
                             </div>
-                            <div class="flex-1">
-                                <p class="font-medium text-slate-800">
+                            <div class="flex-1 min-w-0">
+                                <p
+                                    class="font-medium text-slate-800 text-sm sm:text-base"
+                                >
                                     Health Package purchased
                                 </p>
-                                <p class="text-sm text-slate-600">
+                                <p class="text-xs sm:text-sm text-slate-600">
                                     Annual Checkup Package
                                 </p>
                             </div>
-                            <span class="text-xs text-slate-500"
+                            <span class="text-xs text-slate-500 flex-shrink-0"
                                 >1 day ago</span
                             >
                         </div>

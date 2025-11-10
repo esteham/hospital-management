@@ -54,17 +54,17 @@ const { canLogin, canRegister, doctor } = defineProps({
                 <!-- Doctor Photo and Basic Info -->
                 <div class="relative">
                     <div
-                        class="h-64 bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center"
+                        class="h-48 sm:h-64 bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center"
                     >
                         <img
                             v-if="doctor.user.photo"
                             :src="`/storage/${doctor.user.photo}`"
                             alt="Doctor Photo"
-                            class="w-48 h-48 object-cover rounded-full border-4 border-white shadow-lg"
+                            class="w-32 h-32 sm:w-48 sm:h-48 object-cover rounded-full border-4 border-white shadow-lg"
                         />
                         <svg
                             v-else
-                            class="w-48 h-48 text-blue-600"
+                            class="w-32 h-32 sm:w-48 sm:h-48 text-blue-600"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -78,36 +78,48 @@ const { canLogin, canRegister, doctor } = defineProps({
                         </svg>
                     </div>
                     <div
-                        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6"
+                        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4 sm:p-6"
                     >
-                        <h1 class="text-3xl font-black text-white mb-2">
+                        <h1
+                            class="text-2xl sm:text-3xl font-black text-white mb-2"
+                        >
                             {{ doctor.user.name }}
                         </h1>
-                        <p class="text-blue-200 font-semibold text-lg">
+                        <p
+                            class="text-blue-200 font-semibold text-base sm:text-lg"
+                        >
                             {{ doctor.speciality }}
                         </p>
-                        <p class="text-white/80">{{ doctor.designation }}</p>
+                        <p class="text-white/80 text-sm sm:text-base">
+                            {{ doctor.designation }}
+                        </p>
                     </div>
                 </div>
 
                 <!-- Doctor Details -->
-                <div class="p-8 space-y-6">
+                <div class="p-4 sm:p-8 space-y-6">
                     <!-- About Section -->
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2
+                            class="text-xl sm:text-2xl font-bold text-gray-900 mb-4"
+                        >
                             About
                         </h2>
-                        <p class="text-gray-700 leading-relaxed">
+                        <p
+                            class="text-gray-700 leading-relaxed text-sm sm:text-base"
+                        >
                             {{ doctor.about }}
                         </p>
                     </div>
 
                     <!-- Contact Information -->
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2
+                            class="text-xl sm:text-2xl font-bold text-gray-900 mb-4"
+                        >
                             Contact Information
                         </h2>
-                        <div class="grid md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div
                                 class="flex items-center gap-4 p-4 bg-blue-50 rounded-xl"
                             >
@@ -174,13 +186,13 @@ const { canLogin, canRegister, doctor } = defineProps({
                         <div class="flex flex-col sm:flex-row gap-4">
                             <a
                                 :href="`tel:${doctor.phone}`"
-                                class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow hover:bg-blue-700 transition-all duration-300 text-center"
+                                class="flex-1 bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold shadow hover:bg-blue-700 transition-all duration-300 text-center text-sm sm:text-base"
                             >
                                 📞 Call Now
                             </a>
                             <Link
                                 :href="`/appointment-booking?doctor=${doctor.id}`"
-                                class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold shadow hover:scale-105 transition-all duration-300 text-center"
+                                class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold shadow hover:scale-105 transition-all duration-300 text-center text-sm sm:text-base"
                             >
                                 📋 Book Appointment
                             </Link>

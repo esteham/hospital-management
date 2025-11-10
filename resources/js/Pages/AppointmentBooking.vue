@@ -367,7 +367,7 @@ const hospitalStats = ref([
                     Book Your Appointment
                 </div>
                 <h1
-                    class="text-4xl lg:text-4xl font-black text-gray-900 mb-4 leading-tight"
+                    class="text-3xl md:text-4xl font-black text-gray-900 mb-4 leading-tight"
                 >
                     Schedule Your
                     <span
@@ -377,7 +377,7 @@ const hospitalStats = ref([
                     </span>
                 </h1>
                 <p
-                    class="text-l text-gray-700 leading-relaxed max-w-3xl mx-auto"
+                    class="text-sm md:text-base text-gray-700 leading-relaxed max-w-3xl mx-auto"
                 >
                     Take the first step towards better health. Book your
                     appointment with our expert medical team and experience
@@ -388,7 +388,7 @@ const hospitalStats = ref([
             <!-- Main Content Grid -->
             <div class="grid lg:grid-cols-12 gap-8">
                 <!-- Left Side - Information (4 columns) -->
-                <div class="lg:col-span-4 space-y-8">
+                <div class="hidden lg:block lg:col-span-4 space-y-8">
                     <!-- Benefits Card -->
                     <div
                         class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8"
