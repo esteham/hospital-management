@@ -74,40 +74,45 @@ const submit = () => {
             <div class="absolute inset-0 bg-black/10"></div>
 
             <div
-                class="relative flex flex-col justify-center px-12 mt-0 max-w-xl"
+                class="relative flex flex-col justify-center px-6 md:px-12 mt-0 max-w-lg md:max-w-xl"
             >
                 <!-- Hospital Info -->
                 <div class="text-white">
                     <div class="flex">
-                        <img :src="Logo" class="w-20 h-20 mb-8 mr-5" />
+                        <img
+                            :src="Logo"
+                            class="w-16 h-16 md:w-20 md:h-20 mb-8 mr-5"
+                        />
 
                         <div
                             class="flex items-center justify-center lg:justify-start space-x-3 mb-8"
                         >
                             <div>
                                 <h2
-                                    class="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent"
+                                    class="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent"
                                 >
                                     Xet Hospital
                                 </h2>
-                                <p class="text-sm text-black-500">
+                                <p class="text-xs md:text-sm text-black-500">
                                     Join Our Team
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <h1 class="text-4xl font-bold mb-4">
+                    <h1 class="text-2xl md:text-4xl font-bold mb-4">
                         Join Xet Specialized Hospital
                     </h1>
-                    <p class="text-xl text-green-100 mb-6">
+                    <p class="text-lg md:text-xl text-green-100 mb-6">
                         Become Part of Our Medical Excellence
                     </p>
 
-                    <div class="space-y-4 text-green-100">
+                    <div
+                        class="space-y-3 md:space-y-4 text-green-100 text-sm md:text-base"
+                    >
                         <div class="flex items-center space-x-3">
                             <svg
-                                class="w-5 h-5 text-white"
+                                class="w-4 h-4 md:w-5 md:h-5 text-white"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -126,7 +131,7 @@ const submit = () => {
                         </div>
                         <div class="flex items-center space-x-3">
                             <svg
-                                class="w-5 h-5 text-white"
+                                class="w-4 h-4 md:w-5 md:h-5 text-white"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -142,7 +147,7 @@ const submit = () => {
                         </div>
                         <div class="flex items-center space-x-3">
                             <svg
-                                class="w-5 h-5 text-white"
+                                class="w-4 h-4 md:w-5 md:h-5 text-white"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -158,7 +163,7 @@ const submit = () => {
                         </div>
                         <div class="flex items-center space-x-3">
                             <svg
-                                class="w-5 h-5 text-white"
+                                class="w-4 h-4 md:w-5 md:h-5 text-white"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -176,12 +181,12 @@ const submit = () => {
                 </div>
 
                 <!-- Security Badge -->
-                <div class="absolute bottom-8 left-12">
+                <div class="absolute bottom-4 md:bottom-8 left-6 md:left-12">
                     <div
-                        class="flex items-center space-x-2 text-green-200 text-sm"
+                        class="flex items-center space-x-2 text-green-200 text-xs md:text-sm"
                     >
                         <svg
-                            class="w-4 h-4"
+                            class="w-3 h-3 md:w-4 md:h-4"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -201,22 +206,25 @@ const submit = () => {
 
         <!-- Right Side - Hospital Branding -->
         <div
-            class="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24 order-2"
+            class="flex-1 flex flex-col justify-center py-8 md:py-12 px-4 sm:px-6 lg:px-20 xl:px-24 order-2"
         >
-            <div class="mx-auto w-full max-w-md lg:w-96">
+            <div class="mx-auto w-full max-w-sm lg:w-96">
                 <!-- Header -->
                 <div class="text-center lg:text-left">
-                    <h2 class="text-3xl font-bold text-gray-900">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">
                         Create Account
                     </h2>
-                    <p class="mt-2 text-sm text-gray-600">
+                    <p class="mt-2 text-sm md:text-base text-gray-600">
                         Register for the hospital management system
                     </p>
                 </div>
 
                 <!-- Registration Form -->
-                <form @submit.prevent="submit" class="mt-8 space-y-6">
-                    <div class="space-y-5">
+                <form
+                    @submit.prevent="submit"
+                    class="mt-6 md:mt-8 space-y-4 md:space-y-6"
+                >
+                    <div class="space-y-4 md:space-y-5">
                         <!-- Name Field -->
                         <div>
                             <InputLabel
@@ -228,7 +236,7 @@ const submit = () => {
                                 <TextInput
                                     id="name"
                                     type="text"
-                                    class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                    class="block w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-sm md:text-base"
                                     placeholder="Enter your full name"
                                     v-model="form.name"
                                     required
@@ -274,7 +282,7 @@ const submit = () => {
                                 <TextInput
                                     id="email"
                                     type="email"
-                                    class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                    class="block w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-sm md:text-base"
                                     placeholder="Enter your work email"
                                     v-model="form.email"
                                     required
@@ -289,7 +297,7 @@ const submit = () => {
                                 >
                                     <svg
                                         v-if="checkingEmail"
-                                        class="h-5 w-5 text-gray-400 animate-spin"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-gray-400 animate-spin"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -303,7 +311,7 @@ const submit = () => {
                                     </svg>
                                     <svg
                                         v-else-if="emailValid === null"
-                                        class="h-5 w-5 text-gray-400"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-gray-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -320,7 +328,7 @@ const submit = () => {
                                             emailValid &&
                                             emailAvailable === null
                                         "
-                                        class="h-5 w-5 text-green-500"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-green-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -334,7 +342,7 @@ const submit = () => {
                                     </svg>
                                     <svg
                                         v-else-if="emailValid && emailAvailable"
-                                        class="h-5 w-5 text-green-500"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-green-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -350,7 +358,7 @@ const submit = () => {
                                         v-else-if="
                                             emailValid && !emailAvailable
                                         "
-                                        class="h-5 w-5 text-red-500"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-red-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -364,7 +372,7 @@ const submit = () => {
                                     </svg>
                                     <svg
                                         v-else
-                                        class="h-5 w-5 text-red-500"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-red-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -410,7 +418,7 @@ const submit = () => {
                                 <TextInput
                                     id="password"
                                     :type="showPassword ? 'text' : 'password'"
-                                    class="block w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                    class="block w-full px-3 md:px-4 py-2 md:py-3 pr-10 md:pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-sm md:text-base"
                                     placeholder="Create a strong password"
                                     v-model="form.password"
                                     required
@@ -426,7 +434,7 @@ const submit = () => {
                                 >
                                     <svg
                                         v-if="showPassword"
-                                        class="h-5 w-5 text-gray-400 hover:text-gray-600"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-gray-400 hover:text-gray-600"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -440,7 +448,7 @@ const submit = () => {
                                     </svg>
                                     <svg
                                         v-else
-                                        class="h-5 w-5 text-gray-400 hover:text-gray-600"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-gray-400 hover:text-gray-600"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -481,7 +489,7 @@ const submit = () => {
                                             ? 'text'
                                             : 'password'
                                     "
-                                    class="block w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                    class="block w-full px-3 md:px-4 py-2 md:py-3 pr-10 md:pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-sm md:text-base"
                                     placeholder="Confirm your password"
                                     v-model="form.password_confirmation"
                                     required
@@ -500,7 +508,7 @@ const submit = () => {
                                 >
                                     <svg
                                         v-if="showConfirmPassword"
-                                        class="h-5 w-5 text-gray-400 hover:text-gray-600"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-gray-400 hover:text-gray-600"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -514,7 +522,7 @@ const submit = () => {
                                     </svg>
                                     <svg
                                         v-else
-                                        class="h-5 w-5 text-gray-400 hover:text-gray-600"
+                                        class="h-4 w-4 md:h-5 md:w-5 text-gray-400 hover:text-gray-600"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -547,7 +555,7 @@ const submit = () => {
                                 v-model:checked="form.terms"
                                 class="w-4 h-4 text-green-600 focus:ring-green-500 border-gray-300 rounded mt-0.5"
                             />
-                            <div class="text-sm">
+                            <div class="text-xs md:text-sm">
                                 <label
                                     for="terms"
                                     class="font-medium text-gray-700"
@@ -565,7 +573,9 @@ const submit = () => {
                                         >Privacy Policy</a
                                     >
                                 </label>
-                                <p class="text-gray-500 mt-1">
+                                <p
+                                    class="text-gray-500 mt-1 text-xs md:text-sm"
+                                >
                                     Including HIPAA compliance and data
                                     protection guidelines
                                 </p>
@@ -577,7 +587,7 @@ const submit = () => {
                     <!-- Submit Button -->
                     <div>
                         <PrimaryButton
-                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="w-full flex justify-center py-2 md:py-3 px-3 md:px-4 border border-transparent rounded-xl shadow-sm text-sm md:text-base font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing || !form.terms"
                         >
@@ -612,8 +622,10 @@ const submit = () => {
                     </div>
 
                     <!-- Login Link -->
-                    <div class="text-center pt-4 border-t border-gray-200">
-                        <p class="text-sm text-gray-600">
+                    <div
+                        class="text-center pt-3 md:pt-4 border-t border-gray-200"
+                    >
+                        <p class="text-sm md:text-base text-gray-600">
                             Already have an account?
                             <Link
                                 :href="route('login')"
@@ -626,7 +638,7 @@ const submit = () => {
 
                     <!-- Support Contact -->
                     <div class="text-center">
-                        <p class="text-xs text-gray-500">
+                        <p class="text-xs md:text-sm text-gray-500">
                             Need help with registration?
                             <a
                                 href="mailto:hr@xethospital.com"

@@ -10,13 +10,117 @@ const user = computed(() => page.props.auth?.user ?? null);
 const isAdmin = computed(() => user.value && user.value.role === "admin");
 const isDoctor = computed(() => user.value && user.value.role === "doctor");
 const sidebarOpen = ref(false);
-const sidebarWidth = ref(320); // Default width in px (w-80 = 20rem = 320px)
+const sidebarWidth = ref(320);
 const isResizing = ref(false);
 const isSidebarCollapsed = ref(false);
+const isMobile = ref(false);
 
 const isRouteActive = (routeName) => {
     return route().current() === routeName;
 };
+
+const navItems = computed(() => {
+    const items = [];
+    if (isAdmin.value) {
+        items.push({
+            name: "Dashboard",
+            routeName: "dashboard",
+            icon: "home",
+        });
+        items.push({
+            name: "Doctors",
+            routeName: "admin.doctors.index",
+            icon: "users",
+        });
+        items.push({
+            name: "Staff",
+            routeName: "admin.staff.index",
+            icon: "users",
+        });
+        items.push({
+            name: "Schedules",
+            routeName: "admin.schedules.index",
+            icon: "calendar",
+        });
+        items.push({
+            name: "Logout",
+            routeName: "logout",
+            icon: "logout",
+        });
+        // items.push({
+        //     name: "Profile",
+        //     routeName: "profile.edit",
+        //     icon: "user",
+        // });
+    } else if (isDoctor.value) {
+        items.push({
+            name: "Dashboard",
+            routeName: "dashboard",
+            icon: "home",
+        });
+        items.push({
+            name: "Schedules",
+            routeName: "doctor.schedules",
+            icon: "calendar",
+        });
+        items.push({
+            name: "Appointments",
+            routeName: "doctor.appointments.index",
+            icon: "calendar",
+        });
+        items.push({
+            name: "Messages",
+            routeName: "doctor.messages",
+            icon: "message",
+        });
+        items.push({
+            name: "Logout",
+            routeName: "logout",
+            icon: "logout",
+            method: "post",
+            as: "button",
+        });
+        // items.push({
+        //     name: "Profile",
+        //     routeName: "profile.edit",
+        //     icon: "user",
+        // });
+    } else {
+        items.push({
+            name: "Home",
+            routeName: "welcome",
+            icon: "home",
+        });
+        items.push({
+            name: "Search",
+            routeName: "find.doctor",
+            icon: "search",
+        });
+        items.push({
+            name: "Dashboard",
+            routeName: "dashboard",
+            icon: "home",
+        });
+        items.push({
+            name: "Appointments",
+            routeName: "appointments.index",
+            icon: "calendar",
+        });
+        items.push({
+            name: "Logout",
+            routeName: "logout",
+            icon: "logout",
+            method: "post",
+            as: "button",
+        });
+        // items.push({
+        //     name: "Profile",
+        //     routeName: "profile.edit",
+        //     icon: "user",
+        // });
+    }
+    return items.slice(0, 5);
+});
 
 const startResize = (e) => {
     isResizing.value = true;
@@ -50,37 +154,50 @@ onUnmounted(() => {
     document.removeEventListener("mousemove", resize);
     document.removeEventListener("mouseup", stopResize);
 });
+
+const checkMobile = () => {
+    isMobile.value = window.innerWidth < 768;
+};
+
+onMounted(() => {
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+});
+
+onUnmounted(() => {
+    window.removeEventListener("resize", checkMobile);
+});
+
+const getIconSvg = (icon) => {
+    switch (icon) {
+        case "home":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>`;
+        case "users":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>`;
+        case "calendar":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`;
+        case "user":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>`;
+        case "message":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`;
+        case "search":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>`;
+        case "logout":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>`;
+        default:
+            return "";
+    }
+};
 </script>
 
 <template>
     <div
         class="h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 overflow-hidden"
-        :class="{ flex: isAdmin || isDoctor }"
+        :class="{ flex: (isAdmin || isDoctor) && !isMobile }"
     >
-        <!-- Mobile Menu Button -->
-        <button
-            v-if="!isAdmin && !isDoctor"
-            @click="sidebarOpen = true"
-            class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white/90 backdrop-blur-md rounded-xl shadow-lg border border-white/80"
-        >
-            <svg
-                class="w-6 h-6 text-slate-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                />
-            </svg>
-        </button>
-
         <!-- Admin Sidebar -->
         <aside
-            v-if="isAdmin"
+            v-if="isAdmin && !isMobile"
             :style="{
                 width: isSidebarCollapsed ? '130px' : sidebarWidth + 'px',
             }"
@@ -425,7 +542,7 @@ onUnmounted(() => {
 
         <!-- Doctor Sidebar -->
         <aside
-            v-if="isDoctor"
+            v-if="isDoctor && !isMobile"
             :style="{
                 width: isSidebarCollapsed ? '130px' : sidebarWidth + 'px',
             }"
@@ -735,7 +852,7 @@ onUnmounted(() => {
 
         <!-- Main Content Area -->
         <div
-            :class="{ 'flex-1': isAdmin || isDoctor }"
+            :class="{ 'flex-1': (isAdmin || isDoctor) && !isMobile }"
             class="h-screen flex flex-col"
         >
             <!-- Top Navigation for Non-Admin -->
@@ -751,7 +868,7 @@ onUnmounted(() => {
                             <Link :href="route('welcome')">
                                 <div class="flex items-center space-x-4">
                                     <img class="w-12 h-12" :src="Logo" />
-                                    <div>
+                                    <div class="hidden lg:block">
                                         <h1
                                             class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent tracking-tight"
                                         >
@@ -854,7 +971,7 @@ onUnmounted(() => {
             </div>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto">
+            <main class="flex-1 overflow-y-auto" :class="{ 'pb-20': isMobile }">
                 <div
                     :class="
                         isAdmin
@@ -874,5 +991,29 @@ onUnmounted(() => {
                 </div>
             </main>
         </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav
+            v-if="isMobile"
+            class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-white/80 shadow-2xl z-50"
+        >
+            <div class="flex justify-around items-center h-16">
+                <Link
+                    v-for="item in navItems"
+                    :key="item.routeName"
+                    :href="route(item.routeName)"
+                    :method="item.method"
+                    :as="item.as"
+                    class="flex flex-col items-center justify-center flex-1 py-2 px-1 text-slate-600 hover:text-blue-600 transition-colors duration-200"
+                    :class="{ 'text-blue-600': isRouteActive(item.routeName) }"
+                >
+                    <div
+                        class="w-6 h-6 mb-1"
+                        v-html="getIconSvg(item.icon)"
+                    ></div>
+                    <span class="text-xs font-medium">{{ item.name }}</span>
+                </Link>
+            </div>
+        </nav>
     </div>
 </template>

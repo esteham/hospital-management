@@ -55,7 +55,7 @@ function closeModal() {
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
                 <Link
-                    href="/book-appointment"
+                    href="/appointment-booking"
                     class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium shadow-sm hover:bg-blue-800 hover:text-white transition-colors"
                 >
                     <svg

@@ -39,9 +39,9 @@ const submit = () => {
     <div class="min-h-screen flex">
         <!-- Left Side - Login Form -->
         <div
-            class="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24"
+            class="flex-1 flex flex-col justify-center py-8 md:py-12 px-4 sm:px-6 lg:px-20 xl:px-24"
         >
-            <div class="mx-auto w-full max-w-sm lg:w-96">
+            <div class="mx-auto w-full max-w-sm lg:w-96 px-4 md:px-0">
                 <!-- Header -->
                 <div class="text-center lg:text-left">
                     <!-- <div
@@ -61,10 +61,10 @@ const submit = () => {
                         </div>
                     </div> -->
 
-                    <h2 class="text-3xl font-bold text-gray-900">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">
                         Welcome back
                     </h2>
-                    <p class="mt-2 text-sm text-gray-600">
+                    <p class="mt-2 text-sm md:text-base text-gray-600">
                         Access the hospital management portal
                     </p>
                 </div>
@@ -72,7 +72,7 @@ const submit = () => {
                 <!-- Status Message -->
                 <div
                     v-if="status"
-                    class="mt-6 p-4 rounded-xl bg-green-50 border border-green-200 animate-fade-in"
+                    class="mt-4 md:mt-6 p-3 md:p-4 rounded-xl bg-green-50 border border-green-200 animate-fade-in"
                 >
                     <div class="flex items-center">
                         <svg
@@ -95,7 +95,10 @@ const submit = () => {
                 </div>
 
                 <!-- Login Form -->
-                <form @submit.prevent="submit" class="mt-8 space-y-6">
+                <form
+                    @submit.prevent="submit"
+                    class="mt-6 md:mt-8 space-y-4 md:space-y-6"
+                >
                     <div class="space-y-4">
                         <!-- Email Field -->
                         <div>
@@ -108,7 +111,7 @@ const submit = () => {
                                 <TextInput
                                     id="email"
                                     type="email"
-                                    class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                    class="block w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm md:text-base"
                                     placeholder="Enter your email"
                                     v-model="form.email"
                                     required
@@ -154,7 +157,7 @@ const submit = () => {
                                 <TextInput
                                     id="password"
                                     :type="showPassword ? 'text' : 'password'"
-                                    class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                    class="block w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm md:text-base"
                                     placeholder="Enter your password"
                                     v-model="form.password"
                                     required
@@ -212,7 +215,9 @@ const submit = () => {
                     </div>
 
                     <!-- Remember Me & Forgot Password -->
-                    <div class="flex items-center justify-between">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0"
+                    >
                         <label class="flex items-center">
                             <Checkbox
                                 name="remember"
@@ -236,7 +241,7 @@ const submit = () => {
                     <!-- Submit Button -->
                     <div>
                         <PrimaryButton
-                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="w-full flex justify-center py-2 md:py-3 px-3 md:px-4 border border-transparent rounded-xl shadow-sm text-sm md:text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
                         >
@@ -271,8 +276,8 @@ const submit = () => {
                     </div>
 
                     <!-- Sign Up Link -->
-                    <div class="text-center mt-4">
-                        <p class="text-sm text-gray-600">
+                    <div class="text-center mt-3 md:mt-4">
+                        <p class="text-sm md:text-base text-gray-600">
                             Don't have an account?
                             <Link
                                 :href="route('register')"
@@ -284,8 +289,10 @@ const submit = () => {
                     </div>
 
                     <!-- Support Contact -->
-                    <div class="text-center pt-4 border-t border-gray-200">
-                        <p class="text-xs text-gray-500">
+                    <div
+                        class="text-center pt-3 md:pt-4 border-t border-gray-200"
+                    >
+                        <p class="text-xs md:text-sm text-gray-500">
                             Need help accessing your account?
                             <a
                                 href="mailto:support@xethospital.com"
@@ -301,25 +308,29 @@ const submit = () => {
 
         <!-- Right Side - Hospital Branding -->
         <div
-            class="hidden lg:flex flex-1 relative bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600"
+            class="hidden lg:flex flex-1 relative bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 overflow-hidden"
         >
             <div class="absolute inset-0 bg-black/10"></div>
-            <div class="relative flex flex-col justify-center px-12 max-w-2xl">
+            <div
+                class="relative flex flex-col justify-center px-6 md:px-12 max-w-2xl"
+            >
                 <!-- Hospital Info -->
                 <div class="text-white">
                     <img :src="Logo" class="w-20 h-20 mb-5" />
 
-                    <h1 class="text-4xl font-bold mb-4">
+                    <h1 class="text-2xl md:text-4xl font-bold mb-4">
                         Xet Specialized Hospital
                     </h1>
-                    <p class="text-xl text-blue-100 mb-6">
+                    <p class="text-lg md:text-xl text-blue-100 mb-6">
                         Management & Support System
                     </p>
 
-                    <div class="space-y-4 text-blue-100">
+                    <div
+                        class="space-y-3 md:space-y-4 text-blue-100 text-sm md:text-base"
+                    >
                         <div class="flex items-center space-x-3">
                             <svg
-                                class="w-5 h-5 text-white"
+                                class="w-4 h-4 md:w-5 md:h-5 text-white flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -335,7 +346,7 @@ const submit = () => {
                         </div>
                         <div class="flex items-center space-x-3">
                             <svg
-                                class="w-5 h-5 text-white"
+                                class="w-4 h-4 md:w-5 md:h-5 text-white flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -351,7 +362,7 @@ const submit = () => {
                         </div>
                         <div class="flex items-center space-x-3">
                             <svg
-                                class="w-5 h-5 text-white"
+                                class="w-4 h-4 md:w-5 md:h-5 text-white flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -369,12 +380,12 @@ const submit = () => {
                 </div>
 
                 <!-- Security Badge -->
-                <div class="absolute bottom-8 left-12">
+                <div class="absolute bottom-4 md:bottom-8 left-6 md:left-12">
                     <div
-                        class="flex items-center space-x-2 text-blue-200 text-sm"
+                        class="flex items-center space-x-2 text-blue-200 text-xs md:text-sm"
                     >
                         <svg
-                            class="w-4 h-4"
+                            class="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"

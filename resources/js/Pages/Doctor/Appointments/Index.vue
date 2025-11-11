@@ -120,14 +120,16 @@ const clearFilters = () => {
         <div class="min-h-screen bg-gray-50/30 py-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Header -->
-                <div class="mb-8">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-4">
+                <div class="mb-6 sm:mb-8">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                    >
+                        <div class="flex items-center space-x-3 sm:space-x-4">
                             <div
-                                class="p-3 bg-white rounded-2xl shadow-sm border border-gray-100"
+                                class="p-2 sm:p-3 bg-white rounded-2xl shadow-sm border border-gray-100"
                             >
                                 <svg
-                                    class="w-7 h-7 text-indigo-600"
+                                    class="w-6 h-6 sm:w-7 sm:h-7 text-indigo-600"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -141,19 +143,25 @@ const clearFilters = () => {
                                 </svg>
                             </div>
                             <div>
-                                <h1 class="text-3xl font-bold text-gray-900">
+                                <h1
+                                    class="text-2xl sm:text-3xl font-bold text-gray-900"
+                                >
                                     Appointments
                                 </h1>
-                                <p class="text-gray-600 mt-1">
+                                <p
+                                    class="text-gray-600 mt-1 text-sm sm:text-base"
+                                >
                                     Manage and track your patient appointments
                                 </p>
                             </div>
                         </div>
-                        <div class="text-right">
+                        <div class="text-left sm:text-right">
                             <p class="text-sm text-gray-500">
                                 Total Appointments
                             </p>
-                            <p class="text-2xl font-semibold text-gray-900">
+                            <p
+                                class="text-xl sm:text-2xl font-semibold text-gray-900"
+                            >
                                 {{ appointments.length }}
                             </p>
                         </div>
@@ -162,7 +170,7 @@ const clearFilters = () => {
 
                 <!-- Filters Card -->
                 <div
-                    class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8"
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8"
                 >
                     <div class="flex flex-col lg:flex-row gap-4 items-end">
                         <div class="flex-1 w-full">
@@ -189,7 +197,7 @@ const clearFilters = () => {
                                     v-model="searchQuery"
                                     type="text"
                                     placeholder="Search by patient name, email, or date..."
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm sm:text-base"
                                 />
                             </div>
                         </div>
@@ -203,7 +211,7 @@ const clearFilters = () => {
                             <input
                                 v-model="selectedDate"
                                 type="date"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm sm:text-base"
                             />
                         </div>
 
@@ -215,7 +223,7 @@ const clearFilters = () => {
                             </label>
                             <select
                                 v-model="statusFilter"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm sm:text-base"
                             >
                                 <option
                                     v-for="option in statusOptions"
@@ -229,7 +237,7 @@ const clearFilters = () => {
 
                         <button
                             @click="clearFilters"
-                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium"
+                            class="px-4 sm:px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium text-sm sm:text-base"
                         >
                             Clear
                         </button>
@@ -239,7 +247,7 @@ const clearFilters = () => {
                 <!-- Appointments List -->
                 <div
                     v-if="Object.keys(filteredAppointments).length === 0"
-                    class="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center"
+                    class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 sm:p-12 text-center"
                 >
                     <div class="max-w-md mx-auto">
                         <div
@@ -262,13 +270,13 @@ const clearFilters = () => {
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">
                             No appointments found
                         </h3>
-                        <p class="text-gray-500 mb-6">
+                        <p class="text-gray-500 mb-6 text-sm sm:text-base">
                             No appointments match your current filters. Try
                             adjusting your search criteria.
                         </p>
                         <button
                             @click="clearFilters"
-                            class="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-medium"
+                            class="px-4 sm:px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-medium text-sm sm:text-base"
                         >
                             Clear all filters
                         </button>
@@ -280,12 +288,16 @@ const clearFilters = () => {
                         v-for="(apps, date) in filteredAppointments"
                         :key="date"
                     >
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-2xl font-bold text-gray-900">
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2"
+                        >
+                            <h2
+                                class="text-xl sm:text-2xl font-bold text-gray-900"
+                            >
                                 {{ formatDisplayDate(date) }}
                             </h2>
                             <span
-                                class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium"
+                                class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium self-start sm:self-auto"
                             >
                                 {{ apps.length }} appointment{{
                                     apps.length !== 1 ? "s" : ""
@@ -293,11 +305,13 @@ const clearFilters = () => {
                             </span>
                         </div>
 
-                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <div
+                            class="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6"
+                        >
                             <div
                                 v-for="appointment in apps"
                                 :key="appointment.id"
-                                class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                                class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-shadow"
                             >
                                 <div
                                     class="flex items-start justify-between mb-4"
@@ -423,7 +437,8 @@ const clearFilters = () => {
                                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                             />
                                         </svg>
-                                        <span>Details and Make Prescription
+                                        <span
+                                            >Details and Make Prescription
                                         </span>
                                     </Link>
                                 </div>

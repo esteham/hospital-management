@@ -13,24 +13,28 @@ import MasterCardLogo from "@/assets/images/payment/mastercard.png";
 
 <template>
     <footer
-        class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-20"
+        class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-12 sm:py-20"
     >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 sm:gap-12">
                 <!-- Brand Section -->
                 <div class="lg:col-span-2">
-                    <div class="flex items-center gap-4 mb-6">
-                        <img :src="Logo" class="w-14 h-14" />
+                    <div class="flex items-start sm:items-center gap-4 mb-6">
+                        <img :src="Logo" class="w-12 h-12 sm:w-14 sm:h-14" />
                         <div>
-                            <h4 class="text-2xl font-bold">
+                            <h4 class="text-xl sm:text-2xl font-bold">
                                 Xet Specialized Hospital
                             </h4>
-                            <p class="text-gray-400 font-medium">
+                            <p
+                                class="text-gray-400 font-medium text-sm sm:text-base"
+                            >
                                 Excellence in Specialized Healthcare
                             </p>
                         </div>
                     </div>
-                    <p class="text-gray-400 leading-relaxed max-w-md">
+                    <p
+                        class="text-gray-400 leading-relaxed max-w-md text-sm sm:text-base"
+                    >
                         Delivering world-class specialized healthcare with
                         compassion, innovation, and unwavering commitment to
                         patient well-being.
@@ -103,40 +107,40 @@ import MasterCardLogo from "@/assets/images/payment/mastercard.png";
 
                 <!-- Quick Links -->
                 <div>
-                    <h5 class="text-lg font-bold mb-6">Quick Links</h5>
-                    <ul class="space-y-3">
+                    <h5 class="text-lg font-bold mb-4 sm:mb-6">Quick Links</h5>
+                    <ul class="space-y-2 sm:space-y-3">
                         <li>
                             <a
                                 href="#home"
-                                class="text-gray-400 hover:text-white"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Home</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#services"
-                                class="text-gray-400 hover:text-white"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Services</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#health-s"
-                                class="text-gray-400 hover:text-white"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Health s</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#patient-stories"
-                                class="text-gray-400 hover:text-white"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Patient Stories</a
                             >
                         </li>
                         <li>
                             <a
                                 href="#blog"
-                                class="text-gray-400 hover:text-white"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Blog</a
                             >
                         </li>
@@ -145,30 +149,40 @@ import MasterCardLogo from "@/assets/images/payment/mastercard.png";
 
                 <!-- Services -->
                 <div>
-                    <h5 class="text-lg font-bold mb-6">Our Services</h5>
-                    <ul class="space-y-3">
+                    <h5 class="text-lg font-bold mb-4 sm:mb-6">Our Services</h5>
+                    <ul class="space-y-2 sm:space-y-3">
                         <li>
-                            <a href="#" class="text-gray-400 hover:text-white"
+                            <a
+                                href="#"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Emergency Care</a
                             >
                         </li>
                         <li>
-                            <a href="#" class="text-gray-400 hover:text-white"
+                            <a
+                                href="#"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Cardiology</a
                             >
                         </li>
                         <li>
-                            <a href="#" class="text-gray-400 hover:text-white"
+                            <a
+                                href="#"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Neurology</a
                             >
                         </li>
                         <li>
-                            <a href="#" class="text-gray-400 hover:text-white"
+                            <a
+                                href="#"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Surgery</a
                             >
                         </li>
                         <li>
-                            <a href="#" class="text-gray-400 hover:text-white"
+                            <a
+                                href="#"
+                                class="text-gray-400 hover:text-white text-sm sm:text-base"
                                 >Diagnostics</a
                             >
                         </li>
@@ -177,19 +191,19 @@ import MasterCardLogo from "@/assets/images/payment/mastercard.png";
 
                 <!-- Newsletter -->
                 <div>
-                    <h5 class="text-lg font-bold mb-6">Stay Updated</h5>
-                    <p class="text-gray-400 mb-4">
+                    <h5 class="text-lg font-bold mb-4 sm:mb-6">Stay Updated</h5>
+                    <p class="text-gray-400 mb-4 text-sm sm:text-base">
                         Subscribe to our newsletter for the latest health tips,
                         news, and updates.
                     </p>
-                    <div class="flex">
+                    <div class="flex flex-col sm:flex-row">
                         <input
                             type="email"
                             placeholder="Enter your email"
-                            class="flex-1 px-4 py-3 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="flex-1 px-4 py-3 bg-gray-800 text-white rounded-t-lg sm:rounded-l-lg sm:rounded-t-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <button
-                            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-r-lg transition-all duration-200 hover:scale-105"
+                            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-b-lg sm:rounded-r-lg sm:rounded-b-none transition-all duration-200 hover:scale-105"
                         >
                             Subscribe
                         </button>
@@ -198,9 +212,11 @@ import MasterCardLogo from "@/assets/images/payment/mastercard.png";
             </div>
 
             <!-- Payment Methods -->
-            <div class="mt-16">
-                <h5 class="text-xl font-bold mb-4">We Accept</h5>
-                <div class="flex flex-wrap gap-4 sm:gap-6 items-center">
+            <div class="mt-12 sm:mt-16">
+                <h5 class="text-lg sm:text-xl font-bold mb-4">We Accept</h5>
+                <div
+                    class="flex flex-wrap gap-4 sm:gap-6 items-center justify-center sm:justify-start"
+                >
                     <img
                         :src="BkashLogo"
                         alt="bKash"
@@ -235,11 +251,19 @@ import MasterCardLogo from "@/assets/images/payment/mastercard.png";
             </div>
 
             <!-- Copyright -->
-            <div class="border-t border-gray-700 mt-10 pt-10 text-center">
-                <p class="text-gray-400 text-sm">
-                    &copy; 2024 Xet Specialized Hospital. All rights reserved. |
-                    <a href="#" class="hover:text-white">Privacy Policy</a> •
-                    <a href="#" class="hover:text-white">Terms of Service</a>
+            <div
+                class="border-t border-gray-700 mt-8 sm:mt-10 pt-8 sm:pt-10 text-center"
+            >
+                <p class="text-gray-400 text-xs sm:text-sm">
+                    &copy; {{ new Date().getFullYear() }} Xet Specialized
+                    Hospital. All rights reserved. |
+                    <a href="#" class="hover:text-white text-xs sm:text-sm"
+                        >Privacy Policy</a
+                    >
+                    •
+                    <a href="#" class="hover:text-white text-xs sm:text-sm"
+                        >Terms of Service</a
+                    >
                 </p>
             </div>
         </div>

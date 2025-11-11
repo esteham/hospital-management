@@ -40,11 +40,11 @@ onMounted(loadMessages);
             </h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-6 sm:py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        <h3 class="text-lg font-medium mb-4">
+                    <div class="p-4 sm:p-6 text-gray-900">
+                        <h3 class="text-base sm:text-lg font-medium mb-4">
                             All Messages from Admin
                         </h3>
                         <div class="mt-2">
@@ -60,31 +60,37 @@ onMounted(loadMessages);
                             >
                                 No messages yet.
                             </div>
-                            <div v-else class="space-y-4">
+                            <div v-else class="space-y-3 sm:space-y-4">
                                 <div
                                     v-for="(msg, index) in messages"
                                     :key="msg.id"
-                                    class="bg-gray-50 p-4 rounded-lg border relative"
+                                    class="bg-gray-50 p-3 sm:p-4 rounded-lg border relative"
                                 >
                                     <span
                                         v-if="index === 0"
-                                        class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
+                                        class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-red-500 text-white text-xs px-1 py-0.5 sm:px-2 sm:py-1 rounded"
                                         title="New Message"
                                     >
                                         New
                                     </span>
-                                    <div class="font-medium text-gray-800">
+                                    <div
+                                        class="font-medium text-gray-800 text-sm sm:text-base"
+                                    >
                                         {{ msg.admin_name }}
                                     </div>
-                                    <div class="text-gray-700 mt-2">
+                                    <div
+                                        class="text-gray-700 mt-2 text-sm sm:text-base"
+                                    >
                                         {{ msg.message }}
                                     </div>
-                                    <div class="text-gray-500 mt-2 text-sm">
+                                    <div
+                                        class="text-gray-500 mt-2 text-xs sm:text-sm"
+                                    >
                                         {{ msg.created_at }}
                                     </div>
                                     <div
                                         v-if="msg.schedule_info"
-                                        class="text-gray-600 italic mt-1 text-sm"
+                                        class="text-gray-600 italic mt-1 text-xs sm:text-sm"
                                     >
                                         {{ msg.schedule_info }}
                                     </div>

@@ -146,7 +146,9 @@ onMounted(fetchList);
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="space-y-6">
                     <!-- Action Bar -->
-                    <div class="flex justify-between items-center">
+                    <div
+                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+                    >
                         <div class="flex items-center gap-4">
                             <div
                                 class="flex items-center gap-2 text-sm text-gray-600 bg-white px-3 py-2 rounded-lg border"
@@ -162,7 +164,7 @@ onMounted(fetchList);
                         </div>
                         <button
                             @click="startCreating"
-                            class="btn-primary flex items-center gap-2"
+                            class="btn-primary flex items-center gap-2 w-full sm:w-auto"
                             :disabled="showForm && !isEditing"
                         >
                             <Plus class="w-4 h-4" />
@@ -209,7 +211,7 @@ onMounted(fetchList);
                             </div>
 
                             <div
-                                class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                             >
                                 <div class="space-y-2">
                                     <label
@@ -218,7 +220,9 @@ onMounted(fetchList);
                                         <Calendar class="w-4 h-4" />
                                         Days of Week (Available)
                                     </label>
-                                    <div class="grid grid-cols-2 gap-2">
+                                    <div
+                                        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2"
+                                    >
                                         <label
                                             v-for="d in dayOptions"
                                             :key="d.v"
@@ -323,12 +327,12 @@ onMounted(fetchList);
                             </div>
 
                             <div
-                                class="flex gap-3 pt-4 border-t border-gray-200"
+                                class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200"
                             >
                                 <button
                                     @click="save"
                                     :disabled="saving"
-                                    class="btn-primary flex items-center gap-2"
+                                    class="btn-primary flex items-center gap-2 w-full sm:w-auto"
                                 >
                                     <Loader2
                                         v-if="saving"
@@ -344,7 +348,7 @@ onMounted(fetchList);
                                 </button>
                                 <button
                                     @click="resetForm"
-                                    class="btn-secondary"
+                                    class="btn-secondary w-full sm:w-auto"
                                 >
                                     Cancel
                                 </button>
@@ -364,39 +368,39 @@ onMounted(fetchList);
                             </h3>
                         </div>
 
-                        <div class="overflow-hidden">
-                            <table class="w-full">
+                        <div class="overflow-x-auto hidden sm:block">
+                            <table class="w-full min-w-[600px]">
                                 <thead
                                     class="bg-gray-50/80 border-b border-gray-200/80"
                                 >
                                     <tr>
                                         <th
-                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                            class="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                         >
                                             Days
                                         </th>
                                         <th
-                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                            class="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                         >
                                             Time Slot
                                         </th>
                                         <th
-                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                            class="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                         >
                                             Duration
                                         </th>
                                         <th
-                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                            class="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                         >
                                             Capacity
                                         </th>
                                         <th
-                                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                            class="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                         >
                                             Fee
                                         </th>
                                         <th
-                                            class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                            class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                         >
                                             Actions
                                         </th>
@@ -406,7 +410,7 @@ onMounted(fetchList);
                                     <tr v-if="loading">
                                         <td
                                             colspan="6"
-                                            class="px-6 py-12 text-center"
+                                            class="px-4 sm:px-6 py-12 text-center"
                                         >
                                             <div
                                                 class="flex flex-col items-center justify-center gap-3"
@@ -427,7 +431,9 @@ onMounted(fetchList);
                                         :key="row.id"
                                         class="group hover:bg-blue-50/30 transition-colors duration-200"
                                     >
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td
+                                            class="px-4 sm:px-6 py-4 whitespace-nowrap"
+                                        >
                                             <div class="flex flex-col gap-1">
                                                 <div
                                                     v-for="day in row.day_of_week"
@@ -446,7 +452,9 @@ onMounted(fetchList);
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td
+                                            class="px-4 sm:px-6 py-4 whitespace-nowrap"
+                                        >
                                             <div
                                                 class="flex items-center gap-2 text-gray-700"
                                             >
@@ -460,11 +468,13 @@ onMounted(fetchList);
                                             </div>
                                         </td>
                                         <td
-                                            class="px-6 py-4 whitespace-nowrap text-gray-600"
+                                            class="px-4 sm:px-6 py-4 whitespace-nowrap text-gray-600"
                                         >
                                             {{ row.slot_minutes }} minutes
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td
+                                            class="px-4 sm:px-6 py-4 whitespace-nowrap"
+                                        >
                                             <div
                                                 class="flex items-center gap-2 text-gray-700"
                                             >
@@ -479,7 +489,9 @@ onMounted(fetchList);
                                                 >
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td
+                                            class="px-4 sm:px-6 py-4 whitespace-nowrap"
+                                        >
                                             <div
                                                 class="flex items-center gap-2 text-gray-700"
                                             >
@@ -490,7 +502,7 @@ onMounted(fetchList);
                                             </div>
                                         </td>
                                         <td
-                                            class="px-6 py-4 whitespace-nowrap text-right"
+                                            class="px-4 sm:px-6 py-4 whitespace-nowrap text-right"
                                         >
                                             <div
                                                 class="flex justify-end gap-2 group-hover:opacity-100 transition-opacity"
@@ -516,7 +528,7 @@ onMounted(fetchList);
                                     <tr v-if="!loading && !hasSchedules">
                                         <td
                                             colspan="6"
-                                            class="px-6 py-16 text-center"
+                                            class="px-4 sm:px-6 py-16 text-center"
                                         >
                                             <div
                                                 class="flex flex-col items-center justify-center gap-4 text-gray-500"
@@ -537,7 +549,7 @@ onMounted(fetchList);
                                                 </div>
                                                 <button
                                                     @click="startCreating"
-                                                    class="btn-primary flex items-center gap-2 mt-2"
+                                                    class="btn-primary flex items-center gap-2 mt-2 w-full sm:w-auto"
                                                 >
                                                     <Plus class="w-4 h-4" />
                                                     <span>Create Schedule</span>
@@ -547,6 +559,119 @@ onMounted(fetchList);
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- Mobile Card View -->
+                        <div class="block sm:hidden p-6 space-y-4">
+                            <div v-if="loading" class="text-center py-12">
+                                <div
+                                    class="flex flex-col items-center justify-center gap-3"
+                                >
+                                    <Loader2
+                                        class="w-8 h-8 animate-spin text-blue-600"
+                                    />
+                                    <span class="text-gray-500 font-medium"
+                                        >Loading schedules...</span
+                                    >
+                                </div>
+                            </div>
+
+                            <div
+                                v-for="row in items"
+                                :key="row.id"
+                                class="bg-gray-50 rounded-lg p-4 space-y-3"
+                            >
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <div
+                                            class="font-medium text-gray-900 mb-2"
+                                        >
+                                            Days:
+                                            {{
+                                                row.day_of_week
+                                                    .map((d) => getDayName(d))
+                                                    .join(", ")
+                                            }}
+                                        </div>
+                                        <div
+                                            class="text-sm text-gray-600 flex items-center gap-2 mb-1"
+                                        >
+                                            <Clock
+                                                class="w-4 h-4 text-gray-400"
+                                            />
+                                            Time: {{ row.start_time }} -
+                                            {{ row.end_time }}
+                                        </div>
+                                        <div class="text-sm text-gray-600 mb-1">
+                                            Duration:
+                                            {{ row.slot_minutes }} minutes
+                                        </div>
+                                        <div
+                                            class="text-sm text-gray-600 flex items-center gap-2 mb-1"
+                                        >
+                                            <Users
+                                                class="w-4 h-4 text-gray-400"
+                                            />
+                                            Capacity:
+                                            {{ row.max_patients_per_day }}
+                                            patients
+                                        </div>
+                                        <div
+                                            class="text-sm text-gray-600 flex items-center gap-2"
+                                        >
+                                            <DollarSign
+                                                class="w-4 h-4 text-gray-400"
+                                            />
+                                            Fee: ${{ row.fee }}
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2 ml-4">
+                                        <button
+                                            @click="edit(row)"
+                                            class="action-btn bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                            title="Edit schedule"
+                                        >
+                                            <Edit3 class="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            @click="removeRow(row)"
+                                            class="action-btn bg-red-50 text-red-600 hover:bg-red-100"
+                                            title="Delete schedule"
+                                        >
+                                            <Trash2 class="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                v-if="!loading && !hasSchedules"
+                                class="text-center py-16"
+                            >
+                                <div
+                                    class="flex flex-col items-center justify-center gap-4 text-gray-500"
+                                >
+                                    <Calendar class="w-12 h-12 text-gray-300" />
+                                    <div>
+                                        <p
+                                            class="font-medium text-gray-900 mb-1"
+                                        >
+                                            No schedules configured
+                                        </p>
+                                        <p class="text-sm">
+                                            Get started by creating your first
+                                            schedule
+                                        </p>
+                                    </div>
+                                    <button
+                                        @click="startCreating"
+                                        class="btn-primary flex items-center gap-2 mt-2 w-full"
+                                    >
+                                        <Plus class="w-4 h-4" />
+                                        <span>Create Schedule</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
