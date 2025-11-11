@@ -352,9 +352,11 @@ onMounted(fetchList);
 
 <template>
     <AuthenticatedLayout title="Admin · Doctors">
-        <div class="p-6 max-w-7xl mx-auto">
+        <div class="p-4 sm:p-6 max-w-7xl mx-auto">
             <!-- Header -->
-            <header class="mb-6 flex items-center justify-between gap-4">
+            <header
+                class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
                 <div>
                     <h1
                         class="text-2xl font-semibold tracking-tight text-gray-900"
@@ -365,9 +367,9 @@ onMounted(fetchList);
                         Only existing doctors are listed below.
                     </p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-col gap-2 sm:flex-row">
                     <button
-                        class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2 font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-3 py-2 sm:px-4 font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                         @click="openAdd"
                     >
                         <svg
@@ -385,7 +387,7 @@ onMounted(fetchList);
                         Add Doctor
                     </button>
                     <button
-                        class="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-3 py-2 sm:px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         @click="fetchList"
                         :disabled="loading"
                     >
@@ -432,7 +434,7 @@ onMounted(fetchList);
             <div
                 class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
             >
-                <div class="relative sm:w-80">
+                <div class="relative w-full sm:w-80">
                     <input
                         v-model="query"
                         type="search"
@@ -454,7 +456,7 @@ onMounted(fetchList);
                         />
                     </svg>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                     <label class="sr-only" for="sortBy">Sort by</label>
                     <select
                         id="sortBy"
@@ -494,26 +496,34 @@ onMounted(fetchList);
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 text-gray-600">
                         <tr>
-                            <th class="px-4 py-3 text-left font-medium">
+                            <th class="px-2 py-3 text-left font-medium sm:px-4">
                                 Name
                             </th>
-                            <th class="px-4 py-3 text-left font-medium">
+                            <th
+                                class="px-2 py-3 text-left font-medium sm:px-4 hidden sm:table-cell"
+                            >
                                 Email
                             </th>
-                            <th class="px-4 py-3 text-left font-medium">
+                            <th
+                                class="px-2 py-3 text-left font-medium sm:px-4 hidden md:table-cell"
+                            >
                                 Speciality
                             </th>
-                            <th class="px-4 py-3 text-left font-medium">
+                            <th
+                                class="px-2 py-3 text-left font-medium sm:px-4 hidden lg:table-cell"
+                            >
                                 Phone
                             </th>
-                            <th class="px-4 py-3 text-right font-medium">
+                            <th
+                                class="px-2 py-3 text-right font-medium sm:px-4"
+                            >
                                 Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         <tr v-if="loading">
-                            <td colspan="5" class="px-4 py-6">
+                            <td colspan="5" class="px-2 py-6 sm:px-4">
                                 <div class="animate-pulse space-y-3">
                                     <div
                                         class="h-4 bg-gray-200 rounded w-2/3"
@@ -532,16 +542,18 @@ onMounted(fetchList);
                             :key="d.id"
                             class="hover:bg-gray-50"
                         >
-                            <td class="px-4 py-3">
+                            <td class="px-2 py-3 sm:px-4">
                                 <div class="flex items-center gap-3">
                                     <img
                                         v-if="d.photo"
                                         :src="d.photo"
                                         alt="Doctor photo"
-                                        class="w-10 h-10 rounded-full object-cover"
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
                                     />
                                     <div>
-                                        <div class="font-medium text-gray-900">
+                                        <div
+                                            class="font-medium text-gray-900 text-sm sm:text-base"
+                                        >
                                             {{ d.name }}
                                         </div>
                                         <div
@@ -553,39 +565,47 @@ onMounted(fetchList);
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-gray-700">
+                            <td
+                                class="px-2 py-3 text-gray-700 sm:px-4 hidden sm:table-cell"
+                            >
                                 {{ d.email }}
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-2 py-3 sm:px-4 hidden md:table-cell">
                                 <span
                                     v-if="d.speciality"
-                                    class="inline-flex items-center rounded-full bg-blue-50 text-blue-700 px-2.5 py-0.5 text-xs font-medium"
+                                    class="inline-flex items-center rounded-full bg-blue-50 text-blue-700 px-2 py-0.5 text-xs font-medium"
                                     >{{ d.speciality }}</span
                                 >
-                                <span v-else class="text-gray-400 italic"
+                                <span
+                                    v-else
+                                    class="text-gray-400 italic text-xs"
                                     >Not specified</span
                                 >
                             </td>
-                            <td class="px-4 py-3">
-                                <span v-if="d.phone" class="text-gray-700">{{
-                                    d.phone
-                                }}</span>
-                                <span v-else class="text-gray-400 italic"
+                            <td class="px-2 py-3 sm:px-4 hidden lg:table-cell">
+                                <span
+                                    v-if="d.phone"
+                                    class="text-gray-700 text-sm"
+                                    >{{ d.phone }}</span
+                                >
+                                <span
+                                    v-else
+                                    class="text-gray-400 italic text-xs"
                                     >Not provided</span
                                 >
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-2 py-3 sm:px-4">
                                 <div
-                                    class="flex items-center justify-end gap-2"
+                                    class="flex items-center justify-end gap-1 sm:gap-2"
                                 >
                                     <button
-                                        class="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-3 py-1.5 hover:bg-gray-50"
+                                        class="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 sm:px-3 sm:py-1.5 hover:bg-gray-50 text-sm"
                                         @click="openEdit(d)"
                                     >
                                         ✏️ <span class="sr-only">Edit</span>
                                     </button>
                                     <button
-                                        class="inline-flex items-center gap-1 rounded-lg border border-red-300 text-red-700 px-3 py-1.5 hover:bg-red-50"
+                                        class="inline-flex items-center gap-1 rounded-lg border border-red-300 text-red-700 px-2 py-1 sm:px-3 sm:py-1.5 hover:bg-red-50 text-sm"
                                         @click="confirmDelete(d)"
                                     >
                                         🗑️ <span class="sr-only">Delete</span>
@@ -596,15 +616,17 @@ onMounted(fetchList);
                         <tr v-if="!loading && filtered.length === 0">
                             <td
                                 colspan="5"
-                                class="px-4 py-12 text-center text-gray-500"
+                                class="px-2 py-12 text-center text-gray-500 sm:px-4"
                             >
                                 <div class="mx-auto w-12 h-12 text-gray-300">
                                     🩺
                                 </div>
-                                <div class="mt-2 font-medium">
+                                <div
+                                    class="mt-2 font-medium text-sm sm:text-base"
+                                >
                                     No doctors found
                                 </div>
-                                <p class="text-sm">
+                                <p class="text-xs sm:text-sm">
                                     Use the Add Doctor button to create a new
                                     profile.
                                 </p>
@@ -617,9 +639,9 @@ onMounted(fetchList);
             <!-- Pagination info -->
             <div
                 v-if="filtered.length"
-                class="mt-4 flex items-center justify-between text-sm"
+                class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-sm"
             >
-                <div class="text-gray-600">
+                <div class="text-gray-600 text-xs sm:text-sm">
                     Showing
                     <span class="font-medium">{{
                         (pageIndex - 1) * pageSize + 1
@@ -631,17 +653,17 @@ onMounted(fetchList);
                     of <span class="font-medium">{{ filtered.length }}</span>
                 </div>
                 <div
-                    class="inline-flex rounded-lg border border-gray-300 overflow-hidden"
+                    class="inline-flex rounded-lg border border-gray-300 overflow-hidden self-center sm:self-auto"
                 >
                     <button
-                        class="px-3 py-1.5 disabled:opacity-50"
+                        class="px-3 py-1.5 disabled:opacity-50 text-xs sm:text-sm"
                         :disabled="pageIndex === 1"
                         @click="pageIndex--"
                     >
                         Prev
                     </button>
                     <button
-                        class="px-3 py-1.5 disabled:opacity-50 border-l border-gray-300"
+                        class="px-3 py-1.5 disabled:opacity-50 border-l border-gray-300 text-xs sm:text-sm"
                         :disabled="pageIndex * pageSize >= filtered.length"
                         @click="pageIndex++"
                     >
@@ -664,7 +686,7 @@ onMounted(fetchList);
                         <div
                             role="dialog"
                             aria-modal="true"
-                            class="relative w-full max-w-2xl rounded-2xl bg-white border border-gray-200 shadow-xl"
+                            class="relative w-full max-w-2xl rounded-2xl bg-white border border-gray-200 shadow-xl mx-4 sm:mx-0"
                         >
                             <div
                                 class="flex items-center justify-between p-6 border-b border-gray-100"
@@ -883,7 +905,7 @@ onMounted(fetchList);
                         <div
                             role="dialog"
                             aria-modal="true"
-                            class="relative w-full max-w-2xl rounded-2xl bg-white border border-gray-200 shadow-xl"
+                            class="relative w-full max-w-2xl rounded-2xl bg-white border border-gray-200 shadow-xl mx-4 sm:mx-0"
                         >
                             <div
                                 class="flex items-center justify-between p-6 border-b border-gray-100"
@@ -1059,7 +1081,7 @@ onMounted(fetchList);
                             @click="showDelete = false"
                         />
                         <div
-                            class="relative w-full max-w-md rounded-2xl bg-white border border-gray-200 shadow-xl p-6"
+                            class="relative w-full max-w-md rounded-2xl bg-white border border-gray-200 shadow-xl p-6 mx-4 sm:mx-0"
                         >
                             <h3 class="text-lg font-semibold text-gray-900">
                                 Delete doctor?
@@ -1094,7 +1116,7 @@ onMounted(fetchList);
 
             <!-- TOASTS -->
             <div
-                class="fixed bottom-4 right-4 z-[60] space-y-2 w-full max-w-sm"
+                class="fixed bottom-4 right-4 sm:right-4 left-4 sm:left-auto z-[60] space-y-2 w-full max-w-sm"
             >
                 <TransitionGroup name="slide-up">
                     <div

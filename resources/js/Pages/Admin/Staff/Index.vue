@@ -268,10 +268,7 @@ async function saveEdit() {
 
         fd.append("_method", "PUT");
 
-        const { data } = await api.post(
-            `/admin/staff/${editing.value.id}`,
-            fd
-        );
+        const { data } = await api.post(`/admin/staff/${editing.value.id}`, fd);
 
         const idx = items.value.findIndex((x) => x.id === editing.value.id);
         if (idx > -1) items.value[idx] = data.staff ?? data;
@@ -352,9 +349,11 @@ onMounted(fetchList);
 
 <template>
     <AuthenticatedLayout title="Admin · Staff">
-        <div class="p-6 max-w-7xl mx-auto">
+        <div class="p-4 sm:p-6 max-w-7xl mx-auto">
             <!-- Header -->
-            <header class="mb-6 flex items-center justify-between gap-4">
+            <header
+                class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
                 <div>
                     <h1
                         class="text-2xl font-semibold tracking-tight text-gray-900"
@@ -365,9 +364,9 @@ onMounted(fetchList);
                         Only existing staff are listed below.
                     </p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-col gap-2 sm:flex-row">
                     <button
-                        class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2 font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-3 py-2 sm:px-4 font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                         @click="openAdd"
                     >
                         <svg
@@ -385,7 +384,7 @@ onMounted(fetchList);
                         Add Staff
                     </button>
                     <button
-                        class="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-3 py-2 sm:px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         @click="fetchList"
                         :disabled="loading"
                     >
@@ -432,7 +431,7 @@ onMounted(fetchList);
             <div
                 class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
             >
-                <div class="relative sm:w-80">
+                <div class="relative w-full sm:w-80">
                     <input
                         v-model="query"
                         type="search"
@@ -454,7 +453,7 @@ onMounted(fetchList);
                         />
                     </svg>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                     <label class="sr-only" for="sortBy">Sort by</label>
                     <select
                         id="sortBy"
@@ -494,89 +493,193 @@ onMounted(fetchList);
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 text-gray-600">
                         <tr>
-                            <th class="px-4 py-3 text-left font-medium">Name</th>
-                            <th class="px-4 py-3 text-left font-medium">Email</th>
-                            <th class="px-4 py-3 text-left font-medium">Department</th>
-                            <th class="px-4 py-3 text-left font-medium">Designation</th>
-                            <th class="px-4 py-3 text-left font-medium">Phone</th>
-                            <th class="px-4 py-3 text-left font-medium">Actions</th>
+                            <th class="px-2 py-3 text-left font-medium sm:px-4">
+                                Name
+                            </th>
+                            <th
+                                class="px-2 py-3 text-left font-medium sm:px-4 hidden sm:table-cell"
+                            >
+                                Email
+                            </th>
+                            <th
+                                class="px-2 py-3 text-left font-medium sm:px-4 hidden md:table-cell"
+                            >
+                                Department
+                            </th>
+                            <th
+                                class="px-2 py-3 text-left font-medium sm:px-4 hidden md:table-cell"
+                            >
+                                Designation
+                            </th>
+                            <th
+                                class="px-2 py-3 text-left font-medium sm:px-4 hidden lg:table-cell"
+                            >
+                                Phone
+                            </th>
+                            <th
+                                class="px-2 py-3 text-right font-medium sm:px-4"
+                            >
+                                Actions
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
+                        <tr v-if="loading">
+                            <td colspan="6" class="px-2 py-6 sm:px-4">
+                                <div class="animate-pulse space-y-3">
+                                    <div
+                                        class="h-4 bg-gray-200 rounded w-2/3"
+                                    ></div>
+                                    <div
+                                        class="h-4 bg-gray-200 rounded w-1/2"
+                                    ></div>
+                                    <div
+                                        class="h-4 bg-gray-200 rounded w-3/4"
+                                    ></div>
+                                </div>
+                            </td>
+                        </tr>
                         <tr
                             v-for="item in paged"
                             :key="item.id"
                             class="hover:bg-gray-50"
                         >
-                        
-                            <td class="flex px-4 py-3 text-sm text-gray-900">
-                                <img
+                            <td class="px-2 py-3 sm:px-4">
+                                <div class="flex items-center gap-3">
+                                    <img
                                         v-if="item.photo"
                                         :src="item.photo"
                                         alt="Staff photo"
-                                        class="w-10 h-10 rounded-full object-cover"
-                                    />{{ item.name }}
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
+                                    />
+                                    <div>
+                                        <div
+                                            class="font-medium text-gray-900 text-sm sm:text-base"
+                                        >
+                                            {{ item.name }}
+                                        </div>
+                                        <div
+                                            v-if="item.designation"
+                                            class="text-xs text-gray-500 mt-1"
+                                        >
+                                            {{ item.designation }}
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-900">
+                            <td
+                                class="px-2 py-3 text-gray-700 sm:px-4 hidden sm:table-cell"
+                            >
                                 {{ item.email }}
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-900">
-                                {{ item.department }}
+                            <td class="px-2 py-3 sm:px-4 hidden md:table-cell">
+                                <span
+                                    v-if="item.department"
+                                    class="inline-flex items-center rounded-full bg-blue-50 text-blue-700 px-2 py-0.5 text-xs font-medium"
+                                    >{{ item.department }}</span
+                                >
+                                <span
+                                    v-else
+                                    class="text-gray-400 italic text-xs"
+                                    >Not specified</span
+                                >
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-900">
-                                {{ item.designation }}
+                            <td class="px-2 py-3 sm:px-4 hidden md:table-cell">
+                                <span
+                                    v-if="item.designation"
+                                    class="text-gray-700 text-sm"
+                                    >{{ item.designation }}</span
+                                >
+                                <span
+                                    v-else
+                                    class="text-gray-400 italic text-xs"
+                                    >Not provided</span
+                                >
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-900">
-                                {{ item.phone }}
+                            <td class="px-2 py-3 sm:px-4 hidden lg:table-cell">
+                                <span
+                                    v-if="item.phone"
+                                    class="text-gray-700 text-sm"
+                                    >{{ item.phone }}</span
+                                >
+                                <span
+                                    v-else
+                                    class="text-gray-400 italic text-xs"
+                                    >Not provided</span
+                                >
                             </td>
-                            <td class="px-4 py-3 text-sm">
-                                <div class="flex items-center gap-2">
+                            <td class="px-2 py-3 sm:px-4">
+                                <div
+                                    class="flex items-center justify-end gap-1 sm:gap-2"
+                                >
                                     <button
+                                        class="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 sm:px-3 sm:py-1.5 hover:bg-gray-50 text-sm"
                                         @click="openEdit(item)"
-                                        class="text-blue-600 hover:text-blue-800 font-medium"
                                     >
-                                        Edit
+                                        ✏️ <span class="sr-only">Edit</span>
                                     </button>
                                     <button
+                                        class="inline-flex items-center gap-1 rounded-lg border border-red-300 text-red-700 px-2 py-1 sm:px-3 sm:py-1.5 hover:bg-red-50 text-sm"
                                         @click="confirmDelete(item)"
-                                        class="text-red-600 hover:text-red-800 font-medium"
                                     >
-                                        Delete
+                                        🗑️ <span class="sr-only">Delete</span>
                                     </button>
                                 </div>
                             </td>
                         </tr>
-                        <tr v-if="paged.length === 0" class="text-center">
-                            <td colspan="6" class="px-4 py-8 text-gray-500">
-                                No staff found.
+                        <tr v-if="!loading && filtered.length === 0">
+                            <td
+                                colspan="6"
+                                class="px-2 py-12 text-center text-gray-500 sm:px-4"
+                            >
+                                <div class="mx-auto w-12 h-12 text-gray-300">
+                                    👥
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-sm sm:text-base"
+                                >
+                                    No staff found
+                                </div>
+                                <p class="text-xs sm:text-sm">
+                                    Use the Add Staff button to create a new
+                                    profile.
+                                </p>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Pagination -->
+            <!-- Pagination info -->
             <div
-                class="mt-4 flex items-center justify-between text-sm text-gray-700"
+                v-if="filtered.length"
+                class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-sm"
             >
-                <div>
-                    Showing {{ (pageIndex - 1) * pageSize + 1 }} to
-                    {{ Math.min(pageIndex * pageSize, filtered.length) }} of
-                    {{ filtered.length }} results
+                <div class="text-gray-600 text-xs sm:text-sm">
+                    Showing
+                    <span class="font-medium">{{
+                        (pageIndex - 1) * pageSize + 1
+                    }}</span>
+                    –
+                    <span class="font-medium">{{
+                        Math.min(pageIndex * pageSize, filtered.length)
+                    }}</span>
+                    of <span class="font-medium">{{ filtered.length }}</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div
+                    class="inline-flex rounded-lg border border-gray-300 overflow-hidden self-center sm:self-auto"
+                >
                     <button
-                        @click="pageIndex = Math.max(1, pageIndex - 1)"
-                        :disabled="pageIndex <= 1"
-                        class="rounded-lg border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        class="px-3 py-1.5 disabled:opacity-50 text-xs sm:text-sm"
+                        :disabled="pageIndex === 1"
+                        @click="pageIndex--"
                     >
-                        Previous
+                        Prev
                     </button>
-                    <span class="px-2">Page {{ pageIndex }}</span>
                     <button
-                        @click="pageIndex = Math.min(Math.ceil(filtered.length / pageSize), pageIndex + 1)"
+                        class="px-3 py-1.5 disabled:opacity-50 border-l border-gray-300 text-xs sm:text-sm"
                         :disabled="pageIndex * pageSize >= filtered.length"
-                        class="rounded-lg border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        @click="pageIndex++"
                     >
                         Next
                     </button>
@@ -601,7 +704,9 @@ onMounted(fetchList);
                         <div
                             class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
                         >
-                            <h2 class="mb-4 text-xl font-semibold text-gray-900">
+                            <h2
+                                class="mb-4 text-xl font-semibold text-gray-900"
+                            >
                                 Add Staff
                             </h2>
                             <form @submit.prevent="submit" class="space-y-4">
@@ -653,15 +758,22 @@ onMounted(fetchList);
                                     <div class="relative">
                                         <input
                                             v-model="form.password"
-                                            :type="showPassword ? 'text' : 'password'"
+                                            :type="
+                                                showPassword
+                                                    ? 'text'
+                                                    : 'password'
+                                            "
                                             class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:border-blue-500 focus:ring-blue-500"
                                             :class="{
-                                                'border-red-500': errors.password,
+                                                'border-red-500':
+                                                    errors.password,
                                             }"
                                         />
                                         <button
                                             type="button"
-                                            @click="showPassword = !showPassword"
+                                            @click="
+                                                showPassword = !showPassword
+                                            "
                                             class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
                                         >
                                             <svg
@@ -757,7 +869,9 @@ onMounted(fetchList);
                                         >Photo</label
                                     >
                                     <input
-                                        @change="form.photo = $event.target.files[0]"
+                                        @change="
+                                            form.photo = $event.target.files[0]
+                                        "
                                         type="file"
                                         accept="image/*"
                                         class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
@@ -782,7 +896,11 @@ onMounted(fetchList);
                                         :disabled="submitting"
                                         class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
                                     >
-                                        {{ submitting ? "Creating..." : "Create Staff" }}
+                                        {{
+                                            submitting
+                                                ? "Creating..."
+                                                : "Create Staff"
+                                        }}
                                     </button>
                                 </div>
                             </form>
@@ -809,7 +927,9 @@ onMounted(fetchList);
                         <div
                             class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
                         >
-                            <h2 class="mb-4 text-xl font-semibold text-gray-900">
+                            <h2
+                                class="mb-4 text-xl font-semibold text-gray-900"
+                            >
                                 Edit Staff
                             </h2>
                             <form @submit.prevent="saveEdit" class="space-y-4">
@@ -856,20 +976,29 @@ onMounted(fetchList);
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700"
-                                        >Password (leave blank to keep current)</label
+                                        >Password (leave blank to keep
+                                        current)</label
                                     >
                                     <div class="relative">
                                         <input
                                             v-model="editForm.password"
-                                            :type="showEditPassword ? 'text' : 'password'"
+                                            :type="
+                                                showEditPassword
+                                                    ? 'text'
+                                                    : 'password'
+                                            "
                                             class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:border-blue-500 focus:ring-blue-500"
                                             :class="{
-                                                'border-red-500': errors.password,
+                                                'border-red-500':
+                                                    errors.password,
                                             }"
                                         />
                                         <button
                                             type="button"
-                                            @click="showEditPassword = !showEditPassword"
+                                            @click="
+                                                showEditPassword =
+                                                    !showEditPassword
+                                            "
                                             class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
                                         >
                                             <svg
@@ -962,10 +1091,14 @@ onMounted(fetchList);
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700"
-                                        >Photo (leave blank to keep current)</label
+                                        >Photo (leave blank to keep
+                                        current)</label
                                     >
                                     <input
-                                        @change="editForm.photo = $event.target.files[0]"
+                                        @change="
+                                            editForm.photo =
+                                                $event.target.files[0]
+                                        "
                                         type="file"
                                         accept="image/*"
                                         class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
@@ -1016,13 +1149,15 @@ onMounted(fetchList);
                         <div
                             class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl"
                         >
-                            <h2 class="mb-4 text-xl font-semibold text-gray-900">
+                            <h2
+                                class="mb-4 text-xl font-semibold text-gray-900"
+                            >
                                 Delete Staff
                             </h2>
                             <p class="text-gray-600">
                                 Are you sure you want to delete
-                                <strong>{{ toDelete?.name }}</strong>? This action
-                                cannot be undone.
+                                <strong>{{ toDelete?.name }}</strong
+                                >? This action cannot be undone.
                             </p>
                             <div class="flex justify-end gap-3 pt-4">
                                 <button
@@ -1059,9 +1194,12 @@ onMounted(fetchList);
                         :key="t.id"
                         class="flex items-start gap-3 rounded-lg border p-4 shadow-lg"
                         :class="{
-                            'border-green-200 bg-green-50 text-green-800': t.type === 'success',
-                            'border-red-200 bg-red-50 text-red-800': t.type === 'error',
-                            'border-blue-200 bg-blue-50 text-blue-800': t.type === 'info',
+                            'border-green-200 bg-green-50 text-green-800':
+                                t.type === 'success',
+                            'border-red-200 bg-red-50 text-red-800':
+                                t.type === 'error',
+                            'border-blue-200 bg-blue-50 text-blue-800':
+                                t.type === 'info',
                         }"
                     >
                         <div class="flex-1">
@@ -1069,7 +1207,9 @@ onMounted(fetchList);
                             <div class="text-sm">{{ t.message }}</div>
                         </div>
                         <button
-                            @click="toasts = toasts.filter((x) => x.id !== t.id)"
+                            @click="
+                                toasts = toasts.filter((x) => x.id !== t.id)
+                            "
                             class="text-gray-400 hover:text-gray-600"
                         >
                             <svg
@@ -1118,4 +1258,3 @@ onMounted(fetchList);
     transform: translateX(0);
 }
 </style>
-

@@ -89,9 +89,13 @@ const clearFilters = () => {
     <Head title="Appointments Management" />
 
     <AuthenticatedLayout>
-        <div class="flex p-3 items-center justify-between">
+        <div
+            class="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 p-3"
+        >
             <div>
-                <h2 class="font-semibold text-2xl text-gray-900 leading-tight">
+                <h2
+                    class="font-semibold text-xl sm:text-2xl text-gray-900 leading-tight"
+                >
                     Appointments Management
                 </h2>
                 <p class="text-gray-600 mt-1 text-sm">
@@ -110,7 +114,9 @@ const clearFilters = () => {
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- Statistics Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
+                <div
+                    class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-6 mb-4"
+                >
                     <div
                         class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
                     >
@@ -236,7 +242,7 @@ const clearFilters = () => {
                 <div
                     class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 mb-6"
                 >
-                    <div class="flex flex-col lg:flex-row gap-4 items-end">
+                    <div class="flex flex-col sm:flex-row gap-4 items-end">
                         <div class="flex-1 w-full">
                             <label
                                 class="block text-sm font-medium text-gray-700 mb-2"
@@ -266,7 +272,7 @@ const clearFilters = () => {
                             </div>
                         </div>
 
-                        <div class="w-full lg:w-48">
+                        <div class="w-full sm:w-48">
                             <label
                                 class="block text-sm font-medium text-gray-700 mb-2"
                             >
@@ -281,7 +287,7 @@ const clearFilters = () => {
 
                         <button
                             @click="clearFilters"
-                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
+                            class="px-4 sm:px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
                         >
                             Clear Filters
                         </button>
@@ -306,7 +312,8 @@ const clearFilters = () => {
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto">
+                    <!-- Desktop Table View -->
+                    <div class="hidden lg:block overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -460,6 +467,129 @@ const clearFilters = () => {
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Mobile Card View -->
+                    <div class="lg:hidden">
+                        <div class="divide-y divide-gray-200">
+                            <div
+                                v-for="group in filteredAppointments"
+                                :key="`${group.doctor_id}-${group.date}`"
+                                class="p-4 hover:bg-gray-50/50 transition-colors"
+                            >
+                                <div
+                                    class="flex justify-between items-start mb-3"
+                                >
+                                    <div>
+                                        <div
+                                            class="text-sm font-semibold text-gray-900"
+                                        >
+                                            {{ group.doctor_name }}
+                                        </div>
+                                        <div
+                                            class="text-sm text-gray-500 capitalize"
+                                        >
+                                            {{ group.speciality }}
+                                        </div>
+                                    </div>
+                                    <Link
+                                        :href="`/admin/appointments/${group.doctor_id}/${group.date}`"
+                                        class="inline-flex items-center px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-lg hover:bg-indigo-100 transition-colors"
+                                    >
+                                        <svg
+                                            class="w-3 h-3 mr-1"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                            />
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                            />
+                                        </svg>
+                                        View
+                                    </Link>
+                                </div>
+                                <div
+                                    class="flex justify-between items-center mb-2"
+                                >
+                                    <div
+                                        class="text-sm text-gray-900 font-medium"
+                                    >
+                                        {{
+                                            new Date(
+                                                group.date
+                                            ).toLocaleDateString("en-US", {
+                                                weekday: "short",
+                                                month: "short",
+                                                day: "numeric",
+                                            })
+                                        }}
+                                    </div>
+                                    <div class="text-xs text-gray-500">
+                                        {{ group.date }}
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-1">
+                                        <div
+                                            class="text-sm font-semibold text-gray-900 mb-1"
+                                        >
+                                            {{ group.booked }} /
+                                            {{ group.max }} booked
+                                        </div>
+                                        <div
+                                            class="w-full bg-gray-200 rounded-full h-2"
+                                        >
+                                            <div
+                                                class="bg-indigo-600 h-2 rounded-full transition-all duration-300"
+                                                :style="{
+                                                    width: `${Math.min(
+                                                        100,
+                                                        (group.booked /
+                                                            group.max) *
+                                                            100
+                                                    )}%`,
+                                                }"
+                                                :class="{
+                                                    'bg-red-500':
+                                                        group.booked /
+                                                            group.max >
+                                                        0.9,
+                                                    'bg-amber-500':
+                                                        group.booked /
+                                                            group.max >
+                                                            0.7 &&
+                                                        group.booked /
+                                                            group.max <=
+                                                            0.9,
+                                                    'bg-green-500':
+                                                        group.booked /
+                                                            group.max <=
+                                                        0.7,
+                                                }"
+                                            ></div>
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            {{
+                                                Math.round(
+                                                    (group.booked / group.max) *
+                                                        100
+                                                )
+                                            }}% capacity
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Empty State -->

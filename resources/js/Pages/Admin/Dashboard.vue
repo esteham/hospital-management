@@ -30,10 +30,12 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex justify-between items-center">
+            <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0"
+            >
                 <div>
                     <h2
-                        class="font-semibold text-2xl text-gray-800 leading-tight"
+                        class="font-semibold text-xl md:text-2xl text-gray-800 leading-tight"
                     >
                         Admin Dashboard
                     </h2>
@@ -41,12 +43,12 @@ defineProps({
                         Welcome back! Here's what's happening today.
                     </p>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center">
                     <div
-                        class="bg-white border rounded-lg px-4 py-2 flex items-center"
+                        class="bg-white border rounded-lg px-3 md:px-4 py-2 flex items-center"
                     >
                         <i class="fas fa-calendar-day text-blue-500 mr-2"></i>
-                        <span class="text-sm font-medium">{{
+                        <span class="text-xs md:text-sm font-medium">{{
                             new Date().toLocaleDateString("en-US", {
                                 weekday: "long",
                                 year: "numeric",
@@ -63,10 +65,10 @@ defineProps({
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- Summary Stats -->
                 <div
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8"
+                    class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8"
                 >
                     <div
-                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 stat-card hover:shadow-md"
+                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 stat-card hover:shadow-md"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -105,7 +107,7 @@ defineProps({
                     </div>
 
                     <div
-                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 stat-card hover:shadow-md"
+                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 stat-card hover:shadow-md"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -142,7 +144,7 @@ defineProps({
                     </div>
 
                     <div
-                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 stat-card hover:shadow-md"
+                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 stat-card hover:shadow-md"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -166,7 +168,7 @@ defineProps({
                     </div>
 
                     <div
-                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 stat-card hover:shadow-md"
+                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 stat-card hover:shadow-md"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -190,7 +192,7 @@ defineProps({
                     </div>
 
                     <div
-                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 stat-card hover:shadow-md"
+                        class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 stat-card hover:shadow-md"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -240,7 +242,9 @@ defineProps({
                 </div>
 
                 <!-- Management Cards -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
                     <div
                         class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 management-card hover:shadow-md hover:border-blue-200"
                     >
@@ -358,7 +362,9 @@ defineProps({
                 </div>
 
                 <!-- Recent Activity Section -->
-                <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div
+                    class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+                >
                     <div
                         class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
                     >

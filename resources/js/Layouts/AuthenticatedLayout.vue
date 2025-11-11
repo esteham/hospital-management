@@ -23,7 +23,7 @@ const navItems = computed(() => {
     const items = [];
     if (isAdmin.value) {
         items.push({
-            name: "Dashboard",
+            name: "Home",
             routeName: "dashboard",
             icon: "home",
         });
@@ -54,7 +54,7 @@ const navItems = computed(() => {
         // });
     } else if (isDoctor.value) {
         items.push({
-            name: "Dashboard",
+            name: "Home",
             routeName: "dashboard",
             icon: "home",
         });
@@ -975,7 +975,7 @@ const getIconSvg = (icon) => {
                 <div
                     :class="
                         isAdmin
-                            ? 'p-8'
+                            ? 'p-4'
                             : 'max-w-7xl mx-auto py-8 sm:px-6 lg:px-8'
                     "
                 >

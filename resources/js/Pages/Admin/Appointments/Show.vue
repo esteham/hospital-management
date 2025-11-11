@@ -89,21 +89,25 @@ const updatedDate = computed(() => {
     <Head :title="`Appointment #${appointment.id} - Details`" />
 
     <AuthenticatedLayout>
-        <div class="flex p-3 items-center justify-between">
+        <div
+            class="flex flex-col sm:flex-row p-2 sm:p-3 items-start sm:items-center justify-between gap-3 sm:gap-4"
+        >
             <div>
-                <h2 class="font-semibold text-2xl text-gray-900 leading-tight">
+                <h2
+                    class="font-semibold text-lg sm:text-xl lg:text-2xl text-gray-900 leading-tight"
+                >
                     Appointment Details
                 </h2>
-                <p class="text-gray-600 mt-1 text-sm">
+                <p class="text-gray-600 mt-1 text-xs sm:text-sm">
                     Complete information for appointment #{{ appointment.id }}
                 </p>
             </div>
             <Link
                 href="/admin/appointments"
-                class="inline-flex items-center px-4 py-2.5 border border-gray-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-300 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
             >
                 <svg
-                    class="w-4 h-4 mr-2"
+                    class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -119,16 +123,18 @@ const updatedDate = computed(() => {
             </Link>
         </div>
 
-        <div class="py-4">
+        <div class="py-2 sm:py-4">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
                     <!-- Main Content -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Patient Information Card -->
                         <div
-                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6"
                         >
-                            <div class="flex items-center justify-between mb-6">
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4"
+                            >
                                 <h3 class="text-lg font-semibold text-gray-900">
                                     Patient Information
                                 </h3>
@@ -144,9 +150,11 @@ const updatedDate = computed(() => {
                                 </div>
                             </div>
 
-                            <div class="flex items-center space-x-4 mb-6">
+                            <div
+                                class="flex sm:flex-row items-start sm:items-center sm:space-y-0 sm:space-x-4 mb-6"
+                            >
                                 <div
-                                    class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center"
+                                    class="w-10 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center flex-shrink-0"
                                 >
                                     <span class="text-white font-bold text-xl">
                                         {{ appointment.first_name[0]
@@ -154,17 +162,21 @@ const updatedDate = computed(() => {
                                     </span>
                                 </div>
                                 <div>
-                                    <h4 class="text-xl font-bold text-gray-900">
+                                    <h4
+                                        class="text-lg sm:text-xl font-bold text-gray-900"
+                                    >
                                         {{ appointment.first_name }}
                                         {{ appointment.last_name }}
                                     </h4>
-                                    <p class="text-gray-600">
+                                    <p
+                                        class="text-gray-600 text-sm sm:text-base"
+                                    >
                                         {{ appointment.email }}
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div class="space-y-4">
                                     <div>
                                         <label
@@ -217,7 +229,7 @@ const updatedDate = computed(() => {
                         <!-- Additional Notes Card -->
                         <div
                             v-if="appointment.additional_notes"
-                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6"
                         >
                             <div class="flex items-center space-x-3 mb-4">
                                 <div class="p-2 bg-purple-50 rounded-lg">
@@ -255,7 +267,7 @@ const updatedDate = computed(() => {
                     <div class="space-y-6">
                         <!-- Status Management Card -->
                         <div
-                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6"
                         >
                             <div class="flex items-center space-x-3 mb-6">
                                 <div class="p-2 bg-indigo-50 rounded-lg">
@@ -400,7 +412,7 @@ const updatedDate = computed(() => {
 
                         <!-- Timeline & Metadata -->
                         <div
-                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                            class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6"
                         >
                             <div class="flex items-center space-x-3 mb-6">
                                 <div class="p-2 bg-gray-50 rounded-lg">

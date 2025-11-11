@@ -16,8 +16,8 @@ const sending = ref(false);
 const rows = ref([]);
 const search = ref("");
 const debounced = ref("");
-const sortBy = ref("doctor"); 
-const sortDir = ref("asc"); 
+const sortBy = ref("doctor");
+const sortDir = ref("asc");
 
 /** Pagination */
 const page = ref(1);
@@ -158,15 +158,15 @@ onMounted(loadList);
         <div class="space-y-5 px-4 py-3">
             <!-- Toolbar -->
             <div
-                class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+                class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
             >
-                <div class="flex items-center gap-3">
-                    <div class="relative">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <div class="relative w-full sm:w-80">
                         <input
                             v-model.trim="search"
                             @keyup.enter="loadList"
                             placeholder="Search by doctor or email"
-                            class="w-72 md:w-96 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                             aria-label="Search schedules"
                         />
                         <span
@@ -174,36 +174,40 @@ onMounted(loadList);
                             >⌘K</span
                         >
                     </div>
-                    <button
-                        class="rounded-xl border bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:bg-gray-50 active:scale-[.98]"
-                        @click="loadList"
-                        :disabled="loading"
-                    >
-                        Search
-                    </button>
-                    <button
-                        class="rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-                        @click="resetSearch"
-                        :disabled="loading"
-                    >
-                        Reset
-                    </button>
+                    <div class="flex gap-3">
+                        <button
+                            class="rounded-xl border bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:bg-gray-50 active:scale-[.98]"
+                            @click="loadList"
+                            :disabled="loading"
+                        >
+                            Search
+                        </button>
+                        <button
+                            class="rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                            @click="resetSearch"
+                            :disabled="loading"
+                        >
+                            Reset
+                        </button>
+                    </div>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <label class="hidden md:block text-sm text-gray-500"
-                        >Rows per page</label
-                    >
-                    <select
-                        v-model.number="pageSize"
-                        class="rounded-xl border border-gray-300 bg-white px-6 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                    >
-                        <option :value="10">10</option>
-                        <option :value="20">20</option>
-                        <option :value="50">50</option>
-                    </select>
+                <div class="flex flex-col gap-2 sm:flex-row">
+                    <div class="flex items-center gap-3">
+                        <label class="text-sm text-gray-500 sm:hidden"
+                            >Rows per page</label
+                        >
+                        <select
+                            v-model.number="pageSize"
+                            class="rounded-xl border border-gray-300 bg-white px-6 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        >
+                            <option :value="10">10</option>
+                            <option :value="20">20</option>
+                            <option :value="50">50</option>
+                        </select>
+                    </div>
                     <button
-                        class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 active:scale-[.98]"
+                        class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 active:scale-[.98] w-full sm:w-auto"
                         @click="loadList"
                         :disabled="loading"
                     >
@@ -220,7 +224,7 @@ onMounted(loadList);
                     <table class="min-w-full text-sm">
                         <thead class="bg-gray-50 text-gray-700">
                             <tr>
-                                <th class="px-4 py-3 font-semibold">
+                                <th class="px-2 py-3 font-semibold sm:px-4">
                                     <button
                                         class="flex items-center gap-1 hover:underline"
                                         @click="toggleSort('doctor')"
@@ -232,7 +236,9 @@ onMounted(loadList);
                                         />
                                     </button>
                                 </th>
-                                <th class="px-4 py-3 font-semibold">
+                                <th
+                                    class="px-2 py-3 font-semibold sm:px-4 hidden sm:table-cell"
+                                >
                                     <button
                                         class="flex items-center gap-1 hover:underline"
                                         @click="toggleSort('email')"
@@ -244,7 +250,7 @@ onMounted(loadList);
                                         />
                                     </button>
                                 </th>
-                                <th class="px-4 py-3 font-semibold">
+                                <th class="px-2 py-3 font-semibold sm:px-4">
                                     <button
                                         class="flex items-center gap-1 hover:underline"
                                         @click="toggleSort('day')"
@@ -256,7 +262,7 @@ onMounted(loadList);
                                         />
                                     </button>
                                 </th>
-                                <th class="px-4 py-3 font-semibold">
+                                <th class="px-2 py-3 font-semibold sm:px-4">
                                     <button
                                         class="flex items-center gap-1 hover:underline"
                                         @click="toggleSort('time')"
@@ -268,7 +274,9 @@ onMounted(loadList);
                                         />
                                     </button>
                                 </th>
-                                <th class="px-4 py-3 font-semibold">
+                                <th
+                                    class="px-2 py-3 font-semibold sm:px-4 hidden md:table-cell"
+                                >
                                     <button
                                         class="flex items-center gap-1 hover:underline"
                                         @click="toggleSort('slot')"
@@ -280,7 +288,9 @@ onMounted(loadList);
                                         />
                                     </button>
                                 </th>
-                                <th class="px-4 py-3 font-semibold">
+                                <th
+                                    class="px-2 py-3 font-semibold sm:px-4 hidden md:table-cell"
+                                >
                                     <button
                                         class="flex items-center gap-1 hover:underline"
                                         @click="toggleSort('max')"
@@ -292,7 +302,9 @@ onMounted(loadList);
                                         />
                                     </button>
                                 </th>
-                                <th class="px-4 py-3 font-semibold">
+                                <th
+                                    class="px-2 py-3 font-semibold sm:px-4 hidden md:table-cell"
+                                >
                                     <button
                                         class="flex items-center gap-1 hover:underline"
                                         @click="toggleSort('fee')"
@@ -304,7 +316,9 @@ onMounted(loadList);
                                         />
                                     </button>
                                 </th>
-                                <th class="px-4 py-3 font-semibold"></th>
+                                <th
+                                    class="px-2 py-3 font-semibold sm:px-4"
+                                ></th>
                             </tr>
                         </thead>
 
@@ -316,7 +330,7 @@ onMounted(loadList);
                                 :key="'skeleton-' + i"
                                 class="border-t"
                             >
-                                <td class="px-4 py-3" colspan="8">
+                                <td class="px-2 py-3 sm:px-4" colspan="8">
                                     <div
                                         class="h-5 w-full animate-pulse rounded bg-gray-100"
                                     ></div>
@@ -329,22 +343,38 @@ onMounted(loadList);
                                 :key="r.id"
                                 class="border-t hover:bg-gray-50"
                             >
-                                <td class="px-4 py-3 font-medium text-gray-800">
+                                <td
+                                    class="px-2 py-3 font-medium text-gray-800 sm:px-4"
+                                >
                                     {{ r.doctor }}
                                 </td>
-                                <td class="px-4 py-3 text-gray-700">
+                                <td
+                                    class="px-2 py-3 text-gray-700 sm:px-4 hidden sm:table-cell"
+                                >
                                     <a
                                         :href="'mailto:' + r.email"
                                         class="text-blue-600 hover:underline"
                                         >{{ r.email }}</a
                                     >
                                 </td>
-                                <td class="px-4 py-3">{{ r.day }}</td>
-                                <td class="px-4 py-3">{{ r.time }}</td>
-                                <td class="px-4 py-3">{{ r.slot }}</td>
-                                <td class="px-4 py-3">{{ r.max }}</td>
-                                <td class="px-4 py-3">{{ r.fee }}</td>
-                                <td class="px-4 py-3 text-right">
+                                <td class="px-2 py-3 sm:px-4">{{ r.day }}</td>
+                                <td class="px-2 py-3 sm:px-4">{{ r.time }}</td>
+                                <td
+                                    class="px-2 py-3 sm:px-4 hidden md:table-cell"
+                                >
+                                    {{ r.slot }}
+                                </td>
+                                <td
+                                    class="px-2 py-3 sm:px-4 hidden md:table-cell"
+                                >
+                                    {{ r.max }}
+                                </td>
+                                <td
+                                    class="px-2 py-3 sm:px-4 hidden md:table-cell"
+                                >
+                                    {{ r.fee }}
+                                </td>
+                                <td class="px-2 py-3 sm:px-4">
                                     <button
                                         class="rounded-lg border px-3 py-1.5 text-sm font-medium transition hover:bg-gray-100"
                                         @click="openMention(r)"
@@ -356,7 +386,7 @@ onMounted(loadList);
 
                             <!-- Empty state -->
                             <tr v-if="!loading && rows.length === 0">
-                                <td colspan="8" class="px-6 py-16">
+                                <td colspan="8" class="px-2 py-12 sm:px-4">
                                     <div class="mx-auto max-w-md text-center">
                                         <div
                                             class="mx-auto mb-4 h-12 w-12 rounded-full bg-gray-100"
@@ -395,7 +425,7 @@ onMounted(loadList);
 
                 <!-- Pagination footer -->
                 <div
-                    class="flex flex-col items-center justify-between gap-3 border-t bg-gray-50 px-4 py-3 text-sm md:flex-row"
+                    class="flex flex-col items-center justify-between gap-3 border-t bg-gray-50 px-2 py-3 text-sm sm:flex-row sm:px-4"
                 >
                     <div class="text-gray-600">
                         Page <span class="font-semibold">{{ page }}</span> of
@@ -429,7 +459,7 @@ onMounted(loadList);
                     role="dialog"
                 >
                     <div
-                        class="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl"
+                        class="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl mx-4"
                     >
                         <div class="flex items-start justify-between">
                             <h3 class="text-lg font-semibold">
@@ -451,7 +481,7 @@ onMounted(loadList);
                                 placeholder="Write a private message…"
                             />
                             <div
-                                class="mt-2 flex items-center justify-between text-xs text-gray-500"
+                                class="mt-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between text-xs text-gray-500"
                             >
                                 <span
                                     >{{
@@ -466,15 +496,17 @@ onMounted(loadList);
                                 >
                             </div>
                         </div>
-                        <div class="mt-5 flex items-center justify-end gap-2">
+                        <div
+                            class="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end"
+                        >
                             <button
-                                class="rounded-xl border px-4 py-2 text-sm hover:bg-gray-50"
+                                class="rounded-xl border px-4 py-2 text-sm hover:bg-gray-50 w-full sm:w-auto"
                                 @click="closeMention"
                             >
                                 Cancel
                             </button>
                             <button
-                                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50"
+                                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50 w-full sm:w-auto"
                                 :disabled="sending || !mentionForm.text.trim()"
                                 @click="sendMention"
                             >
@@ -490,7 +522,7 @@ onMounted(loadList);
                 <div
                     v-if="toast.show"
                     :class="[
-                        'fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-xl px-4 py-2 text-sm shadow-lg',
+                        'fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-xl px-4 py-2 text-sm shadow-lg max-w-xs sm:max-w-sm text-center',
                         toast.type === 'error'
                             ? 'bg-red-600 text-white'
                             : 'bg-gray-900 text-white',
