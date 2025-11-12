@@ -151,11 +151,12 @@ onMounted(() => {
 }
 
 .doctor-card {
-    width: 280px;
+    width: 320px;
     height: 160px;
     display: flex;
     transition: transform 0.3s ease;
     align-items: stretch;
+    border: 1px solid rgb(211, 206, 206);
 }
 
 @media (min-width: 640px) {
@@ -167,8 +168,8 @@ onMounted(() => {
 
 @media (min-width: 1024px) {
     .doctor-card {
-        width: 340px;
-        height: 180px;
+        width: 350px;
+        height: 175px;
     }
 }
 

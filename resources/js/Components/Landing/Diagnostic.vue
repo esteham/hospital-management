@@ -41,7 +41,7 @@ onMounted(() => {
                 <p class="text-gray-500">Loading diagnostic services...</p>
             </div>
 
-            <div v-else class="marquee-container space-y-2">
+            <div v-else class="marquee-container space-y-3">
                 <!-- Top Row -->
                 <div class="marquee-track">
                     <div class="marquee-segment flex gap-2">
@@ -57,11 +57,16 @@ onMounted(() => {
                             <div
                                 :style="{
                                     backgroundImage: `url(${
-                                        service.image ||
-                                        '/images/default-service.png'
+                                        service.image
+                                            ? '/storage/' + service.image
+                                            : '/images/default-service.png'
                                     })`,
-                                    backgroundSize: 'cover',
+
+                                    backgroundSize: '55%',
+                                    backgroundRepeat: 'no-repeat',
                                     backgroundPosition: 'center',
+                                    width: '100px',
+                                    height: '120px',
                                 }"
                             ></div>
                             <div class="flex-1">
@@ -107,9 +112,15 @@ onMounted(() => {
                             <div
                                 :style="{
                                     backgroundImage: `url(${
-                                        service.image ||
-                                        '/images/default-service.png'
+                                        service.image
+                                            ? '/storage/' + service.image
+                                            : '/images/default-service.png'
                                     })`,
+                                    backgroundSize: '55%',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundPosition: 'center',
+                                    width: '100px',
+                                    height: '120px',
                                 }"
                             ></div>
                             <div class="flex-1">
@@ -168,23 +179,24 @@ onMounted(() => {
 
 .service-card {
     width: 280px;
-    height: 120px;
+    height: 110px;
     display: flex;
     transition: transform 0.3s ease;
     align-items: stretch;
+    border: 1px solid rgb(211, 206, 206);
 }
 
 @media (min-width: 640px) {
     .service-card {
-        width: 300px;
-        height: 130px;
+        width: 280px;
+        height: 110px;
     }
 }
 
 @media (min-width: 1024px) {
     .service-card {
         width: 300px;
-        height: 125px;
+        height: 120px;
     }
 }
 
@@ -239,7 +251,7 @@ onMounted(() => {
 
 .marquee-segment {
     display: flex;
-    gap: 12px;
+    gap: 1px;
 }
 
 @media (min-width: 640px) {
