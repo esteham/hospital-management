@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsCtrl;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
 use App\Http\Controllers\Staff\StaffController as StaffCtrl;
+use App\Http\Controllers\Diagnostic\DashboardController as DiagnosticDashboardCtrl;
+use App\Http\Controllers\Diagnostic\DiagnosticServiceController;
 
 
 use App\Models\Doctor;
@@ -56,7 +58,9 @@ Route::get('/news-all', fn() => Inertia::render('NewsAll'))->name('news.all');
 Route::get('/news/{id}', fn($id) => Inertia::render('NewsDetail', ['id' => $id]))->name('news.detail');
 
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+Route::get('/appointments/{appointment}/download-pdf', [AppointmentController::class, 'downloadPdf'])->name('appointments.download-pdf');
 
+Route::get('/diagnostic/services/list', [DiagnosticServiceController::class, 'list'])->name('diagnostic.services.list');
 
 require __DIR__.'/auth.php';
 
@@ -76,6 +80,8 @@ Route::middleware(['auth','verified'])->group(function() {
             return Inertia::render('Doctor/Dashboard');
         } elseif ($user->role === 'staff') {
             return Inertia::render('Staff/Dashboard');
+        } elseif ($user->role === 'diagnostic') {
+            return app(DiagnosticDashboardCtrl::class)->index();
         } else {
             return Inertia::render('Patient/Dashboard');
         }
@@ -151,7 +157,7 @@ Route::middleware(['auth','verified'])->group(function() {
     Route::middleware(['auth','verified','role:doctor'])->group(function(){
 
         Route::get('/doctor', fn() => Inertia::render('Doctor/Dashboard'))->name('doctor.home');
-        
+
         Route::get('/doctor/schedules', fn()=> Inertia::render('Doctor/Schedules/Index'))->name('doctor.schedules');
 
         Route::get('/doctor/schedules/list', [DocScheduleCtrl::class, 'index']);
@@ -167,6 +173,11 @@ Route::middleware(['auth','verified'])->group(function() {
         Route::put('/doctor/appointments/{appointment}', [DocAppointmentCtrl::class, 'update'])->name('doctor.appointments.update');
         Route::post('/doctor/appointments/{appointment}/prescription', [DocAppointmentCtrl::class, 'storePrescription'])->name('doctor.appointments.store-prescription');
         Route::get('/doctor/appointments/{appointment}/prescriptions/{prescription}/download-pdf', [DocAppointmentCtrl::class, 'downloadPrescriptionPdf'])->name('doctor.appointments.download-prescription-pdf');
+    });
+
+    // Diagnostic Routes
+    Route::middleware(['auth','verified','role:diagnostic'])->group(function(){
+        Route::resource('/diagnostic/services', DiagnosticServiceController::class, ['as' => 'diagnostic']);
     });
 
 });

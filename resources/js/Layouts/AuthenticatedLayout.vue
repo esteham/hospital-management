@@ -9,6 +9,9 @@ const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
 const isAdmin = computed(() => user.value && user.value.role === "admin");
 const isDoctor = computed(() => user.value && user.value.role === "doctor");
+const isDiagnostic = computed(
+    () => user.value && user.value.role === "diagnostic"
+);
 const sidebarOpen = ref(false);
 const sidebarWidth = ref(320);
 const isResizing = ref(false);
@@ -85,6 +88,34 @@ const navItems = computed(() => {
         //     routeName: "profile.edit",
         //     icon: "user",
         // });
+    } else if (isDiagnostic.value) {
+        items.push({
+            name: "Home",
+            routeName: "dashboard",
+            icon: "home",
+        });
+        items.push({
+            name: "Services",
+            routeName: "diagnostic.services.index",
+            icon: "flask",
+        });
+        items.push({
+            name: "Bookings",
+            routeName: "diagnostic.services.index",
+            icon: "calendar-check",
+        });
+        items.push({
+            name: "Test Results",
+            routeName: "diagnostic.services.index",
+            icon: "file-medical",
+        });
+        items.push({
+            name: "Logout",
+            routeName: "logout",
+            icon: "logout",
+            method: "post",
+            as: "button",
+        });
     } else {
         items.push({
             name: "Home",
@@ -184,6 +215,12 @@ const getIconSvg = (icon) => {
             return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>`;
         case "logout":
             return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>`;
+        case "flask":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>`;
+        case "calendar-check":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>`;
+        case "file-medical":
+            return `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
         default:
             return "";
     }
@@ -193,7 +230,7 @@ const getIconSvg = (icon) => {
 <template>
     <div
         class="h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 overflow-hidden"
-        :class="{ flex: (isAdmin || isDoctor) && !isMobile }"
+        :class="{ flex: (isAdmin || isDoctor || isDiagnostic) && !isMobile }"
     >
         <!-- Admin Sidebar -->
         <aside
@@ -540,9 +577,9 @@ const getIconSvg = (icon) => {
         </aside>
         <!-- Admin Sidebar -->
 
-        <!-- Doctor Sidebar -->
+        <!-- Diagnostic Sidebar -->
         <aside
-            v-if="isDoctor && !isMobile"
+            v-if="isDiagnostic && !isMobile"
             :style="{
                 width: isSidebarCollapsed ? '130px' : sidebarWidth + 'px',
             }"
@@ -580,7 +617,7 @@ const getIconSvg = (icon) => {
                     >
                         <div>
                             <h2 class="text-xl font-bold text-slate-800">
-                                Doctor Portal
+                                Diagnostic Portal
                             </h2>
                             <p class="text-slate-600 mt-1 text-sm">
                                 Welcome back, {{ user.name }} 👋
@@ -624,51 +661,20 @@ const getIconSvg = (icon) => {
                 </Link>
 
                 <Link
-                    :href="route('doctor.schedules')"
-                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
-                    :class="{
-                        'bg-sky-200 shadow-lg border-white/80':
-                            isRouteActive('doctor.schedules'),
-                    }"
-                >
-                    <div
-                        class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
-                        :class="{ 'mx-auto': isSidebarCollapsed }"
-                    >
-                        <svg
-                            class="w-5 h-5 text-purple-600 group-hover:text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                        </svg>
-                    </div>
-                    <span v-if="!isSidebarCollapsed" class="font-semibold"
-                        >My Schedules</span
-                    >
-                </Link>
-
-                <Link
-                    :href="route('doctor.appointments.index')"
+                    :href="route('diagnostic.services.index')"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
                         'bg-sky-200 shadow-lg border-white/80': isRouteActive(
-                            'doctor.appointments.index'
+                            'diagnostic.services.index'
                         ),
                     }"
                 >
                     <div
-                        class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors duration-300"
+                        class="w-10 h-10 bg-sky-100 rounded-xl flex items-center justify-center group-hover:bg-sky-500 transition-colors duration-300"
                         :class="{ 'mx-auto': isSidebarCollapsed }"
                     >
                         <svg
-                            class="w-5 h-5 text-teal-600 group-hover:text-white"
+                            class="w-5 h-5 text-sky-600 group-hover:text-white"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -677,21 +683,54 @@ const getIconSvg = (icon) => {
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
                             />
                         </svg>
                     </div>
                     <span v-if="!isSidebarCollapsed" class="font-semibold"
-                        >Appointments</span
+                        >Diagnostic Services</span
+                    >
+                </Link>
+
+                <!-- <Link
+                    :href="route('diagnostic.bookings.index')"
+                    class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
+                    :class="{
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'diagnostic.bookings.index'
+                        ), // Placeholder
+                    }"
+                >
+                    <div
+                        class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300"
+                        :class="{ 'mx-auto': isSidebarCollapsed }"
+                    >
+                        <svg
+                            class="w-5 h-5 text-green-600 group-hover:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                            />
+                        </svg>
+                    </div>
+                    <span v-if="!isSidebarCollapsed" class="font-semibold"
+                        >Bookings Management</span
                     >
                 </Link>
 
                 <Link
-                    :href="route('doctor.messages')"
+                    :href="route('diagnostic.results.index')"
                     class="flex items-center space-x-4 px-4 py-2 text-slate-700 hover:bg-sky-200 hover:shadow-lg rounded-2xl transition-all duration-300 group border border-white/0 hover:border-white/80"
                     :class="{
-                        'bg-sky-200 shadow-lg border-white/80':
-                            isRouteActive('doctor.messages'),
+                        'bg-sky-200 shadow-lg border-white/80': isRouteActive(
+                            'diagnostic.results.index'
+                        ), // Placeholder
                     }"
                 >
                     <div
@@ -708,14 +747,14 @@ const getIconSvg = (icon) => {
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                             />
                         </svg>
                     </div>
                     <span v-if="!isSidebarCollapsed" class="font-semibold"
-                        >Messages</span
+                        >Test Results</span
                     >
-                </Link>
+                </Link> -->
             </nav>
 
             <!-- Logout -->
@@ -852,12 +891,14 @@ const getIconSvg = (icon) => {
 
         <!-- Main Content Area -->
         <div
-            :class="{ 'flex-1': (isAdmin || isDoctor) && !isMobile }"
+            :class="{
+                'flex-1': (isAdmin || isDoctor || isDiagnostic) && !isMobile,
+            }"
             class="h-screen flex flex-col"
         >
             <!-- Top Navigation for Non-Admin -->
             <nav
-                v-if="!isAdmin && !isDoctor"
+                v-if="!isAdmin && !isDoctor && !isDiagnostic"
                 class="bg-white/80 backdrop-blur-xl border-b border-white/80 shadow-sm sticky top-0 z-30"
             >
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -934,7 +975,7 @@ const getIconSvg = (icon) => {
 
             <!-- Header (hidden for admin and doctor) -->
             <header
-                v-if="!isAdmin && !isDoctor && title"
+                v-if="!isAdmin && !isDoctor && !isDiagnostic && title"
                 class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border-b border-white/80"
             >
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-4 lg:px-10">
@@ -980,11 +1021,7 @@ const getIconSvg = (icon) => {
                     "
                 >
                     <div
-                        :class="
-                            isDoctor
-                                ? 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/80 overflow-hidden'
-                                : 'bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/80 overflow-hidden'
-                        "
+                        class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/80 overflow-hidden"
                     >
                         <slot />
                     </div>

@@ -9,6 +9,7 @@ import HealthCheck from "@/Components/Landing/HealthChecks.vue";
 import PatientStories from "@/Components/Landing/PatientStories.vue";
 import NewsMedia from "@/Components/Landing/NewsMedia.vue";
 import Specialists from "@/Components/Landing/Specialists.vue";
+import Diagnostic from "@/Components/Landing/Diagnostic.vue";
 import CorporateServices from "@/Components/Landing/CorporateServices.vue";
 import Contact from "@/Components/Landing/Contact.vue";
 import Footer from "@/Components/Landing/Footer.vue";
@@ -29,6 +30,9 @@ defineProps({
 
     <!-- Banner Slider Section -->
     <Banner />
+
+    <!-- Specialists  Section -->
+    <Diagnostic />
 
     <!-- Specialists  Section -->
     <Specialists />

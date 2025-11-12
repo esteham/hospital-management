@@ -12,7 +12,9 @@ class DatabaseSeeder extends Seeder
     {
        $this->call(AdminAndDoctorSeeder::class);
        $this->call(StaffSeeder::class);
+       $this->call(DiagnosticUserSeeder::class);
        $this->call(HealthCheckSeeder::class);
        $this->call(NewsSeeder::class);
+       $this->call(DiagnosticSeeder::class);
     }
 }

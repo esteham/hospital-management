@@ -16,6 +16,7 @@ use App\Mail\DoctorAppointmentNotificationMail;
 use App\Models\Doctor;
 use App\Models\Schedule;
 use App\Models\Appointment;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AppointmentController extends Controller
 {   
@@ -188,5 +189,12 @@ class AppointmentController extends Controller
         $appointment->update($validated);
 
         return redirect()->back()->with('success', 'Appointment updated successfully!');
+    }
+
+    public function downloadPdf(Appointment $appointment)
+    {
+        $pdf = Pdf::loadView('pdfs.appointment_details', ['appointment' => $appointment]);
+
+        return $pdf->download('appointment_' . $appointment->booking_id . '.pdf');
     }
 }

@@ -71,6 +71,8 @@ const form = ref({
 });
 
 const submitting = ref(false);
+const showSuccessModal = ref(false);
+const successAppointment = ref(null);
 
 // Computed property for minimum date (today)
 const minDate = computed(() => {
@@ -120,21 +122,8 @@ const submitForm = async () => {
         }
 
         if (response.ok) {
-            alert("Appointment booked successfully!");
-            // Reset form
-            form.value = {
-                firstName: "",
-                lastName: "",
-                email: "",
-                phone: "",
-                gender: "",
-                age: "",
-                preferredDate: "",
-                preferredTime: "",
-                speciality: "",
-                doctorId: "",
-                additionalNotes: "",
-            };
+            successAppointment.value = result.appointment;
+            showSuccessModal.value = true;
         } else {
             alert(
                 "Error booking appointment: " +
@@ -312,6 +301,35 @@ onMounted(() => {
     }
 });
 
+const downloadAppointmentDetails = (bookingId) => {
+    // Create a temporary link to download the PDF
+    const link = document.createElement("a");
+    link.href = `/appointments/${bookingId}/download-pdf`;
+    link.download = `appointment_${bookingId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+const closeModal = () => {
+    showSuccessModal.value = false;
+    successAppointment.value = null;
+    // Reset form
+    form.value = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        gender: "",
+        age: "",
+        preferredDate: "",
+        preferredTime: "",
+        speciality: "",
+        doctorId: "",
+        additionalNotes: "",
+    };
+};
+
 // Benefits information
 const benefits = ref([
     {
@@ -355,7 +373,7 @@ const hospitalStats = ref([
     <main
         class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50/30"
     >
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <!-- Header Section -->
             <div class="text-center mb-8">
                 <div
@@ -388,19 +406,19 @@ const hospitalStats = ref([
             <!-- Main Content Grid -->
             <div class="grid lg:grid-cols-12 gap-8">
                 <!-- Left Side - Information (4 columns) -->
-                <div class="hidden lg:block lg:col-span-4 space-y-8">
+                <div class="hidden lg:block lg:col-span-3 space-y-8">
                     <!-- Benefits Card -->
                     <div
                         class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8"
                     >
                         <h3 class="text-2xl font-black text-gray-900 mb-6">
-                            Why Choose Xet Hospital?
+                            Why Xet Hospital?
                         </h3>
                         <div class="space-y-6">
                             <div
                                 v-for="benefit in benefits"
                                 :key="benefit.title"
-                                class="flex items-start gap-4 p-4 rounded-xl bg-blue-50/50 hover:bg-blue-100/50 transition-colors duration-300"
+                                class="flex items-start gap-4 p-4 rounded-l bg-blue-50/50 hover:bg-blue-100/50 transition-colors duration-300"
                             >
                                 <div class="text-2xl flex-shrink-0">
                                     {{ benefit.icon }}
@@ -428,7 +446,7 @@ const hospitalStats = ref([
                             <div
                                 v-for="stat in hospitalStats"
                                 :key="stat.label"
-                                class="text-center p-4 bg-white/10 rounded-xl backdrop-blur-sm"
+                                class="text-center p-4 bg-white/10 rounded-l backdrop-blur-sm"
                             >
                                 <div class="text-2xl font-black mb-1">
                                     {{ stat.number }}
@@ -453,10 +471,10 @@ const hospitalStats = ref([
                         </p>
                         <div class="space-y-4">
                             <div
-                                class="flex items-center gap-4 p-4 bg-red-50 rounded-xl border border-red-200"
+                                class="flex items-center gap-4 p-4 bg-red-50 rounded-l border border-red-200"
                             >
                                 <div
-                                    class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-600"
+                                    class="w-12 h-12 bg-red-100 rounded-l flex items-center justify-center text-red-600"
                                 >
                                     <svg
                                         class="w-6 h-6"
@@ -480,10 +498,10 @@ const hospitalStats = ref([
                                 </div>
                             </div>
                             <div
-                                class="flex items-center gap-4 p-4 bg-blue-50 rounded-xl border border-blue-200"
+                                class="flex items-center gap-4 p-4 bg-blue-50 rounded-l border border-blue-200"
                             >
                                 <div
-                                    class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600"
+                                    class="w-12 h-12 bg-blue-100 rounded-l flex items-center justify-center text-blue-600"
                                 >
                                     <svg
                                         class="w-6 h-6"
@@ -603,7 +621,7 @@ const hospitalStats = ref([
                 </div>
 
                 <!-- Right Side - Appointment Form (8 columns) -->
-                <div class="lg:col-span-8">
+                <div class="lg:col-span-9">
                     <div
                         class="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 lg:p-12"
                     >
@@ -632,56 +650,60 @@ const hospitalStats = ref([
                                     Appointment Details
                                 </h3>
 
-                                <div class="mt-6">
-                                    <label
-                                        class="block text-sm font-semibold text-gray-700 mb-1"
-                                    >
-                                        Medical Speciality *
-                                    </label>
-                                    <select
-                                        v-model="form.speciality"
-                                        required
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
-                                    >
-                                        <option value="">
-                                            Select Speciality
-                                        </option>
-                                        <option
-                                            v-for="specialty in specialties"
-                                            :key="specialty.value"
-                                            :value="specialty.value"
+                                <div class="grid md:grid-cols-2 gap-6 mt-5">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
                                         >
-                                            {{ specialty.icon }}
-                                            {{ specialty.label }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="mt-6">
-                                    <label
-                                        class="block text-sm font-semibold text-gray-700 mb-1"
-                                    >
-                                        Preferred Doctor
-                                    </label>
-                                    <select
-                                        v-model="form.doctorId"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
-                                    >
-                                        <option value="">
-                                            Select Doctor (Optional)
-                                        </option>
-                                        <option
-                                            v-for="doctor in filteredDoctors"
-                                            :key="doctor.id"
-                                            :value="doctor.id"
+                                            Medical Speciality *
+                                        </label>
+                                        <select
+                                            v-model="form.speciality"
+                                            required
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
                                         >
-                                            {{ doctor.user.name }} -
-                                            {{ doctor.speciality }}
-                                        </option>
-                                    </select>
-                                    <p class="text-sm text-gray-500">
-                                        You can leave this blank and we'll
-                                        assign the best available doctor
-                                    </p>
+                                            <option value="">
+                                                Select Speciality
+                                            </option>
+                                            <option
+                                                v-for="specialty in specialties"
+                                                :key="specialty.value"
+                                                :value="specialty.value"
+                                            >
+                                                {{ specialty.icon }}
+                                                {{ specialty.label }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-semibold text-gray-700 mb-1"
+                                        >
+                                            Preferred Doctor
+                                        </label>
+                                        <select
+                                            v-model="form.doctorId"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                        >
+                                            <option value="">
+                                                Select Doctor (Optional)
+                                            </option>
+                                            <option
+                                                v-for="doctor in filteredDoctors"
+                                                :key="doctor.id"
+                                                :value="doctor.id"
+                                            >
+                                                {{ doctor.user.name }} -
+                                                {{ doctor.speciality }}
+                                            </option>
+                                        </select>
+                                        <!-- <p class="text-sm text-gray-500">
+                                            You can leave this blank and we'll
+                                            assign the best available doctor
+                                        </p> -->
+                                    </div>
                                 </div>
                                 <div class="grid md:grid-cols-2 gap-6 mt-5">
                                     <div>
@@ -693,7 +715,8 @@ const hospitalStats = ref([
                                         <select
                                             v-model="form.preferredDate"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
                                         >
                                             <option value="">
                                                 Select Preferred Date
@@ -749,7 +772,8 @@ const hospitalStats = ref([
                                         <select
                                             v-model="form.preferredTime"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
                                         >
                                             <option value="">
                                                 Select Time Slot
@@ -789,7 +813,8 @@ const hospitalStats = ref([
                                             v-model="form.firstName"
                                             type="text"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                             placeholder="Enter your first name"
                                         />
                                     </div>
@@ -803,7 +828,8 @@ const hospitalStats = ref([
                                             v-model="form.lastName"
                                             type="text"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                             placeholder="Enter your last name"
                                         />
                                     </div>
@@ -819,7 +845,8 @@ const hospitalStats = ref([
                                             v-model="form.email"
                                             type="email"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                             placeholder="your@email.com"
                                         />
                                     </div>
@@ -833,7 +860,8 @@ const hospitalStats = ref([
                                             v-model="form.phone"
                                             type="tel"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                             placeholder="+88 (013) 1235-4567"
                                         />
                                     </div>
@@ -848,7 +876,8 @@ const hospitalStats = ref([
                                         <select
                                             v-model="form.gender"
                                             required
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
                                         >
                                             <option value="">
                                                 Select Gender
@@ -871,8 +900,9 @@ const hospitalStats = ref([
                                             type="number"
                                             required
                                             min="1"
-                                            max="120"
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+                                            max="99"
+                                            :disabled="submitting"
+                                            class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                             placeholder="Enter your age"
                                         />
                                     </div>
@@ -885,9 +915,10 @@ const hospitalStats = ref([
                                     </label>
                                     <textarea
                                         v-model="form.additionalNotes"
+                                        :disabled="submitting"
                                         rows="4"
                                         placeholder="Please describe your symptoms, reason for visit, medical history, or any special requirements..."
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400 resize-none"
+                                        class="w-full px-4 py-3 rounded-l border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400 resize-none"
                                     ></textarea>
                                     <p class="text-sm text-gray-500 mt-2">
                                         Providing detailed information helps us
@@ -901,7 +932,7 @@ const hospitalStats = ref([
                                 <button
                                     type="submit"
                                     :disabled="submitting"
-                                    class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                    class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-4 rounded-l font-bold text-lg hover:shadow-2xl transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {{
                                         submitting
@@ -935,7 +966,7 @@ const hospitalStats = ref([
                             class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
                         >
                             <div
-                                class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4"
+                                class="w-12 h-12 bg-green-100 rounded-l flex items-center justify-center mx-auto mb-4"
                             >
                                 <svg
                                     class="w-6 h-6 text-green-600"
@@ -962,7 +993,7 @@ const hospitalStats = ref([
                             class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
                         >
                             <div
-                                class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4"
+                                class="w-12 h-12 bg-blue-100 rounded-l flex items-center justify-center mx-auto mb-4"
                             >
                                 <svg
                                     class="w-6 h-6 text-blue-600"
@@ -989,7 +1020,7 @@ const hospitalStats = ref([
                             class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
                         >
                             <div
-                                class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4"
+                                class="w-12 h-12 bg-purple-100 rounded-l flex items-center justify-center mx-auto mb-4"
                             >
                                 <svg
                                     class="w-6 h-6 text-purple-600"
@@ -1018,4 +1049,117 @@ const hospitalStats = ref([
         </div>
     </main>
     <Footer />
+
+    <!-- Success Modal -->
+    <div
+        v-if="showSuccessModal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+        @click="closeModal"
+    >
+        <div
+            class="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 text-center relative"
+            @click.stop
+        >
+            <!-- Close Button -->
+            <button
+                @click="closeModal"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+                <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                    />
+                </svg>
+            </button>
+
+            <!-- Success Icon -->
+            <div
+                class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+                <svg
+                    class="w-10 h-10 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                    />
+                </svg>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-2xl font-black text-gray-900 mb-4">
+                Appointment Booked Successfully!
+            </h2>
+
+            <!-- Message -->
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Your appointment booking confirmation has been sent to your
+                email. You can also download your appointment details here.
+            </p>
+
+            <!-- Appointment Details -->
+            <div
+                v-if="successAppointment"
+                class="bg-blue-50 rounded-l p-4 mb-6 text-left"
+            >
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Booking ID:</span>
+                        <span class="font-semibold text-gray-900">{{
+                            successAppointment.booking_id
+                        }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Date:</span>
+                        <span class="font-semibold text-gray-900">{{
+                            new Date(
+                                successAppointment.preferred_date
+                            ).toLocaleDateString()
+                        }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Time:</span>
+                        <span class="font-semibold text-gray-900">{{
+                            successAppointment.preferred_time
+                        }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Speciality:</span>
+                        <span class="font-semibold text-gray-900">{{
+                            successAppointment.speciality
+                        }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <button
+                @click="downloadAppointmentDetails(successAppointment.id)"
+                class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-3 rounded-l font-bold hover:shadow-lg transition-all duration-300 mb-4"
+            >
+                📄 Download Appointment
+            </button>
+
+            <!-- Close Button -->
+            <button
+                @click="closeModal"
+                class="w-full bg-gray-100 text-gray-700 py-3 rounded-l font-semibold hover:bg-gray-200 transition-all duration-300"
+            >
+                Close
+            </button>
+        </div>
+    </div>
 </template>
