@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User;
 use App\Models\DiagnosticService;
-use Illuminate\Support\Facades\Hash;
 
 class DiagnosticSeeder extends Seeder
 {
@@ -254,6 +252,288 @@ class DiagnosticSeeder extends Seeder
             'duration' => 20,
             'home_collection_available' => true,
             'report_time' => 48,
+        ]);
+
+        // Additional Laboratory Services
+        DiagnosticService::create([
+            'name' => 'Complete Blood Count (CBC)',
+            'image' => null,
+            'price' => 35.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Blood',
+            'description' => 'Comprehensive blood count for red cells, white cells, and platelets.',
+            'duration' => 15,
+            'home_collection_available' => true,
+            'report_time' => 12,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Kidney Function Test',
+            'image' => null,
+            'price' => 60.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Blood',
+            'description' => 'Blood test to assess kidney function and creatinine levels.',
+            'duration' => 10,
+            'home_collection_available' => true,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'HbA1c Test',
+            'image' => null,
+            'price' => 50.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Blood',
+            'description' => 'Blood test for average blood sugar levels over past months.',
+            'duration' => 10,
+            'home_collection_available' => true,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'PSA Test',
+            'image' => null,
+            'price' => 75.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Blood',
+            'description' => 'Prostate Specific Antigen test for prostate health.',
+            'duration' => 10,
+            'home_collection_available' => true,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Pap Smear',
+            'image' => null,
+            'price' => 80.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Cervical',
+            'description' => 'Screening test for cervical cancer.',
+            'duration' => 20,
+            'home_collection_available' => false,
+            'report_time' => 72,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'ESR Test',
+            'image' => null,
+            'price' => 20.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Blood',
+            'description' => 'Erythrocyte Sedimentation Rate test for inflammation.',
+            'duration' => 10,
+            'home_collection_available' => true,
+            'report_time' => 12,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Vitamin B12 Test',
+            'image' => null,
+            'price' => 40.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Blood',
+            'description' => 'Blood test for vitamin B12 levels.',
+            'duration' => 10,
+            'home_collection_available' => true,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Iron Test',
+            'image' => null,
+            'price' => 30.00,
+            'category' => 'Laboratory',
+            'sample_type' => 'Blood',
+            'description' => 'Blood test for iron levels and anemia.',
+            'duration' => 10,
+            'home_collection_available' => true,
+            'report_time' => 24,
+        ]);
+
+        // Additional Radiology Services
+        DiagnosticService::create([
+            'name' => 'Bone Marrow Biopsy',
+            'image' => null,
+            'price' => 400.00,
+            'category' => 'Radiology',
+            'sample_type' => 'Bone Marrow',
+            'description' => 'Biopsy of bone marrow for diagnostic purposes.',
+            'duration' => 60,
+            'home_collection_available' => false,
+            'report_time' => 96,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Angiography',
+            'image' => null,
+            'price' => 600.00,
+            'category' => 'Radiology',
+            'sample_type' => 'N/A',
+            'description' => 'Imaging of blood vessels using contrast dye.',
+            'duration' => 90,
+            'home_collection_available' => false,
+            'report_time' => 48,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'DEXA Scan',
+            'image' => null,
+            'price' => 200.00,
+            'category' => 'Radiology',
+            'sample_type' => 'N/A',
+            'description' => 'Dual-energy X-ray absorptiometry for bone density.',
+            'duration' => 15,
+            'home_collection_available' => false,
+            'report_time' => 24,
+        ]);
+
+        // Additional Cardiology Services
+        DiagnosticService::create([
+            'name' => 'Holter Monitor',
+            'image' => null,
+            'price' => 150.00,
+            'category' => 'Cardiology',
+            'sample_type' => 'N/A',
+            'description' => 'Portable device to monitor heart rhythm over 24-48 hours.',
+            'duration' => 1440, // 24 hours
+            'home_collection_available' => false,
+            'report_time' => 72,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Stress Test',
+            'image' => null,
+            'price' => 200.00,
+            'category' => 'Cardiology',
+            'sample_type' => 'N/A',
+            'description' => 'Exercise stress test to evaluate heart function.',
+            'duration' => 60,
+            'home_collection_available' => false,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Cardiac Catheterization',
+            'image' => null,
+            'price' => 1000.00,
+            'category' => 'Cardiology',
+            'sample_type' => 'N/A',
+            'description' => 'Procedure to examine heart and blood vessels.',
+            'duration' => 120,
+            'home_collection_available' => false,
+            'report_time' => 48,
+        ]);
+
+        // Additional Pathology Services
+        DiagnosticService::create([
+            'name' => 'Biopsy',
+            'image' => null,
+            'price' => 250.00,
+            'category' => 'Pathology',
+            'sample_type' => 'Tissue',
+            'description' => 'Removal of tissue sample for examination.',
+            'duration' => 30,
+            'home_collection_available' => false,
+            'report_time' => 120,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Fine Needle Aspiration',
+            'image' => null,
+            'price' => 180.00,
+            'category' => 'Pathology',
+            'sample_type' => 'Tissue',
+            'description' => 'Aspiration of cells from a lump for diagnosis.',
+            'duration' => 20,
+            'home_collection_available' => false,
+            'report_time' => 72,
+        ]);
+
+        // Neurology Services
+        DiagnosticService::create([
+            'name' => 'EEG',
+            'image' => null,
+            'price' => 300.00,
+            'category' => 'Neurology',
+            'sample_type' => 'N/A',
+            'description' => 'Electroencephalogram to record brain activity.',
+            'duration' => 60,
+            'home_collection_available' => false,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'EMG',
+            'image' => null,
+            'price' => 250.00,
+            'category' => 'Neurology',
+            'sample_type' => 'N/A',
+            'description' => 'Electromyography to assess muscle and nerve function.',
+            'duration' => 45,
+            'home_collection_available' => false,
+            'report_time' => 24,
+        ]);
+
+        // Gastroenterology Services
+        DiagnosticService::create([
+            'name' => 'Endoscopy',
+            'image' => null,
+            'price' => 350.00,
+            'category' => 'Gastroenterology',
+            'sample_type' => 'N/A',
+            'description' => 'Procedure to examine the digestive tract.',
+            'duration' => 30,
+            'home_collection_available' => false,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Bronchoscopy',
+            'image' => null,
+            'price' => 400.00,
+            'category' => 'Pulmonology',
+            'sample_type' => 'N/A',
+            'description' => 'Examination of the airways and lungs.',
+            'duration' => 45,
+            'home_collection_available' => false,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Cystoscopy',
+            'image' => null,
+            'price' => 300.00,
+            'category' => 'Urology',
+            'sample_type' => 'N/A',
+            'description' => 'Examination of the bladder and urethra.',
+            'duration' => 30,
+            'home_collection_available' => false,
+            'report_time' => 24,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Spirometry',
+            'image' => null,
+            'price' => 50.00,
+            'category' => 'Pulmonology',
+            'sample_type' => 'N/A',
+            'description' => 'Test to measure lung function.',
+            'duration' => 20,
+            'home_collection_available' => false,
+            'report_time' => 6,
+        ]);
+
+        DiagnosticService::create([
+            'name' => 'Audiometry',
+            'image' => null,
+            'price' => 100.00,
+            'category' => 'Otolaryngology',
+            'sample_type' => 'N/A',
+            'description' => 'Hearing test to assess auditory function.',
+            'duration' => 30,
+            'home_collection_available' => false,
+            'report_time' => 12,
         ]);
 
 
