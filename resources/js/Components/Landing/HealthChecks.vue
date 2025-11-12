@@ -80,7 +80,7 @@ onMounted(() => {
 <template>
     <section
         id="health-s"
-        class="py-8 md:py-10 bg-gradient-to-br from-blue-200 to-yellow-200 text-white/10"
+        class="py-12 md:py-14 bg-gradient-to-br from-blue-200 to-yellow-200 text-white/10"
     >
         <div class="absolute inset-0 bg-white/85 pointer-events-none z-0"></div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

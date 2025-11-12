@@ -28,7 +28,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <section id="news" class="py-12 bg-gray-100">
+    <section id="news" class="py-16 bg-gray-100">
         <div>
             <div
                 class="text-card flex flex-col md:flex-row md:justify-between md:items-center"

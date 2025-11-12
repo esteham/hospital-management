@@ -22,19 +22,22 @@ onMounted(() => {
 <template>
     <section class="specialties-offered py-16">
         <div class="mx-auto overflow-hidden">
-            <div class="text-card">
+            <div class="text-card text-right ml-auto">
                 <h2 class="text-2xl md:text-3xl font-semibold text-gray-900">
-                    Our
+                    👨‍⚕️Our
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
                     >
-                        Specialists </span
-                    >👨‍⚕️
+                        Specialists
+                    </span>
                 </h2>
-                <p class="text-base text-gray-600 max-w-2xl mt-2">
+                <p class="mt-2 text-gray-600">
                     Highly Experienced, Internationally Trained Specialists from
-                    reputed medical colleges are the top choice of Bangladeshi
-                    patients for their healthcare needs.
+                    reputed medical colleges
+                </p>
+                <p class="text-gray-600">
+                    are the top choice of Bangladeshi patients for their
+                    healthcare needs.
                 </p>
             </div>
 
@@ -128,7 +131,7 @@ onMounted(() => {
 
 <style scoped>
 .text-card {
-    margin: 0 20px 40px;
+    text-align: right;
 }
 
 @media (min-width: 768px) {

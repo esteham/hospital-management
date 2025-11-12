@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\PackageBookingController;
 use App\Http\Controllers\Api\EmailCheckController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Diagnostic\DiagnosticServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,4 @@ Route::get('/news', [NewsController::class, 'index']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
 
 Route::get('/doctors', [DoctorController::class, 'index']);
+Route::get('/diagnostic-services', [DiagnosticServiceController::class, 'list']);
