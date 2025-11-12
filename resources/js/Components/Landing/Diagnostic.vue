@@ -196,7 +196,7 @@ onMounted(() => {
 @media (min-width: 1024px) {
     .service-card {
         width: 300px;
-        height: 120px;
+        height: 105px;
     }
 }
 
