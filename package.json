@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^7.1.0",
+        "@heroicons/vue": "^2.2.0",
         "@splidejs/splide": "^4.1.4",
         "@splidejs/vue-splide": "^0.6.12",
         "@vueup/vue-quill": "^1.2.0",

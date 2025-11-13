@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Link } from "@inertiajs/vue3";
+import { ChevronRightIcon, CalendarDaysIcon } from "@heroicons/vue/24/outline";
 import api from "@/lib/api";
 
 const diagnosticServices = ref([]);
@@ -28,8 +29,8 @@ onMounted(() => {
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
                     >
-                        Services </span
-                    >🧪
+                        Services
+                    </span>
                 </h2>
                 <p class="text-base text-gray-600 max-w-2xl mt-2">
                     Advanced diagnostic services with state-of-the-art equipment
@@ -52,7 +53,7 @@ onMounted(() => {
                             )"
                             :key="'top-' + service.id"
                             :href="`/diagnostic/service/${service.id}`"
-                            class="service-card flex bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition"
+                            class="service-card flex bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition relative"
                         >
                             <div
                                 :style="{
@@ -94,6 +95,22 @@ onMounted(() => {
                                     ${{ service.price }}
                                 </div>
                             </div>
+                            <div class="card-overlay">
+                                <Link
+                                    :href="`/diagnostic/services/public`"
+                                    class="overlay-btn bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded-lg text-xs font-medium hover:from-blue-600 hover:to-blue-800 hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-1"
+                                >
+                                    <ChevronRightIcon class="w-4 h-4" />
+                                    See All
+                                </Link>
+                                <Link
+                                    :href="`/diagnostic/schedule/${service.id}`"
+                                    class="overlay-btn bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded-lg text-xs font-medium hover:from-green-600 hover:to-green-800 hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-1"
+                                >
+                                    <CalendarDaysIcon class="w-4 h-4" />
+                                    Schedule Test
+                                </Link>
+                            </div>
                         </Link>
                     </div>
                 </div>
@@ -107,7 +124,7 @@ onMounted(() => {
                             )"
                             :key="'bottom-' + service.id"
                             :href="`/diagnostic/service/${service.id}`"
-                            class="service-card flex bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition"
+                            class="service-card flex bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition relative"
                         >
                             <div
                                 :style="{
@@ -147,6 +164,22 @@ onMounted(() => {
                                 >
                                     ${{ service.price }}
                                 </div>
+                            </div>
+                            <div class="card-overlay">
+                                <Link
+                                    :href="`/diagnostic/services`"
+                                    class="overlay-btn bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded-lg text-xs font-medium hover:from-blue-600 hover:to-blue-800 hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-1"
+                                >
+                                    <ChevronRightIcon class="w-4 h-4" />
+                                    See All
+                                </Link>
+                                <Link
+                                    :href="`/diagnostic/schedule/${service.id}`"
+                                    class="overlay-btn bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded-lg text-xs font-medium hover:from-green-600 hover:to-green-800 hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-1"
+                                >
+                                    <CalendarDaysIcon class="w-4 h-4" />
+                                    Schedule Test
+                                </Link>
                             </div>
                         </Link>
                     </div>
@@ -236,6 +269,30 @@ onMounted(() => {
     transform: translateY(-4px);
 }
 
+.service-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 0.375rem;
+}
+
+.overlay-btn {
+    transition: background-color 0.4s ease;
+}
+
 /* --- Continuous Scroll --- */
 .marquee-container {
     position: relative;
@@ -247,6 +304,10 @@ onMounted(() => {
     display: flex;
     width: max-content;
     animation: scroll-right 60s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
 }
 
 .marquee-segment {

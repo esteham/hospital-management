@@ -10,6 +10,8 @@ const { canLogin, canRegister, doctors } = defineProps({
     doctors: Array,
 });
 
+const phoneNumber = "999";
+
 const searchQuery = ref("");
 const selectedSpecialty = ref("");
 
@@ -204,7 +206,7 @@ const specialties = computed(() => {
                     >
                         <!-- Call Button -->
                         <a
-                            :href="`tel:${doctor.phone}`"
+                            :href="`tel: ${phoneNumber}`"
                             class="mb-3 bg-white text-blue-600 px-5 py-2 rounded-full font-semibold shadow hover:bg-blue-600 hover:text-white transition-all duration-300"
                         >
                             📞 Call Now

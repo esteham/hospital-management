@@ -62,6 +62,8 @@ Route::get('/appointments/{appointment}/download-pdf', [AppointmentController::c
 
 Route::get('/diagnostic/services/list', [DiagnosticServiceController::class, 'list'])->name('diagnostic.services.list');
 
+Route::get('/diagnostic/services/public', [DiagnosticServiceController::class, 'publicIndex'])->name('diagnostic.services.public');
+
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {

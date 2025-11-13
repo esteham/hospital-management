@@ -31,6 +31,17 @@ class DiagnosticServiceController extends Controller
     }
 
     /**
+     * Display a public listing of the resource.
+     */
+    public function publicIndex()
+    {
+        $services = DiagnosticService::all();
+        return Inertia::render('Diagnostic/Services/PublicIndex', [
+            'services' => $services,
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

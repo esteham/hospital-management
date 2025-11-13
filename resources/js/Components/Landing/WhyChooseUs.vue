@@ -1,21 +1,26 @@
 <script setup>
+import { Link } from "@inertiajs/vue3";
 const features = [
     {
+        link: "/find-doctor",
         title: "Expert Specialists",
         desc: "200+ renowned medical specialists across all departments",
         icon: "👨‍⚕️",
     },
     {
+        link: "#",
         title: "Advanced Technology",
         desc: "State-of-the-art medical equipment and facilities",
         icon: "🔬",
     },
     {
+        link: "#",
         title: "24/7 Emergency",
         desc: "Round-the-clock emergency and critical care services",
         icon: "🚨",
     },
     {
+        link: "#",
         title: "Patient First",
         desc: "Personalized care plans and compassionate treatment",
         icon: "❤️",
@@ -44,11 +49,12 @@ const features = [
             </div>
 
             <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-8"
             >
-                <div
+                <Link
                     v-for="feature in features"
                     :key="feature.title"
+                    :href="feature.link"
                     class="text-center p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
                 >
                     <div class="text-3xl md:text-4xl mb-4">
@@ -62,7 +68,7 @@ const features = [
                     >
                         {{ feature.desc }}
                     </p>
-                </div>
+                </Link>
             </div>
         </div>
     </section>

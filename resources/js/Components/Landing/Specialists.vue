@@ -24,7 +24,7 @@ onMounted(() => {
         <div class="mx-auto overflow-hidden">
             <div class="text-card text-right ml-auto">
                 <h2 class="text-2xl md:text-3xl font-semibold text-gray-900">
-                    👨‍⚕️Our
+                    Our
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"
                     >
