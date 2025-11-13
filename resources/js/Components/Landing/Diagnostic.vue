@@ -97,7 +97,7 @@ onMounted(() => {
                             </div>
                             <div class="card-overlay">
                                 <Link
-                                    :href="`/diagnostic/services/public`"
+                                    :href="`/diagnostic/services/all`"
                                     class="overlay-btn bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded-lg text-xs font-medium hover:from-blue-600 hover:to-blue-800 hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-1"
                                 >
                                     <ChevronRightIcon class="w-4 h-4" />
@@ -167,7 +167,7 @@ onMounted(() => {
                             </div>
                             <div class="card-overlay">
                                 <Link
-                                    :href="`/diagnostic/services`"
+                                    :href="`/diagnostic/services/all`"
                                     class="overlay-btn bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded-lg text-xs font-medium hover:from-blue-600 hover:to-blue-800 hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-1"
                                 >
                                     <ChevronRightIcon class="w-4 h-4" />

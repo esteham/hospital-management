@@ -22,11 +22,54 @@ class DiagnosticServiceController extends Controller
     }
 
     /**
+     * Get distinct categories.
+     */
+    public function categories(Request $request)
+    {
+        $categories = DiagnosticService::distinct()->pluck('category')->filter();
+
+        if ($request->has('search') && $request->search !== '') {
+            $search = strtolower($request->search);
+            $categories = $categories->filter(function ($category) use ($search) {
+                return stripos(strtolower($category), $search) !== false;
+            });
+        }
+
+        $limit = $request->get('limit', 10);
+        $offset = $request->get('offset', 0);
+
+        $paginatedCategories = $categories->slice($offset, $limit)->values();
+
+        return response()->json($paginatedCategories);
+    }
+
+    /**
      * Get a listing of the resource for AJAX.
      */
-    public function list()
+    public function list(Request $request)
     {
-        $services = DiagnosticService::all();
+        $query = DiagnosticService::query();
+
+        // Filter by category
+        if ($request->has('category') && $request->category !== '') {
+            $query->where('category', $request->category);
+        }
+
+        // Search by name or description
+        if ($request->has('search') && $request->search !== '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Pagination
+        $limit = $request->get('limit', 20);
+        $offset = $request->get('offset', 0);
+
+        $services = $query->skip($offset)->take($limit)->get();
+
         return response()->json($services);
     }
 
@@ -36,7 +79,7 @@ class DiagnosticServiceController extends Controller
     public function publicIndex()
     {
         $services = DiagnosticService::all();
-        return Inertia::render('Diagnostic/Services/PublicIndex', [
+        return Inertia::render('DiagnosticAll', [
             'services' => $services,
         ]);
     }

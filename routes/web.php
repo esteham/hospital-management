@@ -61,8 +61,9 @@ Route::post('/appointments', [AppointmentController::class, 'store'])->name('app
 Route::get('/appointments/{appointment}/download-pdf', [AppointmentController::class, 'downloadPdf'])->name('appointments.download-pdf');
 
 Route::get('/diagnostic/services/list', [DiagnosticServiceController::class, 'list'])->name('diagnostic.services.list');
+Route::get('/diagnostic/services/categories', [DiagnosticServiceController::class, 'categories'])->name('diagnostic.services.categories');
 
-Route::get('/diagnostic/services/public', [DiagnosticServiceController::class, 'publicIndex'])->name('diagnostic.services.public');
+Route::get('/diagnostic/services/all', [DiagnosticServiceController::class, 'publicIndex'])->name('diagnostic.services.all');
 
 require __DIR__.'/auth.php';
 
