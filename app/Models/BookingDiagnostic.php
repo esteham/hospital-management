@@ -18,7 +18,24 @@ class BookingDiagnostic extends Model
         'payment_status',
         'payment_method',
         'address',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'gender',
+        'age',
+        'additional_notes',
     ];
+
+    protected $casts = [
+        'booking_date' => 'date',
+        'age' => 'integer',
+    ];
+
+    public function setBookingTimeAttribute($value)
+    {
+        $this->attributes['booking_time'] = date('H:i:s', strtotime($value));
+    }
 
     public function user()
     {

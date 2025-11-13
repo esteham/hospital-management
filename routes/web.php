@@ -18,6 +18,7 @@ use App\Http\Controllers\Patient\AppointmentController as PtnAppoinmentCtrl;
 use App\Http\Controllers\Staff\StaffController as StaffCtrl;
 use App\Http\Controllers\Diagnostic\DashboardController as DiagnosticDashboardCtrl;
 use App\Http\Controllers\Diagnostic\DiagnosticServiceController;
+use App\Http\Controllers\Diagnostic\DiagnosticBookingController;
 
 
 use App\Models\Doctor;
@@ -64,6 +65,10 @@ Route::get('/diagnostic/services/list', [DiagnosticServiceController::class, 'li
 Route::get('/diagnostic/services/categories', [DiagnosticServiceController::class, 'categories'])->name('diagnostic.services.categories');
 
 Route::get('/diagnostic/services/all', [DiagnosticServiceController::class, 'publicIndex'])->name('diagnostic.services.all');
+
+Route::get('/diagnostic/schedule/{service_id}', [DiagnosticBookingController::class, 'create'])->name('diagnostic.booking.create');
+Route::post('/diagnostic/bookings', [DiagnosticBookingController::class, 'store'])->name('diagnostic.bookings.store');
+Route::get('/diagnostic/bookings/{booking}/download-pdf', [DiagnosticBookingController::class, 'downloadPdf'])->name('diagnostic.bookings.download-pdf');
 
 require __DIR__.'/auth.php';
 

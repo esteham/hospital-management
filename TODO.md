@@ -1,7 +1,13 @@
-# TODO: Fix Diagnostic Services Truncation Error
+# Diagnostic Booking Implementation
 
 ## Tasks
 
--   [x] Update Vue component: Change duration and report_time inputs to type="number" in add and edit forms.
--   [x] Update controller: Change validation for duration and report_time to 'nullable|integer|min:0'.
--   [ ] Test the fix by attempting to update a service with numeric values.
+-   [ ] Create DiagnosticBooking.vue page adapted from AppointmentBooking.vue
+-   [ ] Create DiagnosticBookingController.php for form handling
+-   [ ] Add route /diagnostic/schedule/{service_id} in routes/web.php
+-   [ ] Test booking flow and data persistence
+-   [ ] Handle user authentication requirements
+
+## Progress
+
+-   [x] Plan confirmed and approved
